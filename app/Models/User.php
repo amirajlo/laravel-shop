@@ -17,9 +17,45 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'username',
         'email',
+        'mobile',
         'password',
+        'role',
+
+        'type',
+        'first_name',
+        'last_name',
+        'corporate_name',
+        'sex',
+        'mobile_sms',
+        'phone1',
+        'phone2',
+        'phone3',
+        'national_code',
+        'economical_code',
+        'register_code',
+        'website',
+        'birthday',
+        'description',
+
+        'address',
+        'province_id',
+        'city_id',
+        'postal_code',
+
+        'status',
+        'last_login',
+        'last_try',
+        'failed_login_count',
+        'email_verified_at',
+        'mobile_verified_at',
+        'is_deleted',
+        'remember_token',
+        'created_at',
+        'updated_at',
+
+
     ];
 
     /**
@@ -43,5 +79,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function getFullName()
+    {
+        return ucwords("{$this->first_name} {$this->last_name}");
     }
 }
