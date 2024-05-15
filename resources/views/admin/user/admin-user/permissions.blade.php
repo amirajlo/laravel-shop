@@ -29,7 +29,7 @@
                 </section>
 
                 <section>
-                    <form action="{{ route('admin.user.admin-user.permissions.store', $admin) }}" method="post"
+                    <form action="{{ route('admin.user.admin-user.permissions.store', $model) }}" method="post"
                         enctype="multipart/form-data">
                         @csrf
                         <section class="row">
@@ -43,7 +43,7 @@
 
                                         @foreach ($permissions as $permission)
                                             <option value="{{ $permission->id }}"
-                                                @foreach ($admin->permissions as $user_permission)
+                                                @foreach ($model->permissions as $user_permission)
 
                                         @if ($user_permission->id === $permission->id)
                                         selected

@@ -56,6 +56,7 @@ class Main extends Model
         return $result;
     }
 
+
     public static function userStatus($label = false)
     {
         $result = [
@@ -118,6 +119,8 @@ class Main extends Model
             'edit'=>'ویرایش',
             'delete'=>'حذف',
             'adminLabel'=>'ادمین',
+            'userLabel'=>'مشتری',
+            'usersLabel'=>'مشتریان',
             'new'=>'جدید',
             'manage'=>'مدیریت',
             'adminsLabel'=>'ادمین ها',

@@ -29,7 +29,7 @@
                 </section>
 
                 <section>
-                    <form action="{{ route('admin.user.permission.update', $permission->id) }}" method="post">
+                    <form action="{{ route('admin.user.permission.update', $model->id) }}" method="post">
                         @method('put')
                         @csrf
                         <section class="row">
@@ -37,7 +37,7 @@
                             <section class="col-12 col-md-5">
                                 <div class="form-group">
                                     <label for="">عنوان دسترسی</label>
-                                    <input type="text" name="name" value="{{ old('name', $permission->name) }}"
+                                    <input type="text" name="name" value="{{ old('name', $model->name) }}"
                                         class="form-control form-control-sm">
                                 </div>
                                 @error('name')
@@ -52,7 +52,7 @@
                                 <div class="form-group">
                                     <label for="">توضیح دسترسی</label>
                                     <input type="text" name="description"
-                                        value="{{ old('description', $permission->description) }}"
+                                        value="{{ old('description', $model->description) }}"
                                         class="form-control form-control-sm">
                                 </div>
                                 @error('description')

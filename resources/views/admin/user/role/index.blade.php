@@ -41,25 +41,25 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($roles as $key => $role)
+                            @foreach ($models as $key => $model)
                                 <tr>
                                     <th>{{ $key + 1 }}</th>
-                                    <td>{{ $role->name }}</td>
+                                    <td>{{ $model->name }}</td>
                                     <td>
-                                        @if (empty($role->permissions()->get()->toArray()))
+                                        @if (empty($model->permissions()->get()->toArray()))
                                             <span class="text-danger">برای این نقش هیچ سطح دسترسی تعریف نشده است</span>
                                         @else
-                                            @foreach ($role->permissions as $permission)
+                                            @foreach ($model->permissions as $permission)
                                                 {{ $permission->name }} <br>
                                             @endforeach
                                         @endif
                                     </td>
                                     <td class="width-22-rem text-left">
-                                        <a href="{{ route('admin.user.role.permission-form', $role->id) }}"
+                                        <a href="{{ route('admin.user.role.permission-form', $model->id) }}"
                                             class="btn btn-success btn-sm"><i class="fa fa-user-graduate"></i> دسترسی ها</a>
-                                        <a href="{{ route('admin.user.role.edit', $role->id) }}"
+                                        <a href="{{ route('admin.user.role.edit', $model->id) }}"
                                             class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
-                                        <form class="d-inline" action="{{ route('admin.user.role.destroy', $role->id) }}"
+                                        <form class="d-inline" action="{{ route('admin.user.role.destroy', $model->id) }}"
                                             method="post">
                                             @csrf
                                             {{ method_field('delete') }}

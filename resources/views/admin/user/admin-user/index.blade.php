@@ -59,33 +59,36 @@ $attributesName = Main::attributesName();
                         </thead>
                         <tbody>
 
-                        @foreach ($admins as $key => $admin)
+                        @foreach ($models as $key => $model)
 
                             <tr>
                                 <th>{{ $key + 1 }}</th>
-                                <td>{{ $admin->first_name }} {{ $admin->last_name }} </td>
-                                <td>{{ $admin->username }}</td>
-                                <td>{{ $admin->email }}</td>
-                                <td>{{ $admin->mobile }}</td>
+                                <td>{{ $model->first_name }} {{ $model->last_name }} </td>
+                                <td>{{ $model->username }}</td>
+                                <td>{{ $model->email }}</td>
+                                <td>{{ $model->mobile }}</td>
 
-                                <td id="status-{{ $admin->id }}">
-                                    {!! Main::userStatus(true)[$admin->status] !!}
+                                <td id="status-{{ $model->id }}">
+                                    {!! Main::userStatus(true)[$model->status] !!}
                                 </td>
 
                                 <td class="width-22-rem text-left">
 
 
-                                    <label  id="statusb-{{ $admin->id }}" class="btn btn-warning btn-sm"
-                                           onclick="changeStatus({{ $admin->id }})"
-                                           data-url="{{ route('admin.user.admin-user.status', $admin->id) }}">
+                                    <label  id="statusb-{{ $model->id }}" class="btn btn-warning btn-sm"
+                                           onclick="changeStatus({{ $model->id }})"
+                                           data-url="{{ route('admin.user.admin-user.status', $model->id) }}">
                                         <i class="fa fa-undo "></i>
                                     </label>
-
-                                    <a href="{{ route('admin.user.admin-user.edit', $admin->id) }}"
+                                    <a href="{{ route('admin.user.admin-user.permissions', $model->id) }}"
+                                       class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> سطوح دسترسی</a>
+                                    <a href="{{ route('admin.user.admin-user.roles', $model->id) }}"
+                                       class="btn btn-info btn-sm"><i class="fa fa-edit"></i> نقش</a>
+                                    <a href="{{ route('admin.user.admin-user.edit', $model->id) }}"
                                        class="btn btn-primary btn-sm"><i
                                             class="fa fa-edit"></i> {{ $attributesName['edit'] }}</a>
                                     <form class="d-inline"
-                                          action="{{ route('admin.user.admin-user.destroy', $admin->id) }}"
+                                          action="{{ route('admin.user.admin-user.destroy', $model->id) }}"
                                           method="post">
                                         @csrf
                                         {{ method_field('delete') }}

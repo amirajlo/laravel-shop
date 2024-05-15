@@ -1,6 +1,7 @@
 <?php
 use App\Models\Main;
 $sexList=Main::sexList();
+$statusList=Main::userStatus();
 $typeList=Main::typeList();
 $attributesName=Main::attributesName();
 ?>
@@ -99,20 +100,7 @@ $attributesName=Main::attributesName();
                                     </span>
                                 @enderror
                             </section>
-                            <section class="col-12 col-md-6">
-                                <div class="form-group">
-                                    <label for="">تکرار کلمه عبور</label>
-                                    <input type="password" name="password_confirmation"
-                                           class="form-control form-control-sm">
-                                </div>
-                                @error('password_confirmation')
-                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
+
                         </section>
 
                         <h2>مشخصات کاربر</h2>
@@ -126,7 +114,7 @@ $attributesName=Main::attributesName();
                                         <option value="">{{ $attributesName['DropdownLabel'] }} </option>
                                         @foreach ($typeList as $index => $item)
                                             <option value="{{ $index }}"
-                                                    @if ($index ===  old('user_type') )
+                                                    @if ($index ==  old('type') )
                                                         selected
                                                 @endif
                                             >
@@ -189,14 +177,14 @@ $attributesName=Main::attributesName();
 
 
 
-                            <section class="col-12 col-md-12">
+                            <section class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="">{{ $attributesName['sex'] }}</label>
                                     <select  class="form-control form-control-sm" name="sex">
                                         <option value="">{{ $attributesName['DropdownLabel'] }}</option>
                                         @foreach ($sexList as $index => $item)
                                             <option value="{{ $index }}"
-                                                    @if ($index ===  old('sex') )
+                                                    @if ($index ==  old('sex') )
                                                         selected
                                                 @endif
                                             >
@@ -213,7 +201,30 @@ $attributesName=Main::attributesName();
                                     </span>
                                 @enderror
                             </section>
+                            <section class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="">{{ $attributesName['status'] }}</label>
+                                    <select  class="form-control form-control-sm" name="status">
+                                        <option value="">{{ $attributesName['DropdownLabel'] }}</option>
+                                        @foreach ($statusList as $index => $item)
+                                            <option value="{{ $index }}"
+                                                    @if ($index ==  old('status') )
+                                                        selected
+                                                @endif
+                                            >
+                                                {{ $item }}</option>
+                                        @endforeach
 
+                                    </select>
+                                </div>
+                                @error('status')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
+                                @enderror
+                            </section>
                             <section class="col-12 col-md-12">
                                 <div class="form-group">
                                     <label for="">{{ $attributesName['mobile_sms'] }}</label>

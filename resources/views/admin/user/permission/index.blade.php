@@ -42,25 +42,25 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($permissions as $key => $permission)
+                            @foreach ($models as $key => $model)
                                 <tr>
                                     <th>{{ $key + 1 }}</th>
-                                    <td>{{ $permission->name }}</td>
+                                    <td>{{ $model->name }}</td>
                                     <td>
-                                        @if (empty($permission->roles()->get()->toArray()))
+                                        @if (empty($model->roles()->get()->toArray()))
                                             <span class="text-danger">برای این دسترسی هیچ نقشی تعریف نشده است</span>
                                         @else
-                                            @foreach ($permission->roles as $role)
+                                            @foreach ($model->roles as $role)
                                                 {{ $role->name }} <br>
                                             @endforeach
                                         @endif
                                     </td>
-                                    <td>{{ $permission->description }}</td>
+                                    <td>{{ $model->description }}</td>
                                     <td class="width-22-rem text-left">
-                                        <a href="{{ route('admin.user.permission.edit', $permission->id) }}"
+                                        <a href="{{ route('admin.user.permission.edit', $model->id) }}"
                                             class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> ویرایش</a>
                                         <form class="d-inline"
-                                            action="{{ route('admin.user.permission.destroy', $permission->id) }}"
+                                            action="{{ route('admin.user.permission.destroy', $model->id) }}"
                                             method="post">
                                             @csrf
                                             {{ method_field('delete') }}

@@ -69,13 +69,13 @@
                             <section class="col-12">
                                 <section class="row border-top mt-3 py-3">
 
-                                    @foreach ($permissions as $key => $permission)
+                                    @foreach ($models as $key => $per)
                                         <section class="col-md-3">
                                             <div class="form-check">
                                                 <input type="checkbox" class="form-check-input" name="permissions[]"
-                                                    value="{{ $permission->id }}" id="{{ $permission->id }}" checked>\
-                                                <label for="{{ $permission->id }}"
-                                                    class="form-check-label mr-3 mt-1">{{ $permission->name }}</label>
+                                                    value="{{ $per->id }}" id="{{ $per->id }}" checked>\
+                                                <label for="{{ $per->id }}"
+                                                    class="form-check-label mr-3 mt-1">{{ $per->name }}</label>
                                             </div>
                                             <div class="mt-2">
                                                 @error('permissions.' . $key)

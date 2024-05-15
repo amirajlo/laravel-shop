@@ -28,7 +28,7 @@ trait CommonValidationRules
     protected function passwordRules($is_new = true)
     {
         $next = "required";
-        $result = [Password::min(8)->letters()->mixedCase()->numbers()->symbols()->uncompromised(),'confirmed'];
+        $result = [Password::min(8)->letters()->mixedCase()->numbers()->symbols()];
         if (!$is_new) {
             $next = "nullable";
         }
@@ -38,12 +38,12 @@ trait CommonValidationRules
         ];
     }
 
-    protected function usernameRules($is_new = true)
+    protected function usernameRules($is_new = true,$modelId=null)
     {
         $next = Rule::unique('users', 'username');
         $result = ['required', 'min:3', $this->onlyEnglish, 'string'];
         if (!$is_new) {
-            $next = Rule::unique('users', 'username')->ignore($this->admin->id);
+            $next = Rule::unique('users', 'username')->ignore($modelId);
         }
         $result[] = $next;
         return [
@@ -51,12 +51,12 @@ trait CommonValidationRules
         ];
     }
 
-    protected function mobileRules($is_new = true)
+    protected function mobileRules($is_new = true,$modelId=null)
     {
         $next = Rule::unique('users', 'mobile');
         $result = ['required', 'digits:11', $this->mobileFormat];
         if (!$is_new) {
-            $next = Rule::unique('users', 'mobile')->ignore($this->admin->id);
+            $next = Rule::unique('users', 'mobile')->ignore($modelId);
         }
         $result[] = $next;
         return [
@@ -64,12 +64,42 @@ trait CommonValidationRules
         ];
     }
 
-    protected function emailRules($is_new = true)
+    protected function nationalRules($is_new = true,$digits=0,$modelId=null)
+    {
+        $next = Rule::unique('users', 'national_code');
+        $result = ['nullable',  'numeric'];
+        if (!$is_new) {
+            $next = Rule::unique('users', 'national_code')->ignore($modelId);
+        }
+        $result[] = $next;
+        if ($digits != 0) {
+            $result[] = 'digits:' . $digits;
+        }
+        return [
+            'national_code' => $result
+        ];
+    }
+    protected function economicalRules($is_new = true,$digits=0,$modelId=null)
+    {
+        $next = Rule::unique('users', 'economical_code');
+        $result = ['nullable', 'numeric'];
+        if (!$is_new) {
+            $next = Rule::unique('users', 'economical_code')->ignore($modelId);
+        }
+        $result[] = $next;
+        if ($digits != 0) {
+            $result[] = 'digits:' . $digits;
+        }
+        return [
+            'economical_code' => $result
+        ];
+    }
+    protected function emailRules($is_new = true,$modelId=null)
     {
         $next = Rule::unique('users', 'email');
         $result = ['required', 'email', 'string'];
         if (!$is_new) {
-            $next = Rule::unique('users', 'email')->ignore($this->admin->id);
+            $next = Rule::unique('users', 'email')->ignore($modelId);
         }
         $result[] = $next;
         return [
@@ -142,9 +172,10 @@ trait CommonValidationRules
         ];
     }
 
-    protected function codeRules($is_new = true, $field, $digits = 0)
+    protected function codeRules($is_new = true, $field, $digits = 0,$modelId=null)
     {
         $result = ['nullable', 'numeric'];
+
         if ($digits != 0) {
             $result[] = 'digits:' . $digits;
         }

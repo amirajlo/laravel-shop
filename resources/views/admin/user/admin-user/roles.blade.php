@@ -29,7 +29,7 @@
                 </section>
 
                 <section>
-                    <form action="{{ route('admin.user.admin-user.roles.store', $admin) }}" method="post"
+                    <form action="{{ route('admin.user.admin-user.roles.store', $model) }}" method="post"
                         enctype="multipart/form-data">
                         @csrf
                         <section class="row">
@@ -41,7 +41,7 @@
                                     <select multiple class="form-control form-control-sm" id="select_roles" name="roles[]">
                                         @foreach ($roles as $role)
                                             <option value="{{ $role->id }}"
-                                                @foreach ($admin->roles as $user_role)
+                                                @foreach ($model->roles as $user_role)
                                         @if ($user_role->id === $role->id)
                                         selected
                                         @endif @endforeach>

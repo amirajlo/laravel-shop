@@ -29,7 +29,7 @@
                 </section>
 
                 <section>
-                    <form action="{{ route('admin.user.role.permission-update', $role->id) }}" method="post">
+                    <form action="{{ route('admin.user.role.permission-update', $model->id) }}" method="post">
                         @csrf
                         @method('put')
                         <section class="row">
@@ -40,29 +40,29 @@
                                     <section class="col-12 col-md-5">
                                         <div class="form-group">
                                             <label for="">نام نقش</label>
-                                            <section>{{ $role->name }}</section>
+                                            <section>{{ $model->name }}</section>
                                         </div>
                                     </section>
 
                                     <section class="col-12 col-md-5">
                                         <div class="form-group">
                                             <label for="">توضیح نقش</label>
-                                            <section>{{ $role->description }}</section>
+                                            <section>{{ $model->description }}</section>
                                         </div>
                                     </section>
 
 
                                     @php
-                                        $rolePermissionsArray = $role->permissions->pluck('id')->toArray();
+                                        $modelPermissionsArray = $model->permissions->pluck('id')->toArray();
                                     @endphp
-                                    @foreach ($permissions as $key => $permission)
+                                    @foreach ($models as $key => $per)
                                         <section class="col-md-3">
                                             <div class="form-check">
                                                 <input type="checkbox" class="form-check-input" name="permissions[]"
-                                                    value="{{ $permission->id }}" id="{{ $permission->id }}"
-                                                    @if (in_array($permission->id, $rolePermissionsArray)) checked @endif />
-                                                <label for="{{ $permission->id }}"
-                                                    class="form-check-label mr-3 mt-1">{{ $permission->name }}</label>
+                                                    value="{{ $per->id }}" id="{{ $per->id }}"
+                                                    @if (in_array($per->id, $modelPermissionsArray)) checked @endif />
+                                                <label for="{{ $per->id }}"
+                                                    class="form-check-label mr-3 mt-1">{{ $per->name }}</label>
                                             </div>
                                             <div class="mt-2">
                                                 @error('permissions.' . $key)

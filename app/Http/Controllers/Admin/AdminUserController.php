@@ -6,6 +6,7 @@ use App\Http\Requests\AdminUserCreateRequest;
 use App\Http\Requests\AdminUserUpdateRequest;
 use App\Models\Main;
 use App\Models\User;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -27,9 +28,18 @@ class AdminUserController extends Controller
     {
 
 
-        //Role::create(['name' => 'admin']);
-        $admins = User::where('role', '!=', Main::ROLE_CUSTOMER)->where(['is_deleted' => Main::STATUS_DEFAULT])->get();
-        return view('admin.user.admin-user.index', compact('admins'));
+        //   Role::create(['name' => 'admin']);
+        //   Permission::create(['name' => 'create post']);
+        //  $role = Role::findByName('admin');
+        //  $permission = Permission::findByName('create post');
+
+        //   $role->givePermissionTo($permission);
+
+        //  $user = User::find(1);
+        //  $user->assignRole('admin');
+
+        $models = User::where('role', '!=', Main::ROLE_CUSTOMER)->where(['is_deleted' => Main::STATUS_DEFAULT])->get();
+        return view('admin.user.admin-user.index', compact('models'));
     }
 
     /**
@@ -53,7 +63,7 @@ class AdminUserController extends Controller
         $inputs = $request->all();
 
         $inputs['password'] = Hash::make($request->password);
-
+        $inputs['role'] = Main::ROLE_ADMIN;
         $user = User::create($inputs);
         return redirect()->route('admin.user.admin-user.index')->with('swal-success', 'ادمین جدید با موفقیت ثبت شد');
     }
@@ -64,9 +74,9 @@ class AdminUserController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $admin)
+    public function edit(User $model)
     {
-        return view('admin.user.admin-user.edit', compact('admin'));
+        return view('admin.user.admin-user.edit', compact('model'));
     }
 
     /**
@@ -76,19 +86,17 @@ class AdminUserController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(AdminUserUpdateRequest $request, User $admin)
+    public function update(AdminUserUpdateRequest $request, User $model)
     {
         $oldPassword = $request->old('password');
         $newPassword = $request->input('password');
+        $request['role'] = Main::ROLE_ADMIN;
 
-
-        $admin->update($request->except('password'));
-        if(!empty(trim($newPassword))){
-
-            $admin->password =bcrypt($newPassword);
-            $admin->save();
+        $model->update($request->except('password'));
+        if (!empty(trim($newPassword))) {
+            $model->password = bcrypt($newPassword);
+            $model->save();
         }
-
 
 
         return redirect()->route('admin.user.admin-user.index')->with('swal-success', 'ادمین سایت شما با موفقیت ویرایش شد');
@@ -100,32 +108,32 @@ class AdminUserController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $admin)
+    public function destroy(User $model)
     {
-        $admin->is_deleted = Main::STATUS_IS_DELETED;
-        $admin->deleted_at = Carbon::now();
-        $admin->save();
+        $model->is_deleted = Main::STATUS_IS_DELETED;
+        $model->deleted_at = Carbon::now();
+        $model->save();
         return redirect()->route('admin.user.admin-user.index')->with('swal-success', 'ادمین شما با موفقیت حذف شد');
     }
 
-    public function status(User $user)
+    public function status(User $model)
     {
         if (Auth::user()->role == Main::ROLE_ADMIN) {
             $outpot = ['status' => false, 'message' => "مشکلی در فرآیند به وجود آمده است."];
-            if (in_array($user->status, [Main::STATUS_ACTIVE, Main::STATUS_DISABLED])) {
+            if (in_array($model->status, [Main::STATUS_ACTIVE, Main::STATUS_DISABLED])) {
                 $status = Main::STATUS_ACTIVE;
-                if ($user->status == $status) {
+                if ($model->status == $status) {
                     $status = Main::STATUS_DISABLED;
                 }
-                $user->status = $status;
-                $result = $user->save();
+                $model->status = $status;
+                $result = $model->save();
                 if ($result) {
-                    $outpot = ['status' => true, "message" => 'وضعیت کاربر به روزرسانی شد.', 'result' => Main::userStatus(true)[$user->status]];
+                    $outpot = ['status' => true, "message" => 'وضعیت کاربر به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
                 }
             } else {
-                $user->status = Main::STATUS_ACTIVE;
-                $user->save();
-                $outpot = ['status' => true, 'message' => 'وضعیت کاربر به روزرسانی شد.', 'result' => Main::userStatus(true)[$user->status]];
+                $model->status = Main::STATUS_ACTIVE;
+                $model->save();
+                $outpot = ['status' => true, 'message' => 'وضعیت کاربر به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
             }
         } else {
             $outpot = ['status' => false, 'message' => "مجوز ندارید."];
@@ -135,6 +143,40 @@ class AdminUserController extends Controller
         return response()->json($outpot);
 
 
+    }
+
+    public function roles(User $model)
+    {
+        $roles = Role::all();
+        return view('admin.user.admin-user.roles', compact('model', 'roles'));
+    }
+
+    public function rolesStore(Request $request, User $model)
+    {
+        $validated = $request->validate([
+            'roles' => 'required|exists:roles,id|array'
+        ]);
+
+        $model->roles()->sync($request->roles);
+        return redirect()->route('admin.user.admin-user.index')->with('swal-success', 'نقش با موفقیت ویرایش شد');
+    }
+
+    public function permissions(User $model)
+    {
+        $permissions = Permission::all();
+
+
+        return view('admin.user.admin-user.permissions', compact('model', 'permissions'));
+    }
+
+    public function permissionsStore(Request $request, User $model)
+    {
+        $validated = $request->validate([
+            'permissions' => 'required|exists:permissions,id|array'
+        ]);
+
+        $model->permissions()->sync($request->permissions);
+        return redirect()->route('admin.user.admin-user.index')->with('swal-success', 'سطح دسترسی با موفقیت ویرایش شد');
     }
 
 

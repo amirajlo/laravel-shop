@@ -28,31 +28,33 @@ class AdminUserUpdateRequest extends FormRequest
     public function rules(): array
     {
 
-            $rules = [
-                'province_id' => 'nullable',
-                'city_id' => 'nullable',
-                'address' => 'nullable',
-            ];
-            return array_merge(
-                $rules,
-                $this->codeRules(false, 'national_code', 10),
-                $this->codeRules(false, 'economical_code', 14),
-                $this->codeRules(false, 'register_code', 0),
-                $this->codeRules(false, 'phone1', 11),
-                $this->codeRules(false, 'phone2', 11),
-                $this->codeRules(false, 'phone3', 11),
-                $this->passwordRules(false),
-                $this->usernameRules(false),
-                $this->mobileRules(false),
-                $this->mobilesmsRules(false),
-                $this->emailRules(false),
-                $this->nameRules(false, 'first_name'),
-                $this->nameRules(false, 'last_name'),
-                $this->nameRules(false, 'corporate_name'),
-                $this->typeRules(false),
-                $this->sexRules(false),
-                $this->postRules(false),
-                $this->imageRules(false),
-            );
+
+        $rules = [
+            'province_id' => 'nullable',
+            'city_id' => 'nullable',
+            'address' => 'nullable',
+        ];
+        return array_merge(
+            $rules,
+            $this->nationalRules(false, 10, $this->model->id),
+            $this->economicalRules(false, 14, $this->model->id),
+            $this->codeRules(false, 'register_code', 0),
+            $this->codeRules(false, 'phone1', 11),
+            $this->codeRules(false, 'phone2', 11),
+            $this->codeRules(false, 'phone3', 11),
+            $this->passwordRules(false),
+            $this->usernameRules(false, $this->model->id),
+            $this->mobileRules(false, $this->model->id),
+            $this->mobilesmsRules(false),
+            $this->emailRules(false, $this->model->id),
+            $this->nameRules(false, 'first_name'),
+            $this->nameRules(false, 'last_name'),
+            $this->nameRules(false, 'corporate_name'),
+            $this->typeRules(false),
+            $this->sexRules(false),
+            $this->postRules(false),
+            $this->imageRules(false),
+        );
     }
+
 }
