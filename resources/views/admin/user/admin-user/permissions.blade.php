@@ -64,7 +64,7 @@
 
 
                             <section class="col-12">
-                                <button class="btn btn-primary btn-sm">ثبت</button>
+                                <button class="btn btn-primary btn-sm">{{ $attributesName['updateButton'] }}</button>
                             </section>
                         </section>
                     </form>

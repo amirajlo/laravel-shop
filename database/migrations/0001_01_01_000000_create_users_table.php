@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->string('mobile', 11)->unique()->nullable();
             $table->string('password');
             $table->tinyInteger('role')->default(Main::ROLE_ADMIN);
-
+            $table->foreignId('user_id')->nullable()->index();
             $table->tinyInteger('type')->default(Main::USER_TYPE_HAGHIGHI)->comment("حقیقی-حقوقی");
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
@@ -36,27 +36,17 @@ return new class extends Migration {
             $table->string('website')->nullable();
             $table->date('birthday')->nullable();
             $table->text('description')->nullable()->comment("بیوگرافی");
-
             $table->string('address')->nullable();
             $table->string('province_id')->nullable();
             $table->string('city_id')->nullable();
             $table->string('postal_code', 10)->nullable();
-
-
-
-
-
-
-
-
             $table->tinyInteger('status')->default(Main::STATUS_ACTIVE);
-           $table->timestamp('email_verified_at')->nullable();
-                                            $table->timestamp('mobile_verified_at')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('mobile_verified_at')->nullable();
 
             $table->rememberToken();
             $table->tinyInteger('is_deleted')->default(Main::STATUS_DEFAULT);
             $table->softDeletes();
-
             $table->timestamps();
         });
 

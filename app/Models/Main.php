@@ -21,7 +21,27 @@ class Main extends Model
     const USER_SEX_MALE = 1;
     const USER_SEX_FEMALE = 2;
     const USER_SEX_OTHER = 3;
+    const CATEGORY_TYPE_PRODUCT = 1;
+    const CATEGORY_TYPE_ARTICLE = 2;
+    const CATEGORY_TYPE_TICKET = 3;
 
+
+    public static function  categoriesTypeList($label = false)
+    {
+        $result = [
+            self::CATEGORY_TYPE_PRODUCT => "محصول",
+            self::CATEGORY_TYPE_ARTICLE => "مقاله",
+            self::CATEGORY_TYPE_TICKET => "تیکت",
+        ];
+        if ($label) {
+            $result = [
+                self::CATEGORY_TYPE_PRODUCT => "<label class='btn btn-primary btn-sm'>محصول</label>",
+                self::CATEGORY_TYPE_ARTICLE => "<label class='btn btn-success btn-sm'>مقاله</label>",
+                self::CATEGORY_TYPE_TICKET => "<label class='btn btn-info btn-sm'>تیکت</label>",
+            ];
+        }
+        return $result;
+    }
     public static function  typeList($label = false)
     {
         $result = [
@@ -132,6 +152,25 @@ class Main extends Model
             'Back'=>'بازگشت',
             'DropdownLabel'=>'-- انتخاب کنید --',
             'searchPlaceHolder'=>'جستجو...',
+            'categories_type'=>'نوع دسته بندی',
+            'categories'=>'دسته بندی ها',
+            'category'=>'دسته بندی',
+            'tags'=>'برچسب ها',
+            'tag'=>'برچسب',
+            'title'=>'عنوان',
+            'en_title'=>'عنوان انگلیسی',
+            'slug'=>'اسلاگ',
+            'content_title'=>'عنوان H1',
+            'seo_title'=>'عنوان سئو',
+            'seo_description'=>'توضیحات سئو',
+            'description'=>'توضیحات',
+            'redirect'=>'ریدایرکت',
+            'canonical'=>'کنونیکال',
+            'sidebar'=>'سایدبار',
+            'update'=>'ویرایش',
+            'sendButton'=>'ارسال',
+            'createButton'=>'ثبت',
+            'updateButton'=>'به روزرسانی',
         ];
     }
 }

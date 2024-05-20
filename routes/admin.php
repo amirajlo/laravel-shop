@@ -1,17 +1,20 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminCategoriesController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminTagsController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\AdminCustomerController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['role:admin']], function () {
+
 
     Route::get('/dashboard', [AdminDashboardController::class, 'dashboard']);
 
     Route::get('/', [AdminDashboardController::class, 'dashboard']);
+
 
     Route::prefix('user')->namespace('User')->group(function () {
 
@@ -65,7 +68,24 @@ Route::group(['middleware' => ['role:admin']], function () {
         });
     });
 
-});
+    Route::prefix('categories')->group(function () {
+        Route::get('/', [AdminCategoriesController::class, 'index'])->name('admin.categories.index');
+        Route::get('/create', [AdminCategoriesController::class, 'create'])->name('admin.categories.create');
+        Route::post('/store', [AdminCategoriesController::class, 'store'])->name('admin.categories.store');
+        Route::get('/edit/{model}', [AdminCategoriesController::class, 'edit'])->name('admin.categories.edit');
+        Route::put('/update/{model}', [AdminCategoriesController::class, 'update'])->name('admin.categories.update');
+        Route::delete('/destroy/{model}', [AdminCategoriesController::class, 'destroy'])->name('admin.categories.destroy');
+        Route::post('/status/{model}', [AdminCategoriesController::class, 'status'])->name('admin.categories.status');
+    });
+    Route::prefix('tags')->group(function () {
+        Route::get('/', [AdminTagsController::class, 'index'])->name('admin.tags.index');
+        Route::get('/create', [AdminTagsController::class, 'create'])->name('admin.tags.create');
+        Route::post('/store', [AdminTagsController::class, 'store'])->name('admin.tags.store');
+        Route::get('/edit/{model}', [AdminTagsController::class, 'edit'])->name('admin.tags.edit');
+        Route::put('/update/{model}', [AdminTagsController::class, 'update'])->name('admin.tags.update');
+        Route::delete('/destroy/{model}', [AdminTagsController::class, 'destroy'])->name('admin.tags.destroy');
+        Route::post('/status/{model}', [AdminTagsController::class, 'status'])->name('admin.tags.status');
+    });
 
 Route::group(['middleware' => ['permission:create post']], function () {
     // Routes accessible only by users with the 'create post' permission
