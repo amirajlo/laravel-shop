@@ -4,6 +4,7 @@ use App\Models\Main;
 
 $attributesName = Main::attributesName();
 $pageName=$attributesName['manage'] ." ". $attributesName['articles'] ;
+
 ?>
 @extends('admin.layouts.master')
 

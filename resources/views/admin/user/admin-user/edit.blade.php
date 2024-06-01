@@ -93,8 +93,14 @@ $perUrl=url()->route('admin.user.admin-user.index');
                             <section class="col-12 col-md-12">
                                 <div class="form-group">
                                     <label for="">{{ $attributesName['password'] }}</label>
-                                    <input type="password" name="password" class="form-control form-control-sm"
-                                           value="">
+
+                                    @if (old('password') === null)
+                                        <input type="password" name="password" id="password" autocomplete="new-password" class="form-control form-control-sm">
+                                    @else
+                                        <input type="password" name="password" id="password">
+                                    @endif
+
+
                                 </div>
                                 @error('password')
                                 <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
