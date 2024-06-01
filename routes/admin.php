@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\AdminCustomerController;
 use App\Http\Controllers\Admin\AdminBrandsController;
+use App\Http\Controllers\Admin\AdminArticlesController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -97,6 +98,17 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::put('/update/{model}', [AdminBrandsController::class, 'update'])->name('admin.brands.update');
         Route::delete('/destroy/{model}', [AdminBrandsController::class, 'destroy'])->name('admin.brands.destroy');
         Route::post('/status/{model}', [AdminBrandsController::class, 'status'])->name('admin.brands.status');
+    });
+
+
+    Route::prefix('articles')->group(function () {
+        Route::get('/', [AdminArticlesController::class, 'index'])->name('admin.articles.index');
+        Route::get('/create', [AdminArticlesController::class, 'create'])->name('admin.articles.create');
+        Route::post('/store', [AdminArticlesController::class, 'store'])->name('admin.articles.store');
+        Route::get('/edit/{model}', [AdminArticlesController::class, 'edit'])->name('admin.articles.edit');
+        Route::put('/update/{model}', [AdminArticlesController::class, 'update'])->name('admin.articles.update');
+        Route::delete('/destroy/{model}', [AdminArticlesController::class, 'destroy'])->name('admin.articles.destroy');
+        Route::post('/status/{model}', [AdminArticlesController::class, 'status'])->name('admin.articles.status');
     });
 
     Route::group(['middleware' => ['permission:create post']], function () {

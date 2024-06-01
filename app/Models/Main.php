@@ -8,7 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Main extends Model
 {
     use HasFactory;
-
+    const SCORE_ONE = 1;
+    const SCORE_TWO = 2;
+    const SCORE_THREE = 3;
+    const SCORE_FOUR = 4;
+    const SCORE_FIVE = 5;
     const STATUS_DEFAULT = 0;
     const STATUS_ACTIVE = 1;
     const STATUS_LOCKED = 2;
@@ -176,6 +180,10 @@ class Main extends Model
             'parent_id' => 'دسته بندی',
             'brands' => 'برندها',
             'brand' => 'برند',
+            'articles' => 'مقالات',
+            'article' => 'مقاله',
+            'sub_title' => 'عنوان فرعی',
+            'lead' => 'لید',
         ];
     }
 
