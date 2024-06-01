@@ -174,6 +174,8 @@ class Main extends Model
             'createButton' => 'ثبت',
             'updateButton' => 'به روزرسانی',
             'parent_id' => 'دسته بندی',
+            'brands' => 'برندها',
+            'brand' => 'برند',
         ];
     }
 

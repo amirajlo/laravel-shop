@@ -3,8 +3,12 @@
 use App\Models\Main;
 
 $attributesName = Main::attributesName();
-$typeName = Main::categoriesTypeList()[request("type")];
-$pageName=$attributesName['manage'] ." ". $attributesName['category'] ." ". $typeName;
+$type = Main::CATEGORY_TYPE_PRODUCT;
+if (request("type")) {
+    $type = request("type");
+}
+$typeName = Main::categoriesTypeList()[$type];
+$pageName = $attributesName['manage'] . " " . $attributesName['category'] . " " . $typeName;
 ?>
 @extends('admin.layouts.master')
 
@@ -19,8 +23,6 @@ $pageName=$attributesName['manage'] ." ". $attributesName['category'] ." ". $typ
 @endsection
 @section('content')
 
-
-
     <section class="row">
         <section class="col-12">
             <section class="main-body-container">
@@ -31,7 +33,7 @@ $pageName=$attributesName['manage'] ." ". $attributesName['category'] ." ". $typ
                 </section>
 
                 <section class="d-flex justify-content-between align-items-center mt-4 mb-3 border-bottom pb-2">
-                    <a href="{{ route('admin.categories.create',request("type")) }}"
+                    <a href="{{ route('admin.categories.create',$type) }}"
                        class="btn btn-info btn-sm">{{ $attributesName['create'] ." ". $attributesName['category'] . " ".$attributesName['new'] }}</a>
                     <div class="max-width-16-rem">
                         <input type="text" class="form-control form-control-sm form-text"
@@ -74,13 +76,16 @@ $pageName=$attributesName['manage'] ." ". $attributesName['category'] ." ". $typ
                                 <td class="width-22-rem text-left">
 
 
-                                    <label id="statusb-{{ $model->id }}" class="btn btn-warning btn-sm"
+                                    <a id="statusb-{{ $model->id }}" class="btn btn-warning btn-sm"
                                            onclick="changeStatus({{ $model->id }})"
                                            data-url="{{ route('admin.categories.status', $model->id) }}">
                                         <i class="fa fa-undo "></i>
-                                    </label>
+                                    </a>
                                     @if ($model->children->count())
-                                        <span class="toggle-children" data-category-id="{{ $model->id }}">+</span>
+                                        <a href="{{ route('admin.categories.index',[$model->type,$model->id] ) }}"
+                                           class="btn btn-info btn-sm"><i
+                                                class="fa fa-search"></i> زیر مجموعه </a>
+
                                     @endif
                                     <a href="{{ route('admin.categories.edit', $model->id) }}"
                                        class="btn btn-primary btn-sm"><i

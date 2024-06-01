@@ -3,26 +3,22 @@
 use App\Models\Main;
 
 $attributesName = Main::attributesName();
+$pageName=$attributesName['manage'] ." ". $attributesName['brands'] ;
 ?>
 @extends('admin.layouts.master')
 
-@section('head-tag')
+@section('head-brand')
     <title>
 
-        {{ $attributesName['manage'] ." ". $attributesName['usersLabel'] }}
+        {{ $pageName }}
     </title>
 @endsection
-
+@section('breadCrumbs')
+    <li class="breadcrumb-item font-size-12 "
+        aria-current="page">{{ $pageName }}</li>
+@endsection
 @section('content')
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item font-size-12"><a href="#"> {{ $attributesName['home'] }}</a></li>
-            <li class="breadcrumb-item font-size-12"><a
-                    href="#"> {{ $attributesName['part']." ".$attributesName['users'] }}</a></li>
-            <li class="breadcrumb-item font-size-12 active"
-                aria-current="page">{{ $attributesName['users']." ".$attributesName['userLabel'] }}</li>
-        </ol>
-    </nav>
+
 
 
     <section class="row">
@@ -30,13 +26,13 @@ $attributesName = Main::attributesName();
             <section class="main-body-container">
                 <section class="main-body-container-header">
                     <h5>
-                        {{ $attributesName['manage'] ." ". $attributesName['usersLabel'] }}
+                        {{ $pageName }}
                     </h5>
                 </section>
 
                 <section class="d-flex justify-content-between align-items-center mt-4 mb-3 border-bottom pb-2">
-                    <a href="{{ route('admin.user.customer.create') }}"
-                       class="btn btn-info btn-sm">{{ $attributesName['create'] ." ". $attributesName['userLabel'] . " ".$attributesName['new'] }}</a>
+                    <a href="{{ route('admin.brands.create') }}"
+                       class="btn btn-info btn-sm">{{ $attributesName['create'] ." ". $attributesName['brand'] . " ".$attributesName['new'] }}</a>
                     <div class="max-width-16-rem">
                         <input type="text" class="form-control form-control-sm form-text"
                                placeholder="{{ $attributesName['searchPlaceHolder'] }}">
@@ -48,10 +44,10 @@ $attributesName = Main::attributesName();
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>{{ $attributesName['first_name'] }}</th>
-                            <th>{{ $attributesName['username'] }}</th>
-                            <th>{{ $attributesName['email'] }}</th>
-                            <th>{{ $attributesName['mobile'] }}</th>
+                            <th>{{ $attributesName['title'] }}</th>
+                            <th>{{ $attributesName['en_title'] }}</th>
+                            <th>{{ $attributesName['slug'] }}</th>
+                            <th>{{ $attributesName['content_title'] }}</th>
                             <th>{{ $attributesName['status'] }}</th>
                             <th class="max-width-16-rem text-center"><i
                                     class="fa fa-cogs"></i> {{ $attributesName['setting'] }}</th>
@@ -59,34 +55,33 @@ $attributesName = Main::attributesName();
                         </thead>
                         <tbody>
 
-                        @foreach ($models as $key => $user)
+                        @foreach ($models as $key => $model)
 
                             <tr>
                                 <th>{{ $key + 1 }}</th>
-                                <td>{{ $user->first_name }} {{ $user->last_name }} </td>
-                                <td>{{ $user->username }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->mobile }}</td>
+                                <td>{{ $model->title }} </td>
+                                <td>{{ $model->en_title }}</td>
+                                <td>{{ $model->slug }}</td>
+                                <td>{{ $model->content_title }}</td>
 
-                                <td id="status-{{ $user->id }}">
-                                    {!! Main::userStatus(true)[$user->status] !!}
+                                <td id="status-{{ $model->id }}">
+                                    {!! Main::userStatus(true)[$model->status] !!}
                                 </td>
 
                                 <td class="width-22-rem text-left">
 
 
-                                    <a  id="statusb-{{ $user->id }}" class="btn btn-warning btn-sm"
-                                           onclick="changeStatus({{ $user->id }})"
-                                           data-url="{{ route('admin.user.customer.status', $user->id) }}">
+                                    <a  id="statusb-{{ $model->id }}" class="btn btn-warning btn-sm"
+                                           onclick="changeStatus({{ $model->id }})"
+                                           data-url="{{ route('admin.brands.status', $model->id) }}">
                                         <i class="fa fa-undo "></i>
                                     </a>
 
-
-                                    <a href="{{ route('admin.user.customer.edit', $user->id) }}"
+                                    <a href="{{ route('admin.brands.edit', $model->id) }}"
                                        class="btn btn-primary btn-sm"><i
                                             class="fa fa-edit"></i> {{ $attributesName['edit'] }}</a>
                                     <form class="d-inline"
-                                          action="{{ route('admin.user.customer.destroy', $user->id) }}"
+                                          action="{{ route('admin.brands.destroy', $model->id) }}"
                                           method="post">
                                         @csrf
                                         {{ method_field('delete') }}

@@ -33,7 +33,6 @@
                 <section class="sidebar-dropdown">
                     <a href="{{ route('admin.user.role.index') }}">مدیریت نقش ها</a>
                     <a href="{{ route('admin.user.permission.index') }}">مدیریت دسترسی ها</a>
-
                 </section>
             </section>
 
@@ -48,11 +47,13 @@
                     <a href="{{ route('admin.categories.index',\App\Models\Main::CATEGORY_TYPE_PRODUCT) }}">دسته بندی محصولات</a>
                     <a href="{{ route('admin.categories.index',\App\Models\Main::CATEGORY_TYPE_ARTICLE) }}">دسته بندی مقالات</a>
                     <a href="{{ route('admin.tags.index') }}">مدیریت برچسب ها</a>
-
                 </section>
             </section>
 
-
+            <a href="{{ route('admin.brands.index') }}" class="sidebar-link">
+                <i class="fas fa-bars"></i>
+                <span>برند</span>
+            </a>
 
 
         </section>

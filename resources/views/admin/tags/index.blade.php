@@ -71,11 +71,11 @@ $pageName=$attributesName['manage'] ." ". $attributesName['tags'] ;
                                 <td class="width-22-rem text-left">
 
 
-                                    <label  id="statusb-{{ $model->id }}" class="btn btn-warning btn-sm"
+                                    <a  id="statusb-{{ $model->id }}" class="btn btn-warning btn-sm"
                                            onclick="changeStatus({{ $model->id }})"
                                            data-url="{{ route('admin.tags.status', $model->id) }}">
                                         <i class="fa fa-undo "></i>
-                                    </label>
+                                    </a>
 
                                     <a href="{{ route('admin.tags.edit', $model->id) }}"
                                        class="btn btn-primary btn-sm"><i

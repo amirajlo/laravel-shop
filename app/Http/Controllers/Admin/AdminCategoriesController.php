@@ -18,9 +18,16 @@ class AdminCategoriesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($type = Main::CATEGORY_TYPE_PRODUCT)
+    public function index($type = Main::CATEGORY_TYPE_PRODUCT,$parent=null)
     {
-        $models = Categories::with('children')->whereNull('parent_id')->where(['type' => $type, 'is_deleted' => Main::STATUS_DEFAULT])->get();
+        $condition=['type' => $type, 'is_deleted' => Main::STATUS_DEFAULT];
+        $models = Categories::with('children')->whereNull('parent_id')->where($condition)->get();
+        if(!is_null($parent)){
+            $condition['parent_id']=$parent;
+            $models = Categories::with('children')->where($condition)->get();
+        }
+
+
         return view('admin.categories.index', compact('models'));
     }
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\AdminCustomerController;
+use App\Http\Controllers\Admin\AdminBrandsController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -70,7 +71,7 @@ Route::group(['middleware' => ['role:admin']], function () {
 
     Route::prefix('categories')->group(function () {
         Route::get('/', [AdminCategoriesController::class, 'index'])->name('admin.categories.index');
-        Route::get('/index/{type?}', [AdminCategoriesController::class, 'index'])->name('admin.categories.index');
+        Route::get('/index/{type?}/{parent?}', [AdminCategoriesController::class, 'index'])->name('admin.categories.index');
         Route::get('/create/{type?}', [AdminCategoriesController::class, 'create'])->name('admin.categories.create');
         Route::post('/store', [AdminCategoriesController::class, 'store'])->name('admin.categories.store');
         Route::get('/edit/{model}', [AdminCategoriesController::class, 'edit'])->name('admin.categories.edit');
@@ -86,6 +87,16 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::put('/update/{model}', [AdminTagsController::class, 'update'])->name('admin.tags.update');
         Route::delete('/destroy/{model}', [AdminTagsController::class, 'destroy'])->name('admin.tags.destroy');
         Route::post('/status/{model}', [AdminTagsController::class, 'status'])->name('admin.tags.status');
+    });
+
+    Route::prefix('brands')->group(function () {
+        Route::get('/', [AdminBrandsController::class, 'index'])->name('admin.brands.index');
+        Route::get('/create', [AdminBrandsController::class, 'create'])->name('admin.brands.create');
+        Route::post('/store', [AdminBrandsController::class, 'store'])->name('admin.brands.store');
+        Route::get('/edit/{model}', [AdminBrandsController::class, 'edit'])->name('admin.brands.edit');
+        Route::put('/update/{model}', [AdminBrandsController::class, 'update'])->name('admin.brands.update');
+        Route::delete('/destroy/{model}', [AdminBrandsController::class, 'destroy'])->name('admin.brands.destroy');
+        Route::post('/status/{model}', [AdminBrandsController::class, 'status'])->name('admin.brands.status');
     });
 
     Route::group(['middleware' => ['permission:create post']], function () {

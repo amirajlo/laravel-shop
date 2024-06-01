@@ -71,11 +71,11 @@ $pageName=$attributesName['manage'] ." ". $attributesName['adminsLabel']  ;
                                 <td class="width-22-rem text-left">
 
 
-                                    <label  id="statusb-{{ $model->id }}" class="btn btn-warning btn-sm"
+                                    <a  id="statusb-{{ $model->id }}" class="btn btn-warning btn-sm"
                                            onclick="changeStatus({{ $model->id }})"
                                            data-url="{{ route('admin.user.admin-user.status', $model->id) }}">
                                         <i class="fa fa-undo "></i>
-                                    </label>
+                                    </a>
                                     <a href="{{ route('admin.user.admin-user.permissions', $model->id) }}"
                                        class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> سطوح دسترسی</a>
                                     <a href="{{ route('admin.user.admin-user.roles', $model->id) }}"
