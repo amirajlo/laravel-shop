@@ -7,9 +7,10 @@ use App\Http\Requests\StoreTagsRequest;
 use App\Http\Requests\UpdateTagsRequest;
 use App\Models\Tags;
 use App\Models\Main;
-use App\Models\User;
+
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class AdminTagsController extends Controller
 {
@@ -35,9 +36,12 @@ class AdminTagsController extends Controller
      */
     public function store(StoreTagsRequest $request)
     {
-        $inputs = $request->all();
+        $request->merge([
+            'slug' => Str::slug($request->title, '-', null),
+            'author_id'=>Auth::user()->id,
+        ]);
 
-        $model = Tags::create($inputs);
+        Tags::create($request->all());
         return redirect()->route('admin.tags.index')->with('swal-success', 'برچسب جدید با موفقیت ثبت شد');
     }
 
@@ -62,9 +66,11 @@ class AdminTagsController extends Controller
      */
     public function update(UpdateTagsRequest $request, Tags $model)
     {
-        $oldPassword = $request->old('password');
-        $newPassword = $request->input('password');
-        $model->update($request->except('password'));
+        $request->merge([
+            'slug' => Str::slug($request->title, '-', null),
+            'author_id'=>Auth::user()->id,
+        ]);
+        $model->update($request->all());
         return redirect()->route('admin.tags.index')->with('swal-success', 'برچسب با موفقیت ویرایش شد');
     }
 
@@ -74,31 +80,33 @@ class AdminTagsController extends Controller
     public function destroy(Tags $model)
     {
         $model->is_deleted = Main::STATUS_IS_DELETED;
+        $model->author_id =Auth::user()->id;
         $model->deleted_at = Carbon::now();
         $model->save();
         return redirect()->route('admin.tags.index')->with('swal-success', 'برچسب با موفقیت حذف شد');
     }
 
-    public function status(User $model)
+    public function status(Tags $model)
     {
 
-            $outpot = ['status' => false, 'message' => "مشکلی در فرآیند به وجود آمده است."];
-            if (in_array($model->status, [Main::STATUS_ACTIVE, Main::STATUS_DISABLED])) {
-                $status = Main::STATUS_ACTIVE;
-                if ($model->status == $status) {
-                    $status = Main::STATUS_DISABLED;
-                }
-                $model->status = $status;
-                $result = $model->save();
-                if ($result) {
-                    $outpot = ['status' => true, "message" => 'وضعیت  به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
-                }
-            } else {
-                $model->status = Main::STATUS_ACTIVE;
-                $model->save();
-                $outpot = ['status' => true, 'message' => 'وضعیت کاربر به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
+        $outpot = ['status' => false, 'message' => "مشکلی در فرآیند به وجود آمده است."];
+        if (in_array($model->status, [Main::STATUS_ACTIVE, Main::STATUS_DISABLED])) {
+            $status = Main::STATUS_ACTIVE;
+            if ($model->status == $status) {
+                $status = Main::STATUS_DISABLED;
             }
-
+            $model->status = $status;
+            $model->author_id =Auth::user()->id;
+            $result = $model->save();
+            if ($result) {
+                $outpot = ['status' => true, "message" => 'وضعیت  به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
+            }
+        } else {
+            $model->status = Main::STATUS_ACTIVE;
+            $model->author_id =Auth::user()->id;
+            $model->save();
+            $outpot = ['status' => true, 'message' => 'وضعیت کاربر به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
+        }
 
 
         return response()->json($outpot);

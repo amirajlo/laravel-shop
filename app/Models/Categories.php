@@ -36,4 +36,13 @@ class Categories extends Model
         'updated_at',
         'deleted_at',
     ];
+    public function children()
+    {
+        return $this->hasMany(Categories::class, 'parent_id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Categories::class, 'parent_id');
+    }
 }

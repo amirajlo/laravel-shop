@@ -2,10 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\CommonValidationRules;
+use App\Models\Main;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCategoriesRequest extends FormRequest
 {
+    use CommonValidationRules;
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -21,8 +24,15 @@ class StoreCategoriesRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
+        $rules = [
+            'title' => 'required|min:3',
+            'redirect' => 'nullable|url:http,https',
+            'canonical' => 'nullable|url:http,https',
         ];
+        return array_merge(
+            $rules,
+            $this->columnUniqueRules(true, null,'categories','title'),
+            $this->CategoriesTypeRules(),
+        );
     }
 }

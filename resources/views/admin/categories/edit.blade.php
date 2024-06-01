@@ -1,24 +1,34 @@
 <?php
+
 use App\Models\Main;
-$sexList=Main::sexList();
-$typeList=Main::typeList();
-$attributesName=Main::attributesName();
+
+$statusList = Main::userStatus();
+$typeList = Main::categoriesTypeList();
+$type=$model->type;
+$typeName = $typeList[$type];
+
+$attributesName = Main::attributesName();
+$pageName=$attributesName['update']." ". $attributesName['category'] ." ". $model->title;
+$perUrl=url()->route('admin.categories.index',$type);
 ?>
 @extends('admin.layouts.master')
 
 @section('head-tag')
-    <title>ویرایش کاربر ادمین</title>
+    <title>
+        {{ $pageName }}
+    </title>
 @endsection
 
+@section('breadCrumbs')
+
+    <li class="breadcrumb-item font-size-12"><a
+            href="{{ $perUrl  }}"> {{ $attributesName['manage'] ." ". $attributesName['category'] ." ". $typeName }}</a>
+    </li>
+    <li class="breadcrumb-item font-size-12 active"
+        aria-current="page"> {{ $pageName }}</li>
+@endsection
 @section('content')
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item font-size-12"> <a href="#"> {{ $attributesName['home'] }}</a></li>
-            <li class="breadcrumb-item font-size-12"> <a href="#"> {{ $attributesName['part']." ".$attributesName['users'] }}</a></li>
-            <li class="breadcrumb-item font-size-12 active" aria-current="page">{{ $attributesName['users']." ".$attributesName['adminLabel'] }}</li>
-            <li class="breadcrumb-item font-size-12 active" aria-current="page"> {{ $attributesName['edit']." ". $attributesName['user']." ".$attributesName['adminLabel'] }}</li>
-        </ol>
-    </nav>
+
 
 
     <section class="row">
@@ -26,93 +36,137 @@ $attributesName=Main::attributesName();
             <section class="main-body-container">
                 <section class="main-body-container-header">
                     <h5>
-                        {{ $attributesName['edit']." ". $attributesName['user']." ".$attributesName['adminLabel'] }}
+                        {{ $attributesName['update']." ". $attributesName['category']." ".$model->title }}
                     </h5>
                 </section>
 
                 <section class="d-flex justify-content-between align-items-center mt-4 mb-3 border-bottom pb-2">
-                    <a href="{{ route('admin.user.admin-user.index') }}" class="btn btn-info btn-sm">{{ $attributesName['Back'] }}</a>
+                    <a href="{{ $perUrl  }}"
+                       class="btn btn-info btn-sm">{{ $attributesName['Back'] }}</a>
                 </section>
 
                 <section>
-                    <form action="{{ route('admin.user.admin-user.update', $model->id) }}" method="post"
-                        enctype="multipart/form-data">
+                    <form action="{{ route('admin.categories.update', $model->id) }}" method="post"
+                          enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
-                            <h2>مشخصات حساب</h2>
-                        <hr/>
                         <section class="row">
-                            <section class="col-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="">{{ $attributesName['username'] }}</label>
-                                    <input type="text" name="username" class="form-control form-control-sm"
-                                           value="{{ old('username', $model->username) }}">
-                                </div>
-                                @error('username')
-                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
-                            <section class="col-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="">{{ $attributesName['email'] }}</label>
-                                    <input type="text" name="email" class="form-control form-control-sm"
-                                           value="{{ old('email', $model->email) }}">
-                                </div>
-                                @error('email')
-                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
-                            <section class="col-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="">{{ $attributesName['mobile'] }}</label>
-                                    <input type="text" name="mobile" class="form-control form-control-sm"
-                                           value="{{ old('mobile', $model->mobile) }}">
-                                </div>
-                                @error('mobile')
-                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
-                            <section class="col-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="">{{ $attributesName['password'] }}</label>
-                                    <input type="password" name="password" class="form-control form-control-sm"
-                                           value="">
-                                </div>
-                                @error('password')
-                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
-                        </section>
 
-                        <h2>مشخصات کاربر</h2>
-                        <hr/>
-                        <section class="row">
+                            <section class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="">{{ $attributesName['title'] }}</label>
+                                    <input type="text" name="title" class="form-control form-control-sm"
+                                           value="{{ old('title', $model->title) }}">
+                                </div>
+                                @error('title')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
+                                @enderror
+                            </section>
+
+                            <section class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="">{{ $attributesName['en_title'] }}</label>
+                                    <input type="text" name="en_title" class="form-control form-control-sm"
+                                           value="{{ old('en_title', $model->en_title) }}">
+                                </div>
+                                @error('en_title')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
+                                @enderror
+                            </section>
+
+
+                            <section class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="">{{ $attributesName['seo_title'] }}</label>
+                                    <input type="text" name="seo_title" class="form-control form-control-sm"
+                                           value="{{ old('seo_title', $model->seo_title) }}">
+                                </div>
+                                @error('seo_title')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
+                                @enderror
+                            </section>
+                            <section class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="">{{ $attributesName['seo_description'] }}</label>
+                                    <input type="text" name="seo_description" class="form-control form-control-sm"
+                                           value="{{ old('seo_description', $model->seo_description) }}">
+                                </div>
+                                @error('seo_description')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
+                                @enderror
+                            </section>
 
                             <section class="col-12 col-md-12">
                                 <div class="form-group">
-                                    <label for="">{{ $attributesName['user_type'] }}</label>
-                                    <select  class="form-control form-control-sm" name="type">
-                                        <option value="">{{ $attributesName['DropdownLabel'] }} </option>
-                                        @foreach ($typeList as $index => $item)
+                                    <label for="">{{ $attributesName['content_title'] }}</label>
+                                    <input type="text" name="content_title" class="form-control form-control-sm"
+                                           value="{{ old('content_title', $model->content_title) }}">
+                                </div>
+                                @error('content_title')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
+                                @enderror
+                            </section>
+
+                            <section class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="">{{ $attributesName['parent_id'] }}</label>
+                                    <select name="parent_id" id="parent_id" class="form-control form-control-sm">
+                                        <option value="">{{ $attributesName['DropdownLabel'] }}</option>
+                                        @foreach ($categories as  $category)
+                                            <option value="{{ $category->id }}"
+                                                    @if ($category->id ==  $model->parent_id )
+                                                        selected
+                                                @endif
+                                            >{{ $category->title }}</option>
+                                            @if ($category->children->count())
+                                                @foreach ($category->children as $key2 => $child)
+                                                    <option value="{{ $child->id }}"
+                                                            @if ($child->id ==  $model->parent_id )
+                                                                selected
+                                                        @endif
+                                                    >- {{ $child->title }}</option>
+                                                @endforeach
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @error('parent_id')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
+                                @enderror
+                            </section>
+                            <section class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="">{{ $attributesName['status'] }}</label>
+                                    <select class="form-control form-control-sm" name="status">
+                                        <option value="">{{ $attributesName['DropdownLabel'] }}</option>
+                                        @foreach ($statusList as $index => $item)
                                             <option value="{{ $index }}"
-                                                    @if ($index == $model->type)
+                                                    @if ($index ==  $model->status )
                                                         selected
                                                 @endif
                                             >
@@ -121,107 +175,7 @@ $attributesName=Main::attributesName();
 
                                     </select>
                                 </div>
-                                @error('type')
-                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
-                            <section class="col-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="">{{ $attributesName['corporate_name'] }}</label>
-                                    <input type="text" name="corporate_name" class="form-control form-control-sm"
-                                           value="{{ old('corporate_name', $model->corporate_name) }}">
-                                </div>
-                                @error('corporate_name')
-                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
-
-                            <section class="col-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="">{{ $attributesName['first_name'] }}</label>
-                                    <input type="text" name="first_name" class="form-control form-control-sm"
-                                        value="{{ old('first_name', $model->first_name) }}">
-                                </div>
-                                @error('first_name')
-                                    <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
-                            <section class="col-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="">{{ $attributesName['last_name'] }}</label>
-                                    <input type="text" name="last_name" class="form-control form-control-sm"
-                                        value="{{ old('last_name', $model->last_name) }}">
-                                </div>
-                                @error('last_name')
-                                    <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
-
-
-
-                            <section class="col-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="">{{ $attributesName['sex'] }}</label>
-                                    <select  class="form-control form-control-sm" name="sex">
-                                        <option value="">{{ $attributesName['DropdownLabel'] }}</option>
-                                        @foreach ($sexList as $index => $item)
-                                            <option value="{{ $index }}"
-
-                                                        @if ($index == $model->sex)
-                                                            selected
-                                                @endif
-                                            >
-                                                {{ $item }}</option>
-                                        @endforeach
-
-                                    </select>
-                                </div>
-                                @error('sex')
-                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
-
-                            <section class="col-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="">{{ $attributesName['mobile_sms'] }}</label>
-                                    <input type="text" name="mobile_sms" class="form-control form-control-sm"
-                                           value="{{ old('mobile_sms', $model->mobile_sms) }}">
-                                </div>
-                                @error('mobile_sms')
-                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
-                            <section class="col-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="">{{ $attributesName['national_code'] }}</label>
-                                    <input type="text" name="national_code" class="form-control form-control-sm"
-                                           value="{{ old('national_code', $model->national_code) }}">
-                                </div>
-                                @error('national_code')
+                                @error('status')
                                 <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
                                         <strong>
                                             {{ $message }}
@@ -233,81 +187,9 @@ $attributesName=Main::attributesName();
 
                             <section class="col-12 col-md-12">
                                 <div class="form-group">
-                                    <label for="">{{ $attributesName['economical_code'] }}</label>
-                                    <input type="text" name="economical_code" class="form-control form-control-sm"
-                                           value="{{ old('economical_code', $model->economical_code) }}">
-                                </div>
-                                @error('economical_code')
-                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
-                            <section class="col-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="">{{ $attributesName['register_code'] }}</label>
-                                    <input type="text" name="register_code" class="form-control form-control-sm"
-                                           value="{{ old('register_code', $model->register_code) }}">
-                                </div>
-                                @error('register_code')
-                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
-                            <section class="col-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="">{{ $attributesName['phone1'] }}</label>
-                                    <input type="text" name="phone1" class="form-control form-control-sm"
-                                           value="{{ old('phone1', $model->phone1) }}">
-                                </div>
-                                @error('phone1')
-                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
-
-                            <section class="col-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="">{{ $attributesName['phone2'] }}</label>
-                                    <input type="text" name="phone2" class="form-control form-control-sm"
-                                           value="{{ old('phone2', $model->phone2) }}">
-                                </div>
-                                @error('phone2')
-                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
-
-
-                            <section class="col-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="">{{ $attributesName['phone3'] }}</label>
-                                    <input type="text" name="phone3" class="form-control form-control-sm"
-                                           value="{{ old('phone3', $model->phone3) }}">
-                                </div>
-                                @error('phone3')
-                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
-                            <section class="col-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="">{{ $attributesName['user_description'] }}</label>
-                                    <textarea type="text" name="description" style="height: 169px;" class="form-control form-control-sm">{{ old('description', $model->description) }}</textarea>
+                                    <label for="">{{ $attributesName['description'] }}</label>
+                                    <textarea type="text" name="description" style="height: 169px;"
+                                              class="form-control form-control-sm">{{ old('description',$model->description) }}</textarea>
                                 </div>
                                 @error('description')
                                 <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
@@ -318,19 +200,31 @@ $attributesName=Main::attributesName();
                                 @enderror
                             </section>
                         </section>
-                        <h2>آدرس</h2>
-                        <hr/>
+
 
                         <section class="row">
 
-                            <section class="col-12 col-md-12">
+                            <section class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label for="">{{ $attributesName['province_id'] }}</label>
-                                    <select  class="form-control form-control-sm" name="province_id">
-                                        <option value="">{{ $attributesName['DropdownLabel'] }}</option>
-                                    </select>
+                                    <label for="">{{ $attributesName['redirect'] }}</label>
+                                    <input type="text" name="redirect" class="form-control form-control-sm"
+                                           value="{{ old('redirect',$model->redirect) }}">
                                 </div>
-                                @error('province_id')
+                                @error('redirect')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
+                                @enderror
+                            </section>
+                            <section class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="">{{ $attributesName['canonical'] }}</label>
+                                    <input type="text" name="canonical" class="form-control form-control-sm"
+                                           value="{{ old('canonical',$model->canonical) }}">
+                                </div>
+                                @error('canonical')
                                 <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
                                         <strong>
                                             {{ $message }}
@@ -340,12 +234,11 @@ $attributesName=Main::attributesName();
                             </section>
                             <section class="col-12 col-md-12">
                                 <div class="form-group">
-                                    <label for="">{{ $attributesName['city_id'] }}</label>
-                                    <select  class="form-control form-control-sm" name="city_id">
-                                        <option value="">{{ $attributesName['DropdownLabel'] }}</option>
-                                    </select>
+                                    <label for="">{{ $attributesName['sidebar'] }}</label>
+                                    <textarea type="text" name="sidebar" style="height: 169px;"
+                                              class="form-control form-control-sm">{{ old('sidebar',$model->sidebar) }}</textarea>
                                 </div>
-                                @error('city_id')
+                                @error('sidebar')
                                 <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
                                         <strong>
                                             {{ $message }}
@@ -353,43 +246,8 @@ $attributesName=Main::attributesName();
                                     </span>
                                 @enderror
                             </section>
-                            <section class="col-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="">{{ $attributesName['address'] }}</label>
-                                    <input type="text" name="address" class="form-control form-control-sm"
-                                           value="{{ old('address', $model->address) }}">
-                                </div>
-                                @error('address')
-                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
-                            <section class="col-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="">{{ $attributesName['postal_code'] }}</label>
-                                    <input type="text" name="postal_code" class="form-control form-control-sm"
-                                           value="{{ old('postal_code', $model->postal_code) }}">
-                                </div>
-                                @error('postal_code')
-                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
-
-
-
-
-
-
-
-
-
+                        </section>
+                        <section class="row">
 
                             <section class="col-12">
                                 <button class="btn btn-primary btn-sm">{{ $attributesName['updateButton'] }}</button>

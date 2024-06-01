@@ -7,27 +7,31 @@ use App\Http\Requests\StoreCategoriesRequest;
 use App\Http\Requests\UpdateCategoriesRequest;
 use App\Models\Categories;
 use App\Models\Main;
+use App\Models\Tags;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class AdminCategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($type = Main::CATEGORY_TYPE_PRODUCT)
     {
-        $models = Categories::where(['is_deleted' => Main::STATUS_DEFAULT])->get();
+        $models = Categories::with('children')->whereNull('parent_id')->where(['type' => $type, 'is_deleted' => Main::STATUS_DEFAULT])->get();
         return view('admin.categories.index', compact('models'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($type = Main::CATEGORY_TYPE_PRODUCT)
     {
-        return view('admin.categories.create');
+
+        $categories = Categories::where(['type' => $type, 'is_deleted' => Main::STATUS_DEFAULT])->whereNull('parent_id')->with('children')->get();
+        return view('admin.categories.create', compact('categories'));
     }
 
     /**
@@ -35,10 +39,14 @@ class AdminCategoriesController extends Controller
      */
     public function store(StoreCategoriesRequest $request)
     {
-        $inputs = $request->all();
+        $request->merge([
+            'slug' => Str::slug($request->title, '-', null),
+            'author_id' => Auth::user()->id,
+        ]);
 
-        $model = Categories::create($inputs);
-        return redirect()->route('admin.categories.index')->with('swal-success', 'ادمین جدید با موفقیت ثبت شد');
+        Categories::create($request->all());
+
+        return redirect()->route('admin.categories.index', $request->input('type'))->with('swal-success', 'ادمین جدید با موفقیت ثبت شد');
     }
 
     /**
@@ -54,7 +62,9 @@ class AdminCategoriesController extends Controller
      */
     public function edit(Categories $model)
     {
-        return view('admin.categories.edit', compact('model'));
+        $categories = Categories::where(['type' => $model->type, 'is_deleted' => Main::STATUS_DEFAULT])->whereNull('parent_id')->with('children')->get();
+
+        return view('admin.categories.edit', compact('model', 'categories'));
     }
 
     /**
@@ -62,10 +72,13 @@ class AdminCategoriesController extends Controller
      */
     public function update(UpdateCategoriesRequest $request, Categories $model)
     {
-        $oldPassword = $request->old('password');
-        $newPassword = $request->input('password');
-        $model->update($request->except('password'));
-        return redirect()->route('admin.categories.index')->with('swal-success', 'ادمین سایت شما با موفقیت ویرایش شد');
+
+        $request->merge([
+            'slug' => Str::slug($request->title, '-', null),
+            'author_id' => Auth::user()->id,
+        ]);
+        $model->update($request->all());
+        return redirect()->route('admin.categories.index', $model->type)->with('swal-success', 'ادمین سایت شما با موفقیت ویرایش شد');
     }
 
     /**
@@ -75,30 +88,32 @@ class AdminCategoriesController extends Controller
     {
         $model->is_deleted = Main::STATUS_IS_DELETED;
         $model->deleted_at = Carbon::now();
+        $model->author_id = Auth::user()->id;
         $model->save();
-        return redirect()->route('admin.categories.index')->with('swal-success', 'ادمین شما با موفقیت حذف شد');
+        return redirect()->route('admin.categories.index', $model->type)->with('swal-success', 'ادمین شما با موفقیت حذف شد');
     }
 
-    public function status(User $model)
+    public function status(Categories $model)
     {
 
-            $outpot = ['status' => false, 'message' => "مشکلی در فرآیند به وجود آمده است."];
-            if (in_array($model->status, [Main::STATUS_ACTIVE, Main::STATUS_DISABLED])) {
-                $status = Main::STATUS_ACTIVE;
-                if ($model->status == $status) {
-                    $status = Main::STATUS_DISABLED;
-                }
-                $model->status = $status;
-                $result = $model->save();
-                if ($result) {
-                    $outpot = ['status' => true, "message" => 'وضعیت کاربر به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
-                }
-            } else {
-                $model->status = Main::STATUS_ACTIVE;
-                $model->save();
-                $outpot = ['status' => true, 'message' => 'وضعیت کاربر به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
+        $outpot = ['status' => false, 'message' => "مشکلی در فرآیند به وجود آمده است."];
+        if (in_array($model->status, [Main::STATUS_ACTIVE, Main::STATUS_DISABLED])) {
+            $status = Main::STATUS_ACTIVE;
+            if ($model->status == $status) {
+                $status = Main::STATUS_DISABLED;
             }
-
+            $model->status = $status;
+            $model->author_id = Auth::user()->id;
+            $result = $model->save();
+            if ($result) {
+                $outpot = ['status' => true, "message" => 'وضعیت کاربر به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
+            }
+        } else {
+            $model->status = Main::STATUS_ACTIVE;
+            $model->author_id = Auth::user()->id;
+            $model->save();
+            $outpot = ['status' => true, 'message' => 'وضعیت کاربر به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
+        }
 
 
         return response()->json($outpot);

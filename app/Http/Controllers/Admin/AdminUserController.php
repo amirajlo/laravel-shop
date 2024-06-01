@@ -26,18 +26,6 @@ class AdminUserController extends Controller
      */
     public function index()
     {
-
-
-        //   Role::create(['name' => 'admin']);
-        //   Permission::create(['name' => 'create post']);
-        //  $role = Role::findByName('admin');
-        //  $permission = Permission::findByName('create post');
-
-        //   $role->givePermissionTo($permission);
-
-        //  $user = User::find(1);
-        //  $user->assignRole('admin');
-
         $models = User::where('role', '!=', Main::ROLE_CUSTOMER)->where(['is_deleted' => Main::STATUS_DEFAULT])->get();
         return view('admin.user.admin-user.index', compact('models'));
     }

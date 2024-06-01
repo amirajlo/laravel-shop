@@ -20,6 +20,12 @@
 
         <section id="main-body" class="main-body">
 
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item font-size-12"><a href="/admin"> {{ \App\Models\Main::attributesName()['home'] }}</a></li>
+                    @yield('breadCrumbs')
+                </ol>
+            </nav>
             @yield('content')
 
         </section>

@@ -37,15 +37,22 @@
                 </section>
             </section>
 
-            <a href="{{ route('admin.categories.index') }}" class="sidebar-link">
-                <i class="fas fa-bars"></i>
-                <span>دسته بندی</span>
-            </a>
 
-            <a href="{{ route('admin.tags.index') }}" class="sidebar-link">
-                <i class="fas fa-bars"></i>
-                <span>برچسب ها</span>
-            </a>
+            <section class="sidebar-group-link">
+                <section class="sidebar-dropdown-toggle">
+                    <i class="fas fa-chart-bar icon"></i>
+                    <span>دسته بندی</span>
+                    <i class="fas fa-angle-left angle"></i>
+                </section>
+                <section class="sidebar-dropdown">
+                    <a href="{{ route('admin.categories.index',\App\Models\Main::CATEGORY_TYPE_PRODUCT) }}">دسته بندی محصولات</a>
+                    <a href="{{ route('admin.categories.index',\App\Models\Main::CATEGORY_TYPE_ARTICLE) }}">دسته بندی مقالات</a>
+                    <a href="{{ route('admin.tags.index') }}">مدیریت برچسب ها</a>
+
+                </section>
+            </section>
+
+
 
 
         </section>

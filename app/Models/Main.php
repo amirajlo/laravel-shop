@@ -26,12 +26,12 @@ class Main extends Model
     const CATEGORY_TYPE_TICKET = 3;
 
 
-    public static function  categoriesTypeList($label = false)
+    public static function categoriesTypeList($label = false)
     {
         $result = [
-            self::CATEGORY_TYPE_PRODUCT => "محصول",
-            self::CATEGORY_TYPE_ARTICLE => "مقاله",
-            self::CATEGORY_TYPE_TICKET => "تیکت",
+            self::CATEGORY_TYPE_PRODUCT => "محصولات",
+            self::CATEGORY_TYPE_ARTICLE => "مقالات",
+            self::CATEGORY_TYPE_TICKET => "تیکت ها",
         ];
         if ($label) {
             $result = [
@@ -42,7 +42,8 @@ class Main extends Model
         }
         return $result;
     }
-    public static function  typeList($label = false)
+
+    public static function typeList($label = false)
     {
         $result = [
             self::USER_TYPE_HAGHIGHI => "حقیقی",
@@ -97,80 +98,93 @@ class Main extends Model
 
     }
 
-    public static  function attributesName(){
+    public static function attributesName()
+    {
         return [
-            'id'=>'شناسه',
-            'first_name'=>'نام',
-            'last_name'=>'نام خانوادگی',
-            'corporate_name'=>'نام شرکت',
-            'sex'=>'جنسیت',
-            'user_description'=>'بیوگرافی',
-            'address'=>'آدرس',
-            'province_id'=>'استان',
-            'province'=>'استان',
-            'city'=>'شهر',
-            'city_id'=>'شهر',
-            'phone1'=>'تلفن 1',
-            'phone2'=>'تلفن 2',
-            'phone3'=>'تلفن 3',
-            'postal_code'=>'کد پستی',
-            'username'=>'نام کاربری',
-            'password'=>'رمز عبور',
-            'email'=>'ایمیل',
-            'mobile'=>'موبایل',
-            'mobile_sms'=>'موبایل جهت دریافت پیامک',
-            'national_code'=>'شناسه ملی',
-            'economical_code'=>'کد اقتصادی',
-            'register_code'=>'شماره ثبت',
-            'status'=>'وضعیت',
-            'user_type'=>'نوع کاربر',
-            'birthday'=>'تاریخ تولد',
-            'last_login'=>'آخرین ورود',
-            'last_try'=>'آخرین تلاش برای ورود',
-            'failed_login_count'=>'تعداد تلاش ناموفق',
-            'email_verified_at'=>'تاریخ تایید ایمیل',
-            'mobile_verified_at'=>'تاریخ تایید موبایل',
-            'deleted_at'=>'تاریخ حذف',
-            'user_role'=>'نقش کاربر',
-            'remember_token'=>'رممبر توکن',
-            'created_at'=>'تاریخ ثبت',
-            'updated_at'=>'تاریخ ویرایش',
-            'setting'=>'تنظیمات',
-            'edit'=>'ویرایش',
-            'delete'=>'حذف',
-            'adminLabel'=>'ادمین',
-            'userLabel'=>'مشتری',
-            'usersLabel'=>'مشتریان',
-            'new'=>'جدید',
-            'manage'=>'مدیریت',
-            'adminsLabel'=>'ادمین ها',
-            'create'=>'ایجاد',
-            'users'=>'کاربران',
-            'part'=>'بخش',
-            'home'=>'خانه',
-            'user'=>'کاربر',
-            'Back'=>'بازگشت',
-            'DropdownLabel'=>'-- انتخاب کنید --',
-            'searchPlaceHolder'=>'جستجو...',
-            'categories_type'=>'نوع دسته بندی',
-            'categories'=>'دسته بندی ها',
-            'category'=>'دسته بندی',
-            'tags'=>'برچسب ها',
-            'tag'=>'برچسب',
-            'title'=>'عنوان',
-            'en_title'=>'عنوان انگلیسی',
-            'slug'=>'اسلاگ',
-            'content_title'=>'عنوان H1',
-            'seo_title'=>'عنوان سئو',
-            'seo_description'=>'توضیحات سئو',
-            'description'=>'توضیحات',
-            'redirect'=>'ریدایرکت',
-            'canonical'=>'کنونیکال',
-            'sidebar'=>'سایدبار',
-            'update'=>'ویرایش',
-            'sendButton'=>'ارسال',
-            'createButton'=>'ثبت',
-            'updateButton'=>'به روزرسانی',
+            'id' => 'شناسه',
+            'first_name' => 'نام',
+            'last_name' => 'نام خانوادگی',
+            'corporate_name' => 'نام شرکت',
+            'sex' => 'جنسیت',
+            'user_description' => 'بیوگرافی',
+            'address' => 'آدرس',
+            'province_id' => 'استان',
+            'province' => 'استان',
+            'city' => 'شهر',
+            'city_id' => 'شهر',
+            'phone1' => 'تلفن 1',
+            'phone2' => 'تلفن 2',
+            'phone3' => 'تلفن 3',
+            'postal_code' => 'کد پستی',
+            'username' => 'نام کاربری',
+            'password' => 'رمز عبور',
+            'email' => 'ایمیل',
+            'mobile' => 'موبایل',
+            'mobile_sms' => 'موبایل جهت دریافت پیامک',
+            'national_code' => 'شناسه ملی',
+            'economical_code' => 'کد اقتصادی',
+            'register_code' => 'شماره ثبت',
+            'status' => 'وضعیت',
+            'user_type' => 'نوع کاربر',
+            'birthday' => 'تاریخ تولد',
+            'last_login' => 'آخرین ورود',
+            'last_try' => 'آخرین تلاش برای ورود',
+            'failed_login_count' => 'تعداد تلاش ناموفق',
+            'email_verified_at' => 'تاریخ تایید ایمیل',
+            'mobile_verified_at' => 'تاریخ تایید موبایل',
+            'deleted_at' => 'تاریخ حذف',
+            'user_role' => 'نقش کاربر',
+            'remember_token' => 'رممبر توکن',
+            'created_at' => 'تاریخ ثبت',
+            'updated_at' => 'تاریخ ویرایش',
+            'setting' => 'تنظیمات',
+            'edit' => 'ویرایش',
+            'delete' => 'حذف',
+            'adminLabel' => 'ادمین',
+            'userLabel' => 'مشتری',
+            'usersLabel' => 'مشتریان',
+            'new' => 'جدید',
+            'manage' => 'مدیریت',
+            'adminsLabel' => 'ادمین ها',
+            'create' => 'ایجاد',
+            'users' => 'کاربران',
+            'part' => 'بخش',
+            'home' => 'خانه',
+            'user' => 'کاربر',
+            'Back' => 'بازگشت',
+            'DropdownLabel' => '-- انتخاب کنید --',
+            'searchPlaceHolder' => 'جستجو...',
+            'categories_type' => 'نوع دسته بندی',
+            'categories' => 'دسته بندی ها',
+            'category' => 'دسته بندی',
+            'tags' => 'برچسب ها',
+            'tag' => 'برچسب',
+            'title' => 'عنوان',
+            'en_title' => 'عنوان انگلیسی',
+            'slug' => 'اسلاگ',
+            'content_title' => 'عنوان H1',
+            'seo_title' => 'عنوان سئو',
+            'seo_description' => 'توضیحات سئو',
+            'description' => 'توضیحات',
+            'redirect' => 'ریدایرکت',
+            'canonical' => 'کنونیکال',
+            'sidebar' => 'سایدبار',
+            'update' => 'ویرایش',
+            'sendButton' => 'ارسال',
+            'createButton' => 'ثبت',
+            'updateButton' => 'به روزرسانی',
+            'parent_id' => 'دسته بندی',
         ];
+    }
+
+    public static function breadCrumbs($list)
+    {
+        $attributesName = self::attributesName();
+        $result = [
+            '<li class="breadcrumb-item font-size-12"><a href="/admin">' . $attributesName['home'] . '</a></li>'
+        ];
+
+
+        return $result;
     }
 }

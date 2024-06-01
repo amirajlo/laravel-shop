@@ -3,26 +3,22 @@
 use App\Models\Main;
 
 $attributesName = Main::attributesName();
+$pageName=$attributesName['manage'] ." ". $attributesName['tags'] ;
 ?>
 @extends('admin.layouts.master')
 
 @section('head-tag')
     <title>
 
-        {{ $attributesName['manage'] ." ". $attributesName['tags'] }}
+        {{ $pageName }}
     </title>
 @endsection
-
+@section('breadCrumbs')
+    <li class="breadcrumb-item font-size-12 "
+        aria-current="page">{{ $pageName }}</li>
+@endsection
 @section('content')
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item font-size-12"><a href="#"> {{ $attributesName['home'] }}</a></li>
-            <li class="breadcrumb-item font-size-12"><a
-                    href="#"> {{ $attributesName['part']." ".$attributesName['tags'] }}</a></li>
-            <li class="breadcrumb-item font-size-12 active"
-                aria-current="page">{{ $attributesName['tags'] }}</li>
-        </ol>
-    </nav>
+
 
 
     <section class="row">
@@ -30,7 +26,7 @@ $attributesName = Main::attributesName();
             <section class="main-body-container">
                 <section class="main-body-container-header">
                     <h5>
-                        {{ $attributesName['manage'] ." ". $attributesName['tags'] }}
+                        {{ $pageName }}
                     </h5>
                 </section>
 

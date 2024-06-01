@@ -3,22 +3,27 @@ use App\Models\Main;
 $sexList=Main::sexList();
 $typeList=Main::typeList();
 $attributesName=Main::attributesName();
+$pageName=$attributesName['update']." ". $attributesName['adminLabel'] ." ". $model->username;
+$perUrl=url()->route('admin.user.admin-user.index');
 ?>
 @extends('admin.layouts.master')
 
 @section('head-tag')
-    <title>ویرایش کاربر ادمین</title>
+    <title>
+        {{ $pageName }}
+    </title>
 @endsection
 
+@section('breadCrumbs')
+
+    <li class="breadcrumb-item font-size-12"><a
+            href="{{ $perUrl  }}"> {{ $attributesName['manage'] ." ". $attributesName['adminsLabel']  }}</a>
+    </li>
+    <li class="breadcrumb-item font-size-12 active"
+        aria-current="page"> {{ $pageName }}</li>
+@endsection
 @section('content')
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item font-size-12"> <a href="#"> {{ $attributesName['home'] }}</a></li>
-            <li class="breadcrumb-item font-size-12"> <a href="#"> {{ $attributesName['part']." ".$attributesName['users'] }}</a></li>
-            <li class="breadcrumb-item font-size-12 active" aria-current="page">{{ $attributesName['users']." ".$attributesName['adminLabel'] }}</li>
-            <li class="breadcrumb-item font-size-12 active" aria-current="page"> {{ $attributesName['edit']." ". $attributesName['user']." ".$attributesName['adminLabel'] }}</li>
-        </ol>
-    </nav>
+
 
 
     <section class="row">
@@ -26,12 +31,12 @@ $attributesName=Main::attributesName();
             <section class="main-body-container">
                 <section class="main-body-container-header">
                     <h5>
-                        {{ $attributesName['edit']." ". $attributesName['user']." ".$attributesName['adminLabel'] }}
+                        {{ $pageName }}
                     </h5>
                 </section>
 
                 <section class="d-flex justify-content-between align-items-center mt-4 mb-3 border-bottom pb-2">
-                    <a href="{{ route('admin.user.admin-user.index') }}" class="btn btn-info btn-sm">{{ $attributesName['Back'] }}</a>
+                    <a href="{{ $perUrl }}" class="btn btn-info btn-sm">{{ $attributesName['Back'] }}</a>
                 </section>
 
                 <section>

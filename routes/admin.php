@@ -10,7 +10,7 @@ use App\Http\Controllers\Admin\AdminCustomerController;
 use Illuminate\Support\Facades\Route;
 
 
-
+Route::group(['middleware' => ['role:admin']], function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'dashboard']);
 
     Route::get('/', [AdminDashboardController::class, 'dashboard']);
@@ -70,7 +70,8 @@ use Illuminate\Support\Facades\Route;
 
     Route::prefix('categories')->group(function () {
         Route::get('/', [AdminCategoriesController::class, 'index'])->name('admin.categories.index');
-        Route::get('/create', [AdminCategoriesController::class, 'create'])->name('admin.categories.create');
+        Route::get('/index/{type?}', [AdminCategoriesController::class, 'index'])->name('admin.categories.index');
+        Route::get('/create/{type?}', [AdminCategoriesController::class, 'create'])->name('admin.categories.create');
         Route::post('/store', [AdminCategoriesController::class, 'store'])->name('admin.categories.store');
         Route::get('/edit/{model}', [AdminCategoriesController::class, 'edit'])->name('admin.categories.edit');
         Route::put('/update/{model}', [AdminCategoriesController::class, 'update'])->name('admin.categories.update');
@@ -87,6 +88,7 @@ use Illuminate\Support\Facades\Route;
         Route::post('/status/{model}', [AdminTagsController::class, 'status'])->name('admin.tags.status');
     });
 
-Route::group(['middleware' => ['permission:create post']], function () {
-    // Routes accessible only by users with the 'create post' permission
+    Route::group(['middleware' => ['permission:create post']], function () {
+        // Routes accessible only by users with the 'create post' permission
+    });
 });

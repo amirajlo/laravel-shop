@@ -2,10 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\CommonValidationRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCategoriesRequest extends FormRequest
 {
+    use CommonValidationRules;
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -21,8 +23,16 @@ class UpdateCategoriesRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
+        $rules = [
+            'title' => 'required|min:3',
+            'redirect' => 'nullable|url:http,https',
+            'parent_id' => 'nullable|exists:categories,id',
+            'canonical' => 'nullable|url:http,https',
         ];
+        return array_merge(
+            $rules,
+            $this->columnUniqueRules(false, $this->model->id,'categories','title'),
+            $this->CategoriesTypeRules(false),
+        );
     }
 }

@@ -1,11 +1,13 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -116,6 +118,15 @@ return new class extends Migration
         app('cache')
             ->store(config('permission.cache.store') != 'default' ? config('permission.cache.store') : null)
             ->forget(config('permission.cache.key'));
+
+
+        Role::create(['name' => 'admin']);
+        Permission::create(['name' => 'create post']);
+        $role = Role::findByName('admin');
+        $permission = Permission::findByName('create post');
+        $role->givePermissionTo($permission);
+        $user = User::find(1);
+        $user->assignRole('admin');
     }
 
     /**

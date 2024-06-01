@@ -3,26 +3,22 @@
 use App\Models\Main;
 
 $attributesName = Main::attributesName();
+$typeName = Main::categoriesTypeList()[request("type")];
+$pageName=$attributesName['manage'] ." ". $attributesName['category'] ." ". $typeName;
 ?>
 @extends('admin.layouts.master')
 
 @section('head-tag')
     <title>
-
-        {{ $attributesName['manage'] ." ". $attributesName['categories'] }}
+        {{ $pageName }}
     </title>
 @endsection
-
+@section('breadCrumbs')
+    <li class="breadcrumb-item font-size-12 active"
+        aria-current="page">{{ $attributesName['category'] ." ". $typeName }}</li>
+@endsection
 @section('content')
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item font-size-12"><a href="#"> {{ $attributesName['home'] }}</a></li>
-            <li class="breadcrumb-item font-size-12"><a
-                    href="#"> {{ $attributesName['part']." ".$attributesName['categories'] }}</a></li>
-            <li class="breadcrumb-item font-size-12 active"
-                aria-current="page">{{ $attributesName['categories'] }}</li>
-        </ol>
-    </nav>
+
 
 
     <section class="row">
@@ -30,12 +26,12 @@ $attributesName = Main::attributesName();
             <section class="main-body-container">
                 <section class="main-body-container-header">
                     <h5>
-                        {{ $attributesName['manage'] ." ". $attributesName['categories'] }}
+                        {{ $pageName }}
                     </h5>
                 </section>
 
                 <section class="d-flex justify-content-between align-items-center mt-4 mb-3 border-bottom pb-2">
-                    <a href="{{ route('admin.categories.create') }}"
+                    <a href="{{ route('admin.categories.create',request("type")) }}"
                        class="btn btn-info btn-sm">{{ $attributesName['create'] ." ". $attributesName['category'] . " ".$attributesName['new'] }}</a>
                     <div class="max-width-16-rem">
                         <input type="text" class="form-control form-control-sm form-text"
@@ -44,12 +40,14 @@ $attributesName = Main::attributesName();
                 </section>
 
                 <section class="table-responsive">
+
                     <table class="table table-striped table-hover">
                         <thead>
                         <tr>
                             <th>#</th>
                             <th>{{ $attributesName['title'] }}</th>
                             <th>{{ $attributesName['en_title'] }}</th>
+
                             <th>{{ $attributesName['slug'] }}</th>
                             <th>{{ $attributesName['content_title'] }}</th>
                             <th>{{ $attributesName['status'] }}</th>
@@ -61,26 +59,29 @@ $attributesName = Main::attributesName();
 
                         @foreach ($models as $key => $model)
 
-                            <tr>
+                            <tr data-category-id="{{ $model->id }}">
                                 <th>{{ $key + 1 }}</th>
                                 <td>{{ $model->title }} </td>
                                 <td>{{ $model->en_title }}</td>
+
                                 <td>{{ $model->slug }}</td>
                                 <td>{{ $model->content_title }}</td>
 
                                 <td id="status-{{ $model->id }}">
-                                    {!! Main::categoriestatus(true)[$model->status] !!}
+                                    {!! Main::userStatus(true)[$model->status] !!}
                                 </td>
 
                                 <td class="width-22-rem text-left">
 
 
-                                    <label  id="statusb-{{ $model->id }}" class="btn btn-warning btn-sm"
+                                    <label id="statusb-{{ $model->id }}" class="btn btn-warning btn-sm"
                                            onclick="changeStatus({{ $model->id }})"
                                            data-url="{{ route('admin.categories.status', $model->id) }}">
                                         <i class="fa fa-undo "></i>
                                     </label>
-
+                                    @if ($model->children->count())
+                                        <span class="toggle-children" data-category-id="{{ $model->id }}">+</span>
+                                    @endif
                                     <a href="{{ route('admin.categories.edit', $model->id) }}"
                                        class="btn btn-primary btn-sm"><i
                                             class="fa fa-edit"></i> {{ $attributesName['edit'] }}</a>
@@ -121,12 +122,12 @@ $attributesName = Main::attributesName();
                 },
                 success: function (response) {
                     if (response.status) {
-                        document.getElementById('status-'+id).innerHTML = response.result;
-                        successToast( response.message)
+                        document.getElementById('status-' + id).innerHTML = response.result;
+                        successToast(response.message)
 
                     } else {
 
-                        errorToast( response.message)
+                        errorToast(response.message)
                     }
                 },
                 error: function () {

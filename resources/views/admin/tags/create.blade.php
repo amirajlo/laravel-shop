@@ -5,26 +5,25 @@ use App\Models\Main;
 $statusList = Main::userStatus();
 
 $attributesName = Main::attributesName();
+$pageName=$attributesName['create']." ". $attributesName['tag'] ;
+$perUrl=url()->route('admin.tags.index');
 ?>
 @extends('admin.layouts.master')
 
 @section('head-tag')
     <title>
-        {{ $attributesName['create']." ". $attributesName['tag']}}
+        {{ $pageName }}
     </title>
 @endsection
-
+@section('breadCrumbs')
+    <li class="breadcrumb-item font-size-12"><a
+            href="{{ $perUrl }}"> {{ $attributesName['manage'] ." ". $attributesName['tags']  }}</a>
+    </li>
+    <li class="breadcrumb-item font-size-12 active"
+        aria-current="page"> {{ $pageName }}</li>
+@endsection
 @section('content')
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item font-size-12"><a href="#"> {{ $attributesName['home'] }}</a></li>
-            <li class="breadcrumb-item font-size-12"><a
-                    href="#"> {{ $attributesName['part']." ".$attributesName['tags'] }}</a></li>
-            <li class="breadcrumb-item font-size-12 active" aria-current="page">{{ $attributesName['tags'] }}</li>
-            <li class="breadcrumb-item font-size-12 active"
-                aria-current="page"> {{ $attributesName['create']." ". $attributesName['tag'] }}</li>
-        </ol>
-    </nav>
+
 
 
     <section class="row">

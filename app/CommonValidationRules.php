@@ -24,7 +24,18 @@ trait CommonValidationRules
             $field => $result
         ];
     }
-
+    protected function columnUniqueRules($is_new = true,$modelId,$table,$column)
+    {
+        $next = Rule::unique($table, $column);
+        $result = [ ];
+        if (!$is_new) {
+            $next = Rule::unique($table, $column)->ignore($modelId);
+        }
+        $result[] = $next;
+        return [
+            $column => $result
+        ];
+    }
     protected function passwordRules($is_new = true)
     {
         $next = "required";
@@ -107,6 +118,19 @@ trait CommonValidationRules
         ];
     }
 
+    protected function CategoriesTypeRules($is_new = true)
+    {
+        $next = 'required';
+        $typeList = implode(',', array_keys(Main::categoriesTypeList()));
+        $result = ["numeric", "in:$typeList"];
+        if (!$is_new) {
+            $next = 'nullable';
+        }
+        $result[] = $next;
+        return [
+            'type' => $result
+        ];
+    }
     protected function typeRules($is_new = true)
     {
         $typeList = implode(',', array_keys(Main::typeList()));
