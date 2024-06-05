@@ -54,7 +54,10 @@
                 <i class="fas fa-bars"></i>
                 <span>برند</span>
             </a>
-
+            <a href="{{ route('admin.products.index') }}" class="sidebar-link">
+                <i class="fas fa-bars"></i>
+                <span>محصولات</span>
+            </a>
             <a href="{{ route('admin.articles.index') }}" class="sidebar-link">
                 <i class="fas fa-bars"></i>
                 <span>مقالات</span>

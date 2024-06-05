@@ -19,7 +19,7 @@ class AdminTagsController extends Controller
      */
     public function index()
     {
-        $models = Tags::where(['is_deleted' => Main::STATUS_DEFAULT])->get();
+        $models = Tags::where(['is_deleted' => Main::STATUS_DISABLED])->get();
         return view('admin.tags.index', compact('models'));
     }
 
@@ -79,7 +79,7 @@ class AdminTagsController extends Controller
      */
     public function destroy(Tags $model)
     {
-        $model->is_deleted = Main::STATUS_IS_DELETED;
+        $model->is_deleted = Main::STATUS_ACTIVE;
         $model->author_id =Auth::user()->id;
         $model->deleted_at = Carbon::now();
         $model->save();

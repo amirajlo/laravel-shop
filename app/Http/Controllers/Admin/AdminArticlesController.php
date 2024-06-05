@@ -19,7 +19,7 @@ class AdminArticlesController extends Controller
      */
     public function index()
     {
-        $models = Article::where(['is_deleted' => Main::STATUS_DEFAULT])->get();
+        $models = Article::where(['is_deleted' => Main::STATUS_DISABLED])->get();
         return view('admin.articles.index', compact('models'));
     }
 
@@ -79,7 +79,7 @@ class AdminArticlesController extends Controller
      */
     public function destroy(Article $model)
     {
-        $model->is_deleted = Main::STATUS_IS_DELETED;
+        $model->is_deleted = Main::STATUS_ACTIVE;
         $model->author_id =Auth::user()->id;
         $model->deleted_at = Carbon::now();
         $model->save();

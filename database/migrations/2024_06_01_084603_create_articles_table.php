@@ -39,7 +39,7 @@ return new class extends Migration
             $table->integer('count_visit')->default(Main::SCORE_ONE);
             $table->integer('count_comment')->default(Main::STATUS_DEFAULT);
             $table->integer('count_score')->default(Main::SCORE_FIVE);
-            $table->tinyInteger('is_deleted')->default(Main::STATUS_DEFAULT);
+            $table->tinyInteger('is_deleted')->default(Main::STATUS_DISABLED);
             $table->tinyInteger('is_commentable')->default(Main::STATUS_ACTIVE);
             $table->softDeletes();
             $table->timestamps();

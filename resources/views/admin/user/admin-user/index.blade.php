@@ -6,12 +6,8 @@ $attributesName = Main::attributesName();
 $pageName=$attributesName['manage'] ." ". $attributesName['adminsLabel']  ;
 ?>
 @extends('admin.layouts.master')
-
-@section('head-tag')
-    <title>
-
-        {{ $pageName}}
-    </title>
+@section('title-tag')
+    {{ $pageName }}
 @endsection
 @section('breadCrumbs')
     <li class="breadcrumb-item font-size-12 active"

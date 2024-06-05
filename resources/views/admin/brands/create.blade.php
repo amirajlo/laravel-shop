@@ -10,10 +10,8 @@ $perUrl=url()->route('admin.brands.index');
 ?>
 @extends('admin.layouts.master')
 
-@section('head-brand')
-    <title>
+@section('title-tag')
         {{ $pageName }}
-    </title>
 @endsection
 @section('breadCrumbs')
     <li class="breadcrumb-item font-size-12"><a

@@ -1,17 +1,17 @@
+<?php
+
+use App\Models\Main;
+
+$attributesName = Main::attributesName();
+$pageName=$attributesName['manage'] ." ". $attributesName['rolessLabel']  ;
+?>
 @extends('admin.layouts.master')
 
-@section('head-tag')
-    <title>نقش ها</title>
+@section('title-tag')
+    {{ $pageName }}
 @endsection
-
 @section('content')
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item font-size-12"> <a href="#">خانه</a></li>
-            <li class="breadcrumb-item font-size-12"> <a href="#">بخش کاربران</a></li>
-            <li class="breadcrumb-item font-size-12 active" aria-current="page"> نقش ها</li>
-        </ol>
-    </nav>
+
 
 
     <section class="row">

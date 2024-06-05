@@ -4,13 +4,15 @@ use App\Models\Main;
 
 $statusList = Main::userStatus();
 $attributesName = Main::attributesName();
-$perUrl=url()->route('admin.brands.index');
-$pageName=$attributesName['update']." ". $attributesName['brand'] ." ". $model->title;
+$perUrl=url()->route('admin.products.index');
+$pageName=$attributesName['update']." ". $attributesName['product'] ." ". $model->title;
 ?>
 @extends('admin.layouts.master')
 
-@section('title_tag')
+@section('head-product')
+    <title>
         {{ $pageName }}
+    </title>
 @endsection
 
 
@@ -18,7 +20,7 @@ $pageName=$attributesName['update']." ". $attributesName['brand'] ." ". $model->
 @section('breadCrumbs')
 
     <li class="breadcrumb-item font-size-12"><a
-            href="{{ $perUrl  }}"> {{ $attributesName['manage'] ." ". $attributesName['brands']  }}</a>
+            href="{{ $perUrl  }}"> {{ $attributesName['manage'] ." ". $attributesName['products']  }}</a>
     </li>
     <li class="breadcrumb-item font-size-12 active"
         aria-current="page"> {{ $pageName }}</li>
@@ -43,7 +45,7 @@ $pageName=$attributesName['update']." ". $attributesName['brand'] ." ". $model->
                 </section>
 
                 <section>
-                    <form action="{{ route('admin.brands.update', $model->id) }}" method="post"
+                    <form action="{{ route('admin.products.update', $model->id) }}" method="post"
                           enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
@@ -67,11 +69,11 @@ $pageName=$attributesName['update']." ". $attributesName['brand'] ." ". $model->
 
                             <section class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label for="">{{ $attributesName['en_title'] }}</label>
-                                    <input type="text" name="en_title" class="form-control form-control-sm"
-                                           value="{{ old('en_title', $model->en_title) }}">
+                                    <label for="">{{ $attributesName['sub_title'] }}</label>
+                                    <input type="text" name="sub_title" class="form-control form-control-sm"
+                                           value="{{ old('en_title', $model->sub_title) }}">
                                 </div>
-                                @error('en_title')
+                                @error('sub_title')
                                 <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
                                         <strong>
                                             {{ $message }}

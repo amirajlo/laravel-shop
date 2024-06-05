@@ -3,14 +3,12 @@
 use App\Models\Main;
 
 $attributesName = Main::attributesName();
+$pageName=$attributesName['manage'] ." ". $attributesName['customersLabel']  ;
 ?>
 @extends('admin.layouts.master')
 
-@section('head-tag')
-    <title>
-
-        {{ $attributesName['manage'] ." ". $attributesName['usersLabel'] }}
-    </title>
+@section('title-tag')
+    {{ $pageName }}
 @endsection
 
 @section('content')

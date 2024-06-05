@@ -7,11 +7,8 @@ $pageName=$attributesName['manage'] ." ". $attributesName['brands'] ;
 ?>
 @extends('admin.layouts.master')
 
-@section('head-brand')
-    <title>
-
+@section('title-tag')
         {{ $pageName }}
-    </title>
 @endsection
 @section('breadCrumbs')
     <li class="breadcrumb-item font-size-12 "

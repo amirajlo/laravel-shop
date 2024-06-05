@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\AdminCustomerController;
 use App\Http\Controllers\Admin\AdminBrandsController;
 use App\Http\Controllers\Admin\AdminArticlesController;
+use App\Http\Controllers\Admin\AdminProductsController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -80,6 +81,7 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::delete('/destroy/{model}', [AdminCategoriesController::class, 'destroy'])->name('admin.categories.destroy');
         Route::post('/status/{model}', [AdminCategoriesController::class, 'status'])->name('admin.categories.status');
     });
+
     Route::prefix('tags')->group(function () {
         Route::get('/', [AdminTagsController::class, 'index'])->name('admin.tags.index');
         Route::get('/create', [AdminTagsController::class, 'create'])->name('admin.tags.create');
@@ -111,6 +113,15 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::post('/status/{model}', [AdminArticlesController::class, 'status'])->name('admin.articles.status');
     });
 
+    Route::prefix('products')->group(function () {
+        Route::get('/', [AdminProductsController::class, 'index'])->name('admin.products.index');
+        Route::get('/create', [AdminProductsController::class, 'create'])->name('admin.products.create');
+        Route::post('/store', [AdminProductsController::class, 'store'])->name('admin.products.store');
+        Route::get('/edit/{model}', [AdminProductsController::class, 'edit'])->name('admin.products.edit');
+        Route::put('/update/{model}', [AdminProductsController::class, 'update'])->name('admin.products.update');
+        Route::delete('/destroy/{model}', [AdminProductsController::class, 'destroy'])->name('admin.products.destroy');
+        Route::post('/status/{model}', [AdminProductsController::class, 'status'])->name('admin.products.status');
+    });
     Route::group(['middleware' => ['permission:create post']], function () {
         // Routes accessible only by users with the 'create post' permission
     });

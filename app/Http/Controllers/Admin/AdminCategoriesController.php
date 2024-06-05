@@ -20,7 +20,7 @@ class AdminCategoriesController extends Controller
      */
     public function index($type = Main::CATEGORY_TYPE_PRODUCT,$parent=null)
     {
-        $condition=['type' => $type, 'is_deleted' => Main::STATUS_DEFAULT];
+        $condition=['type' => $type, 'is_deleted' => Main::STATUS_DISABLED];
         $models = Categories::with('children')->whereNull('parent_id')->where($condition)->get();
         if(!is_null($parent)){
             $condition['parent_id']=$parent;
@@ -37,7 +37,7 @@ class AdminCategoriesController extends Controller
     public function create($type = Main::CATEGORY_TYPE_PRODUCT)
     {
 
-        $categories = Categories::where(['type' => $type, 'is_deleted' => Main::STATUS_DEFAULT])->whereNull('parent_id')->with('children')->get();
+        $categories = Categories::where(['type' => $type, 'is_deleted' => Main::STATUS_DISABLED])->whereNull('parent_id')->with('children')->get();
         return view('admin.categories.create', compact('categories'));
     }
 
@@ -69,7 +69,7 @@ class AdminCategoriesController extends Controller
      */
     public function edit(Categories $model)
     {
-        $categories = Categories::where(['type' => $model->type, 'is_deleted' => Main::STATUS_DEFAULT])->whereNull('parent_id')->with('children')->get();
+        $categories = Categories::where(['type' => $model->type, 'is_deleted' => Main::STATUS_DISABLED])->whereNull('parent_id')->with('children')->get();
 
         return view('admin.categories.edit', compact('model', 'categories'));
     }
@@ -93,7 +93,7 @@ class AdminCategoriesController extends Controller
      */
     public function destroy(Categories $model)
     {
-        $model->is_deleted = Main::STATUS_IS_DELETED;
+        $model->is_deleted = Main::STATUS_ACTIVE;
         $model->deleted_at = Carbon::now();
         $model->author_id = Auth::user()->id;
         $model->save();

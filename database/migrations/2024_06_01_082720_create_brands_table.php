@@ -31,7 +31,7 @@ return new class extends Migration
             $table->string('redirect')->nullable();
             $table->string('canonical')->nullable();
             $table->text('sidebar')->nullable();
-            $table->tinyInteger('is_deleted')->default(Main::STATUS_DEFAULT);
+            $table->tinyInteger('is_deleted')->default(Main::STATUS_DISABLED);
             $table->softDeletes();
             $table->timestamps();
         });

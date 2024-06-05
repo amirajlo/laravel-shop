@@ -10,16 +10,25 @@ class Main extends Model
 {
     use HasFactory;
     use RevisionableTrait;
+
+    /***** START SCORE ****/
     const SCORE_ONE = 1;
     const SCORE_TWO = 2;
     const SCORE_THREE = 3;
     const SCORE_FOUR = 4;
     const SCORE_FIVE = 5;
+
+    /***** END SCORE ****/
+
+    /***** START PUBLIC STATUS ****/
     const STATUS_DEFAULT = 0;
     const STATUS_ACTIVE = 1;
     const STATUS_LOCKED = 2;
     const STATUS_DISABLED = 3;
-    const STATUS_IS_DELETED = 1;
+
+    /***** END PUBLIC STATUS ****/
+
+    /***** START USER STATUS ****/
     const USER_TYPE_HAGHIGHI = 1;
     const USER_TYPE_HOGHOGHI = 2;
     const ROLE_ADMIN = 1;
@@ -27,10 +36,19 @@ class Main extends Model
     const USER_SEX_MALE = 1;
     const USER_SEX_FEMALE = 2;
     const USER_SEX_OTHER = 3;
+    /***** END USER STATUS ****/
+
+    /***** START CATEGORY TYPE ****/
     const CATEGORY_TYPE_PRODUCT = 1;
     const CATEGORY_TYPE_ARTICLE = 2;
     const CATEGORY_TYPE_TICKET = 3;
+    /***** END CATEGORY TYPE ****/
 
+    /***** START STOCK  ****/
+    const STOCK = 1;
+    const IN_STOCK = 2;
+
+    /***** END STOCK  ****/
 
     public static function categoriesTypeList($label = false)
     {
@@ -158,6 +176,9 @@ class Main extends Model
             'home' => 'خانه',
             'user' => 'کاربر',
             'Back' => 'بازگشت',
+            'rolessLabel' => 'نقش ها',
+            'permissionsLabel' => 'دسترسی ها',
+            'customersLabel' => 'مشتریان',
             'DropdownLabel' => '-- انتخاب کنید --',
             'searchPlaceHolder' => 'جستجو...',
             'categories_type' => 'نوع دسته بندی',
@@ -186,6 +207,8 @@ class Main extends Model
             'article' => 'مقاله',
             'sub_title' => 'عنوان فرعی',
             'lead' => 'لید',
+            'products' => 'محصولات',
+            'product' => 'محصول',
         ];
     }
 

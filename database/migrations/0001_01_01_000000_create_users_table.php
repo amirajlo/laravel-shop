@@ -45,7 +45,7 @@ return new class extends Migration {
             $table->timestamp('mobile_verified_at')->nullable();
 
             $table->rememberToken();
-            $table->tinyInteger('is_deleted')->default(Main::STATUS_DEFAULT);
+            $table->tinyInteger('is_deleted')->default(Main::STATUS_DISABLED);
             $table->softDeletes();
             $table->timestamps();
         });

@@ -26,7 +26,7 @@ class AdminUserController extends Controller
      */
     public function index()
     {
-        $models = User::where('role', '!=', Main::ROLE_CUSTOMER)->where(['is_deleted' => Main::STATUS_DEFAULT])->get();
+        $models = User::where('role', '!=', Main::ROLE_CUSTOMER)->where(['is_deleted' => Main::STATUS_DISABLED])->get();
         return view('admin.user.admin-user.index', compact('models'));
     }
 
@@ -98,7 +98,7 @@ class AdminUserController extends Controller
      */
     public function destroy(User $model)
     {
-        $model->is_deleted = Main::STATUS_IS_DELETED;
+        $model->is_deleted = Main::STATUS_ACTIVE;
         $model->deleted_at = Carbon::now();
         $model->save();
         return redirect()->route('admin.user.admin-user.index')->with('swal-success', 'ادمین شما با موفقیت حذف شد');

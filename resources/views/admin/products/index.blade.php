@@ -3,19 +3,21 @@
 use App\Models\Main;
 
 $attributesName = Main::attributesName();
-$pageName = $attributesName['manage'] . " " . $attributesName['articles'];
+$pageName=$attributesName['manage'] ." ". $attributesName['products'] ;
 
 ?>
 @extends('admin.layouts.master')
 
 @section('title-tag')
-    {{ $pageName }}
+        {{ $pageName }}
 @endsection
 @section('breadCrumbs')
     <li class="breadcrumb-item font-size-12 "
         aria-current="page">{{ $pageName }}</li>
 @endsection
 @section('content')
+
+
 
     <section class="row">
         <section class="col-12">
@@ -27,8 +29,8 @@ $pageName = $attributesName['manage'] . " " . $attributesName['articles'];
                 </section>
 
                 <section class="d-flex justify-content-between align-items-center mt-4 mb-3 border-bottom pb-2">
-                    <a href="{{ route('admin.articles.create') }}"
-                       class="btn btn-info btn-sm">{{ $attributesName['create'] ." ". $attributesName['article'] . " ".$attributesName['new'] }}</a>
+                    <a href="{{ route('admin.products.create') }}"
+                       class="btn btn-info btn-sm">{{ $attributesName['create'] ." ". $attributesName['product'] . " ".$attributesName['new'] }}</a>
                     <div class="max-width-16-rem">
                         <input type="text" class="form-control form-control-sm form-text"
                                placeholder="{{ $attributesName['searchPlaceHolder'] }}">
@@ -67,17 +69,17 @@ $pageName = $attributesName['manage'] . " " . $attributesName['articles'];
                                 <td class="width-22-rem text-left">
 
 
-                                    <a id="statusb-{{ $model->id }}" class="btn btn-warning btn-sm"
-                                       onclick="changeStatus({{ $model->id }})"
-                                       data-url="{{ route('admin.articles.status', $model->id) }}">
+                                    <a  id="statusb-{{ $model->id }}" class="btn btn-warning btn-sm"
+                                           onclick="changeStatus({{ $model->id }})"
+                                           data-url="{{ route('admin.products.status', $model->id) }}">
                                         <i class="fa fa-undo "></i>
                                     </a>
 
-                                    <a href="{{ route('admin.articles.edit', $model->id) }}"
+                                    <a href="{{ route('admin.products.edit', $model->id) }}"
                                        class="btn btn-primary btn-sm"><i
                                             class="fa fa-edit"></i> {{ $attributesName['edit'] }}</a>
                                     <form class="d-inline"
-                                          action="{{ route('admin.articles.destroy', $model->id) }}"
+                                          action="{{ route('admin.products.destroy', $model->id) }}"
                                           method="post">
                                         @csrf
                                         {{ method_field('delete') }}
@@ -113,12 +115,12 @@ $pageName = $attributesName['manage'] . " " . $attributesName['articles'];
                 },
                 success: function (response) {
                     if (response.status) {
-                        document.getElementById('status-' + id).innerHTML = response.result;
-                        successToast(response.message)
+                        document.getElementById('status-'+id).innerHTML = response.result;
+                        successToast( response.message)
 
                     } else {
 
-                        errorToast(response.message)
+                        errorToast( response.message)
                     }
                 },
                 error: function () {
