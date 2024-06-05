@@ -62,6 +62,10 @@
                 <i class="fas fa-bars"></i>
                 <span>مقالات</span>
             </a>
+            <a href="{{ route('admin.comments.index') }}" class="sidebar-link">
+                <i class="fas fa-bars"></i>
+                <span>کامنت ها</span>
+            </a>
         </section>
     </section>
 </aside>

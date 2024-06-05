@@ -5,9 +5,10 @@ namespace App\Http\Requests;
 use App\CommonValidationRules;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProductsRequest extends FormRequest
+class StoreCommentsRequest extends FormRequest
 {
     use CommonValidationRules;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -24,13 +25,19 @@ class StoreProductsRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'title' => 'required|min:3',
-            'redirect' => 'nullable|url:http,https',
-            'canonical' => 'nullable|url:http,https',
+            'title' => 'nullable|min:3',
+            'email' => 'required|email',
+            'description' => 'required|min:6',
+            'score' => 'required|numeric|between:1,5',
+            'positive_points' => 'string',
+            'negative_points' => 'string',
+            'website' => 'nullable|url:http,https',
+            'like' => 'nullable|numeric',
+            'diss_like' => 'nullable|numeric',
         ];
         return array_merge(
             $rules,
-            $this->columnUniqueRules(true,null,'products','title'),
+            $this->mobilesmsRules(true, 'mobile'),
         );
 
     }

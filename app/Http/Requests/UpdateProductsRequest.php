@@ -30,7 +30,7 @@ class UpdateProductsRequest extends FormRequest
         ];
         return array_merge(
             $rules,
-            $this->columnUniqueRules(false, $this->model->id,'articles','title'),
+            $this->columnUniqueRules(false, $this->model->id,'products','title'),
         );
     }
 }

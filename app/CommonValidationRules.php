@@ -157,7 +157,7 @@ trait CommonValidationRules
         ];
     }
 
-    protected function mobilesmsRules($is_new = true)
+    protected function mobilesmsRules($is_new = true,$column='mobile_sms')
     {
 
         $result = ['nullable', 'digits:11', $this->mobileFormat];
@@ -166,7 +166,7 @@ trait CommonValidationRules
         }
 
         return [
-            'mobile_sms' => $result
+            $column => $result
         ];
     }
 

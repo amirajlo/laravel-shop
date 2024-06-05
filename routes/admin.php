@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\AdminCustomerController;
 use App\Http\Controllers\Admin\AdminBrandsController;
 use App\Http\Controllers\Admin\AdminArticlesController;
 use App\Http\Controllers\Admin\AdminProductsController;
+use App\Http\Controllers\Admin\AdminCommentsController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -122,6 +123,17 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::delete('/destroy/{model}', [AdminProductsController::class, 'destroy'])->name('admin.products.destroy');
         Route::post('/status/{model}', [AdminProductsController::class, 'status'])->name('admin.products.status');
     });
+
+    Route::prefix('comments')->group(function () {
+        Route::get('/', [AdminCommentsController::class, 'index'])->name('admin.comments.index');
+        Route::get('/create', [AdminCommentsController::class, 'create'])->name('admin.comments.create');
+        Route::post('/store', [AdminCommentsController::class, 'store'])->name('admin.comments.store');
+        Route::get('/edit/{model}', [AdminCommentsController::class, 'edit'])->name('admin.comments.edit');
+        Route::put('/update/{model}', [AdminCommentsController::class, 'update'])->name('admin.comments.update');
+        Route::delete('/destroy/{model}', [AdminCommentsController::class, 'destroy'])->name('admin.comments.destroy');
+        Route::post('/status/{model}', [AdminCommentsController::class, 'status'])->name('admin.comments.status');
+    });
+
     Route::group(['middleware' => ['permission:create post']], function () {
         // Routes accessible only by users with the 'create post' permission
     });

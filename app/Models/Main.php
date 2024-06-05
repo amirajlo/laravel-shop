@@ -125,7 +125,9 @@ class Main extends Model
     public static function attributesName()
     {
         return [
-            'id' => 'شناسه',
+            'negative_points' => 'نکات منفی',
+            'positive_points' => 'نکات مثبت',
+            'website' => 'سایت',
             'first_name' => 'نام',
             'last_name' => 'نام خانوادگی',
             'corporate_name' => 'نام شرکت',
@@ -134,6 +136,9 @@ class Main extends Model
             'address' => 'آدرس',
             'province_id' => 'استان',
             'province' => 'استان',
+            'score' => 'امتیاز',
+            'like' => 'لایک',
+            'diss_like' => 'دیس لایک',
             'city' => 'شهر',
             'city_id' => 'شهر',
             'phone1' => 'تلفن 1',
@@ -177,6 +182,8 @@ class Main extends Model
             'user' => 'کاربر',
             'Back' => 'بازگشت',
             'rolessLabel' => 'نقش ها',
+            'comments' => 'کامنت ها',
+            'comment' => 'کامنت',
             'permissionsLabel' => 'دسترسی ها',
             'customersLabel' => 'مشتریان',
             'DropdownLabel' => '-- انتخاب کنید --',
