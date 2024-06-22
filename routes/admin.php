@@ -11,10 +11,12 @@ use App\Http\Controllers\Admin\AdminBrandsController;
 use App\Http\Controllers\Admin\AdminArticlesController;
 use App\Http\Controllers\Admin\AdminProductsController;
 use App\Http\Controllers\Admin\AdminCommentsController;
+use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
 
 
 Route::group(['middleware' => ['role:admin']], function () {
+    Route::post('/upload', [MainController::class, 'upload'])->name('main.upload');
     Route::get('/dashboard', [AdminDashboardController::class, 'dashboard']);
 
     Route::get('/', [AdminDashboardController::class, 'dashboard']);

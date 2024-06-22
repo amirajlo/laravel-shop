@@ -8,6 +8,10 @@ use Venturecraft\Revisionable\RevisionableTrait;
 
 class Main extends Model
 {
+    public $tags;
+    public $categories;
+    public $main_image;
+    public $gallery_images;
     use HasFactory;
     use RevisionableTrait;
 
@@ -122,10 +126,20 @@ class Main extends Model
 
     }
 
+    public static function defaultCondition()
+    {
+        $condition = [
+            'is_deleted' => self::STATUS_DISABLED,
+            'status' => self::STATUS_ACTIVE,
+        ];
+        return $condition;
+    }
+
     public static function attributesName()
     {
         return [
             'negative_points' => 'نکات منفی',
+            'is_commentable' => 'اجازه ارسال دیدگاه',
             'positive_points' => 'نکات مثبت',
             'website' => 'سایت',
             'first_name' => 'نام',

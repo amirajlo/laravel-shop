@@ -24,6 +24,23 @@ trait CommonValidationRules
             $field => $result
         ];
     }
+
+    protected function columnImageRules($is_new = true,$modelId,$table,$column)
+    {
+        $result = ['nullable','image','mimes:jpeg,png,jpg,gif,webp','max:5120'];
+        return [
+            $column => $result
+        ];
+    }
+    protected function columnGalleryImageRules($is_new = true,$modelId,$table,$column)
+    {
+        $result = ['nullable','array','min:1','max:5'];
+        $result2 = ['image','mimes:jpeg,png,jpg,gif,webp','max:5120'];
+        return [
+            $column => $result,
+            $column.'.*' => $result2,
+        ];
+    }
     protected function columnUniqueRules($is_new = true,$modelId,$table,$column)
     {
         $next = Rule::unique($table, $column);

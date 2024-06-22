@@ -23,8 +23,8 @@ return new class extends Migration
             $table->string('content_title')->nullable()->comment('H1 in content');
             $table->string('slug')->nullable();
             $table->tinyInteger('status')->default(Main::STATUS_ACTIVE);
-            $table->string('categories')->nullable();
-            $table->string('tags')->nullable();
+
+
             $table->foreignId('author_id')->nullable()
                 ->constrained(table: 'users', indexName: 'articles_author_id')
                 ->onUpdate('cascade')

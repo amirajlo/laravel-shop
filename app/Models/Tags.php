@@ -7,15 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tags extends Main
 {
+
     use HasFactory;
-    public function sluggable(): array
-    {
-        return [
-            'slug' => [
-                'source' => 'title'
-            ]
-        ];
-    }
+
     protected $fillable = [
 
         'title',
@@ -36,4 +30,19 @@ class Tags extends Main
         'updated_at',
         'deleted_at',
     ];
+
+
+    public function articles(): MorphToMany
+    {
+        return $this->morphedByMany('App\Models\Article', 'taggable','taggables','model_id');
+    }
+
+    /**
+     * Get all of the videos that are assigned this tag.
+     */
+    public function products(): MorphToMany
+    {
+        return $this->morphedByMany('App\Models\Product', 'taggable','taggables','model_id');
+    }
+
 }

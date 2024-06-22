@@ -1,5 +1,5 @@
 <?php
-
+//https://github.com/majidh1/JalaliDatePicker
 use App\Models\Main;
 
 $statusList = Main::userStatus();
@@ -9,11 +9,13 @@ $pageName=$attributesName['create']." ". $attributesName['article'] ;
 $perUrl=url()->route('admin.articles.index');
 ?>
 @extends('admin.layouts.master')
+@section('head-tag')
+    <link rel="stylesheet" href="{{ asset('admin-assets/datepicker_majid/jalalidatepicker.min.css') }}">
+@endsection
+@section('title-tag')
 
-@section('head-article')
-    <title>
         {{ $pageName }}
-    </title>
+
 @endsection
 @section('breadCrumbs')
     <li class="breadcrumb-item font-size-12"><a
@@ -41,7 +43,7 @@ $perUrl=url()->route('admin.articles.index');
                 </section>
 
                 <section>
-                    <form action="{{ route('admin.articles.store') }}" method="post"
+                    <form action="{{ route('admin.articles.store') }}" method="post" id="form"
                           enctype="multipart/form-data">
                         @csrf
 
@@ -107,7 +109,41 @@ $perUrl=url()->route('admin.articles.index');
                                     </span>
                                 @enderror
                             </section>
+                            <section class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="">تاریخ انتشار</label>
+                                    <input type="hidden" name="published_at" id="published_at"
+                                           class="form-control form-control-sm">
+                                    <input type="text" data-jdp data-jdp-miladi-input="published_at" autocomplete="off"  id="published_at_view" class="form-control form-control-sm"  >
+                                </div>
+                                @error('published_at')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
+                                @enderror
+                            </section>
+                            <section class="col-12">
+                                <div class="form-group">
+                                    <label for="tags">تگ ها</label>
 
+                                    <select class="select2 form-control form-control-sm" name="tags[]" id="tags" multiple="multiple">
+                                        @foreach($tags as $tag)
+                                          <option value="{{$tag->id}}">{{$tag->title}}</option>
+                                        @endforeach
+                                    </select>
+
+
+                                </div>
+                                @error('tags')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
+                                @enderror
+                            </section>
                             <section class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="">{{ $attributesName['content_title'] }}</label>
@@ -211,8 +247,54 @@ $perUrl=url()->route('admin.articles.index');
                                     </span>
                                 @enderror
                             </section>
+                            <section class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="is_commentable">{{ $attributesName['is_commentable'] }}</label>
+                                    <input type="checkbox" name="is_commentable" id="is_commentable"
+checked
+
+                                           class="form-check-input" >
+                                </div>
+                                @error('is_commentable')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
+                                @enderror
+                            </section>
+                            <section class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="main_image">Main Image:</label>
+                                    <input type="file" name="main_image" id="main_image"   class="form-control "
+                                           accept="image/*">
+
+                                </div>
+                                @error('main_image')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
+                                @enderror
+                            </section>
+
+                            <section class="col-12 col-md-6 ">
+                                <div class="form-group">
+                                    <label for="gallery_images">Gallery Images:</label>
+                                    <input type="file" name="gallery_images[]" id="gallery_images" class="form-control  "
+                                           multiple accept="image/*">
+                                </div>
+                                @error('gallery_images')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
+                                @enderror
+                            </section>
                         </section>
-                        <section class="row">
+                        <section class="row mt-3">
 
                             <section class="col-12">
                                 <button class="btn btn-primary btn-sm">{{ $attributesName['createButton'] }}</button>
@@ -224,4 +306,45 @@ $perUrl=url()->route('admin.articles.index');
             </section>
         </section>
     </section>
+@endsection
+
+
+@section('script')
+    <script src="{{ asset('admin-assets/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('admin-assets/datepicker_majid/jalalidatepicker.min.js') }}"></script>
+    <script src="{{ asset('admin-assets/datepicker_majid/functions.js') }}"></script>
+
+    <script>
+        CKEDITOR.replace('description',{
+            filebrowserUploadUrl: "{{route('main.upload', ['_token' => csrf_token() ])}}",
+            filebrowserImageUploadUrl:"{{route('main.upload', ['_token' => csrf_token() ])}}",
+            filebrowserUploadMethod: 'form'
+        });
+        CKEDITOR.config.language='fa';
+    </script>
+    <script>
+        $(document).ready(function() {
+
+            jalaliDatepicker.startWatch({
+             //   time:true,
+            });
+            document.querySelector("[data-jdp-miladi-input]").addEventListener("jdp:change", function (e) {
+                var miladiInput = document.getElementById(this.getAttribute("data-jdp-miladi-input"));
+                if (!this.value) {
+                    miladiInput.value = "";
+                    return;
+                }
+                var date = this.value.split("/");
+                miladiInput.value = jalali_to_gregorian(date[0], date[1], date[2]).join("/")
+            });
+            $("#tags").select2({
+                placeholder: 'لطفا تگ های خود را وارد نمایید',
+                dir: "rtl",
+                tags: true
+            });
+
+        });
+    </script>
+
+
 @endsection

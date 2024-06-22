@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\MainController;
 use App\Http\Requests\StoreCommentsRequest;
 use App\Http\Requests\UpdateCommentsRequest;
 use App\Models\Comment;
@@ -12,7 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
-class AdminCommentsController extends Controller
+class AdminCommentsController extends MainController
 {
     /**
      * Display a listing of the resource.

@@ -5,8 +5,8 @@ use App\Models\Main;
 $statusList = Main::userStatus();
 
 $attributesName = Main::attributesName();
-$pageName=$attributesName['create']." ". $attributesName['product'] ;
-$perUrl=url()->route('admin.products.index');
+$pageName = $attributesName['create'] . " " . $attributesName['product'];
+$perUrl = url()->route('admin.products.index');
 ?>
 @extends('admin.layouts.master')
 
@@ -24,8 +24,6 @@ $perUrl=url()->route('admin.products.index');
 @endsection
 @section('content')
 
-
-
     <section class="row">
         <section class="col-12">
             <section class="main-body-container">
@@ -41,6 +39,16 @@ $perUrl=url()->route('admin.products.index');
                 </section>
 
                 <section>
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <p>لطفا خطاهای زیر را بررسی کنید:</p>
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <form action="{{ route('admin.products.store') }}" method="post"
                           enctype="multipart/form-data">
                         @csrf
@@ -197,6 +205,7 @@ $perUrl=url()->route('admin.products.index');
                                     </span>
                                 @enderror
                             </section>
+
                             <section class="col-12 col-md-12">
                                 <div class="form-group">
                                     <label for="">{{ $attributesName['sidebar'] }}</label>
@@ -211,10 +220,43 @@ $perUrl=url()->route('admin.products.index');
                                     </span>
                                 @enderror
                             </section>
-                        </section>
-                        <section class="row">
 
-                            <section class="col-12">
+
+                            <section class="col-12 col-md-6">
+                                <div class="form-group">
+                                <label for="main_image">Main Image:</label>
+                                <input type="file" name="main_image" id="main_image" class="form-control "
+                                       accept="image/*">
+                                </div>
+                                @error('main_image')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
+                                @enderror
+                            </section>
+
+                            <section class="col-12 col-md-6 ">
+                                <div class="form-group">
+                                <label for="gallery_images">Gallery Images:</label>
+                                <input type="file" name="gallery_images[]" id="gallery_images" class="form-control  "
+                                       multiple accept="image/*">
+                                </div>
+                                @error('gallery_images')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
+                                @enderror
+                            </section>
+
+                        </section>
+
+                        <section class="row mt-3">
+
+                            <section class="col-12 col-md-6">
                                 <button class="btn btn-primary btn-sm">{{ $attributesName['createButton'] }}</button>
                             </section>
                         </section>

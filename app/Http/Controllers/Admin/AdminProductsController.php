@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\MainController;
 use App\Http\Requests\StoreProductsRequest;
 use App\Http\Requests\UpdateProductsRequest;
 use App\Models\Product;
@@ -12,7 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
-class AdminProductsController extends Controller
+class AdminProductsController extends MainController
 {
     /**
      * Display a listing of the resource.
@@ -36,14 +37,28 @@ class AdminProductsController extends Controller
      */
     public function store(StoreProductsRequest $request)
     {
+
         $request->merge([
             'slug' => Str::slug($request->title, '-', null),
-            'author_id'=>Auth::user()->id,
+            'author_id' => Auth::user()->id,
         ]);
+        $model = Product::create($request->all());
+        // Handle main image upload
+        if ($request->hasFile('main_image')) {
+            $file = $request->file('main_image');
+            $uploadmainImage = $this->uploadMainImage($file);
 
-        Product::create($request->all());
+            if ($uploadmainImage['status'] == Main::STATUS_ACTIVE) {
+                $model->sidebar = $uploadmainImage['fileName'];
+                $model->save();
+            }
+        }
+        // Handle gallery image uploads (if any)
+        // $this->uploadGalleryImages($request, $product);
+
         return redirect()->route('admin.products.index')->with('swal-success', 'محصول جدید با موفقیت ثبت شد');
     }
+
 
     /**
      * Display the specified resource.
@@ -68,9 +83,19 @@ class AdminProductsController extends Controller
     {
         $request->merge([
             'slug' => Str::slug($request->title, '-', null),
-            'author_id'=>Auth::user()->id,
+            'author_id' => Auth::user()->id,
         ]);
         $model->update($request->all());
+
+        if ($request->hasFile('main_image')) {
+            $file = $request->file('main_image');
+            $uploadmainImage = $this->uploadMainImage($file);
+
+            if ($uploadmainImage['status'] == Main::STATUS_ACTIVE) {
+                $model->sidebar = $uploadmainImage['fileName'];
+                $model->save();
+            }
+        }
         return redirect()->route('admin.products.index')->with('swal-success', 'محصول با موفقیت ویرایش شد');
     }
 
@@ -80,7 +105,7 @@ class AdminProductsController extends Controller
     public function destroy(Product $model)
     {
         $model->is_deleted = Main::STATUS_ACTIVE;
-        $model->author_id =Auth::user()->id;
+        $model->author_id = Auth::user()->id;
         $model->deleted_at = Carbon::now();
         $model->save();
         return redirect()->route('admin.products.index')->with('swal-success', 'محصول با موفقیت حذف شد');
@@ -96,14 +121,14 @@ class AdminProductsController extends Controller
                 $status = Main::STATUS_DISABLED;
             }
             $model->status = $status;
-            $model->author_id =Auth::user()->id;
+            $model->author_id = Auth::user()->id;
             $result = $model->save();
             if ($result) {
                 $outpot = ['status' => true, "message" => 'وضعیت  به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
             }
         } else {
             $model->status = Main::STATUS_ACTIVE;
-            $model->author_id =Auth::user()->id;
+            $model->author_id = Auth::user()->id;
             $model->save();
             $outpot = ['status' => true, 'message' => 'وضعیت کاربر به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
         }

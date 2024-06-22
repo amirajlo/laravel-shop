@@ -54,4 +54,8 @@ class Product extends Main
         'low_stock',
         'sitemap_check',
     ];
+    public function tags(): MorphToMany
+    {
+        return $this->morphToMany(Tags::class, 'taggable','taggables','tag_id');
+    }
 }

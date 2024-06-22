@@ -27,10 +27,15 @@ class UpdateArticlesRequest extends FormRequest
             'title' => 'required|min:3',
             'redirect' => 'nullable|url:http,https',
             'canonical' => 'nullable|url:http,https',
+            'is_commentable' => 'nullable',
+            'gallery_images' => 'nullable|array|min:1|max:5',
+            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:4048',
+
         ];
         return array_merge(
             $rules,
             $this->columnUniqueRules(false, $this->model->id,'articles','title'),
+            $this->columnImageRules(true,null,'products','main_image'),
         );
     }
 }

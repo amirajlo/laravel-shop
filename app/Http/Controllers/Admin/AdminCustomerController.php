@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\MainController;
 use App\Http\Requests\AdminCustomerCreateRequest;
 use App\Http\Requests\AdminCustomerUpdateRequest;
 use App\Models\Main;
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Services\Image\ImageService;
 
 
-class AdminCustomerController extends Controller
+class AdminCustomerController extends MainController
 {
     /**
      * Display a listing of the resource.

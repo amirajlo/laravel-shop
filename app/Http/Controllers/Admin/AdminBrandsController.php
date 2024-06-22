@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\MainController;
 use App\Http\Requests\StoreBrandsRequest;
 use App\Http\Requests\UpdateBrandsRequest;
 use App\Models\Brand;
@@ -12,7 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
-class AdminBrandsController extends Controller
+class AdminBrandsController extends MainController
 {
     /**
      * Display a listing of the resource.

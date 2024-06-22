@@ -27,10 +27,14 @@ class StoreArticlesRequest extends FormRequest
             'title' => 'required|min:3',
             'redirect' => 'nullable|url:http,https',
             'canonical' => 'nullable|url:http,https',
+            'gallery_images' => 'nullable|array|min:1|max:5',
+            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:4048',
+            'is_commentable' => 'nullable',
         ];
         return array_merge(
             $rules,
             $this->columnUniqueRules(true,null,'articles','title'),
+            $this->columnImageRules(true,null,'products','main_image'),
         );
 
     }

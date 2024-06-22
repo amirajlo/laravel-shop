@@ -6,18 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Venturecraft\Revisionable\RevisionableTrait;
 
+
 class Article extends Main
 {
     use HasFactory;
 
-    public function sluggable(): array
-    {
-        return [
-            'slug' => [
-                'source' => 'title'
-            ]
-        ];
-    }
+
     protected $fillable = [
 
         'title',
@@ -48,4 +42,9 @@ class Article extends Main
         'updated_at',
         'deleted_at',
     ];
+    public function tags(): MorphToMany
+    {
+        return $this->morphToMany('App\Models\Tags', 'taggable','taggables','tag_id');
+    }
+
 }

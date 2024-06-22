@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\MainController;
 use App\Http\Requests\StoreTagsRequest;
 use App\Http\Requests\UpdateTagsRequest;
 use App\Models\Tags;
@@ -12,7 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
-class AdminTagsController extends Controller
+class AdminTagsController extends MainController
 {
     /**
      * Display a listing of the resource.

@@ -34,4 +34,13 @@ class Comment extends Main
         'updated_at',
         'deleted_at',
     ];
+
+    public function article(): BelongsTo
+    {
+        return $this->belongsTo(Article::class);
+    }
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

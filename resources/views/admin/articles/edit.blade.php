@@ -1,18 +1,35 @@
 <?php
 
 use App\Models\Main;
+use Morilog\Jalali;
+
+
+$modeltags = $model->tags;
+$oldPublished="";
+if(!empty($model->published_at)){
+    $dateTimeInput = explode(' ', $model->published_at);
+    $date = explode('-', $dateTimeInput[0]);
+    $datePart0 = Morilog\Jalali\CalendarUtils::toJalali($date[0], $date[1], $date[2]);
+    $datePart0 = implode('/', $datePart0);
+    $oldPublished = $datePart0 . " " . $dateTimeInput[1];
+
+}
 
 $statusList = Main::userStatus();
 $attributesName = Main::attributesName();
-$perUrl=url()->route('admin.articles.index');
-$pageName=$attributesName['update']." ". $attributesName['article'] ." ". $model->title;
+$perUrl = url()->route('admin.articles.index');
+$pageName = $attributesName['update'] . " " . $attributesName['article'] . " " . $model->title;
 ?>
 @extends('admin.layouts.master')
 
-@section('head-article')
-    <title>
-        {{ $pageName }}
-    </title>
+@section('head-tag')
+
+    <link rel="stylesheet" href="{{ asset('admin-assets/datepicker_majid/jalalidatepicker.min.css') }}">
+@endsection
+@section('title-tag')
+
+    {{ $pageName }}
+
 @endsection
 
 
@@ -27,8 +44,6 @@ $pageName=$attributesName['update']." ". $attributesName['article'] ." ". $model
 @endsection
 
 @section('content')
-
-
 
     <section class="row">
         <section class="col-12">
@@ -45,7 +60,7 @@ $pageName=$attributesName['update']." ". $attributesName['article'] ." ". $model
                 </section>
 
                 <section>
-                    <form action="{{ route('admin.articles.update', $model->id) }}" method="post"
+                    <form action="{{ route('admin.articles.update', $model->id) }}" method="post" id="form"
                           enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
@@ -111,7 +126,49 @@ $pageName=$attributesName['update']." ". $attributesName['article'] ." ". $model
                                     </span>
                                 @enderror
                             </section>
+                            <section class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="">تاریخ انتشار</label>
+                                    <input type="hidden" name="published_at" id="published_at"
+                                           value="{{$model->published_at}}"
+                                           class="form-control form-control-sm">
+                                    <input type="text" data-jdp data-jdp-miladi-input="published_at" autocomplete="off"
+                                           id="published_at_view" class="form-control form-control-sm"
+                                           value="{{$oldPublished}}">
+                                </div>
+                                @error('published_at')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
+                                @enderror
+                            </section>
+                            <section class="col-12">
+                                <div class="form-group">
+                                    <label for="tags">تگ ها</label>
 
+
+
+                                    <select class="select2 form-control form-control-sm" name="tags[]" id="tags"
+                                            multiple="multiple">
+                                        @foreach($tags as $tag)
+                                            <option
+{{--                                                @if(in_array($tag->title,$modeltags))--}}
+{{--                                                    selected--}}
+{{--                                                @endif--}}
+                                                value="{{$tag->title}}">{{$tag->title}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @error('tags')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
+                                @enderror
+                            </section>
                             <section class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="">{{ $attributesName['content_title'] }}</label>
@@ -215,8 +272,54 @@ $pageName=$attributesName['update']." ". $attributesName['article'] ." ". $model
                                     </span>
                                 @enderror
                             </section>
+                            <section class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="is_commentable">{{ $attributesName['is_commentable'] }}</label>
+                                    <input type="checkbox" name="is_commentable" class="form-check-input" id="is_commentable"
+                                           @if($model->is_commentable)
+                                               checked
+                                           @endif
+                                            >
+                                </div>
+                                @error('is_commentable')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
+                                @enderror
+                            </section>
+                            <section class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="main_image">Main Image:</label>
+                                    <input type="file" name="main_image" id="main_image" class="form-control "
+                                           accept="image/*">
+                                </div>
+                                @error('main_image')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
+                                @enderror
+                            </section>
+
+                            <section class="col-12 col-md-6 ">
+                                <div class="form-group">
+                                    <label for="gallery_images">Gallery Images:</label>
+                                    <input type="file" name="gallery_images[]" id="gallery_images" class="form-control  "
+                                           multiple accept="image/*">
+                                </div>
+                                @error('gallery_images')
+                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
+                                @enderror
+                            </section>
                         </section>
-                        <section class="row">
+                        <section class="row mt-3">
 
                             <section class="col-12">
                                 <button class="btn btn-primary btn-sm">{{ $attributesName['updateButton'] }}</button>
@@ -228,4 +331,44 @@ $pageName=$attributesName['update']." ". $attributesName['article'] ." ". $model
             </section>
         </section>
     </section>
+@endsection
+@section('script')
+    <script src="{{ asset('admin-assets/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('admin-assets/datepicker_majid/jalalidatepicker.min.js') }}"></script>
+    <script src="{{ asset('admin-assets/datepicker_majid/functions.js') }}"></script>
+    <script>
+        CKEDITOR.replace('description',{
+            filebrowserUploadUrl: "{{route('main.upload', ['_token' => csrf_token() ])}}",
+            filebrowserImageUploadUrl:"{{route('main.upload', ['_token' => csrf_token() ])}}",
+            filebrowserUploadMethod: 'form'
+        });
+        CKEDITOR.config.language='fa';
+    </script>
+    <script>
+        $(document).ready(function () {
+
+            jalaliDatepicker.startWatch({
+          //      time:true,
+         });
+            document.querySelector("[data-jdp-miladi-input]").addEventListener("jdp:change", function (e) {
+                var miladiInput = document.getElementById(this.getAttribute("data-jdp-miladi-input"));
+                if (!this.value) {
+                    miladiInput.value = "";
+                    return;
+                }
+                var date = this.value.split("/");
+                miladiInput.value = jalali_to_gregorian(date[0], date[1], date[2]).join("/")
+            });
+
+            $("#tags").select2({
+                placeholder: 'لطفا تگ های خود را وارد نمایید',
+                dir: "rtl",
+                tags: true,
+
+            });
+
+        });
+    </script>
+
+
 @endsection
