@@ -16,7 +16,11 @@ return new class extends Migration
             $table->id();
             $table->string('title')->nullable()->comment('نام سفارش دهنده');
             $table->float('tax')->default(Main::STATUS_DEFAULT);
-            $table->integer('delivery_id')->nullable();
+
+            $table->foreignId('delivery_id')->nullable()
+                ->constrained(table: 'deliveries', indexName: 'orders_delivery_id')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->float('delivery_price')->nullable();
             $table->float('delivery_discount')->nullable();
             $table->float('delivery_total')->nullable();
@@ -25,8 +29,16 @@ return new class extends Migration
             $table->float('total_price')->default(Main::STATUS_DEFAULT)->comment('قیمت کل سفارش');
             $table->float('total_discount')->default(Main::STATUS_DEFAULT)->comment('قیمت کل تخفیف');
             $table->float('total')->default(Main::STATUS_DEFAULT)->comment('قیمت کل سفارش بعد از کسر تخفیف و جمع مالیات و ارسال');
-            $table->integer('address_id')->nullable();
-            $table->integer('payment_id')->nullable();
+
+            $table->foreignId('address_id')->nullable()
+                ->constrained(table: 'addresses', indexName: 'orders_address_id')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreignId('payment_id')->nullable()
+                ->constrained(table: 'payments', indexName: 'orders_payment_id')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->tinyInteger('payment_status')->default(Main::STATUS_DEFAULT);
             $table->string('ip')->nullable();
             $table->string('email')->nullable();
