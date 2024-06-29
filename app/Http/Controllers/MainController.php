@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class MainController extends Controller
 {
+
     public function upload(Request $request, $isCK = true)
     {
 
@@ -45,26 +46,49 @@ class MainController extends Controller
             mkdir($basePath . $destination, 0777, true);
         }
         $filePath = $basePath . $destination . '/';
-        return $filePath;
+
+        return [
+            'storePath'=>$filePath,
+            'destination'=>$destination,
+        ];
     }
 
 
-    public static function setFilename($file)
+    public static function setFilename($file,$prefix='pr_')
     {
         $originName = $file->getClientOriginalName();
         $extension = $file->getClientOriginalExtension();
         $fileName = pathinfo($originName, PATHINFO_FILENAME);
-        $fileName = $fileName . '_' . time() . '.' . $extension;
+        $fileName = uniqid($prefix). '.' . $extension;
         return $fileName;
     }
 
     protected function uploadMainImage($file)
     {
         $fileName = self::setFilename($file);
-        $filePath = self::getfilePath();
+        $getfilePath = self::getfilePath();
+        $filePath = $getfilePath['storePath'];
         $file->move($filePath, $fileName);
         $url = asset($filePath . $fileName);
-        $response = ['status' => 1, 'message' => 'Success', 'fileName' => $fileName];
+        $response = ['status' => 1, 'message' => 'Success', 'fileName' =>$getfilePath['destination'].'/'. $fileName, 'url' => $url];
+        return $response;
+    }
+
+    protected function uploadGalleryImages($files)
+    {
+        $ImageNames=[];
+        foreach ($files as $file){
+            $fileName = self::setFilename($file);
+            $getfilePath = self::getfilePath();
+            $filePath = $getfilePath['storePath'];
+            $file->move($filePath, $fileName);
+            $url = asset($filePath . $fileName);
+            $ImageNames[]=$getfilePath['destination'].'/'. $fileName;
+            $urlNames[]=$url;
+        }
+
+
+        $response = ['status' => 1, 'message' => 'Success', 'fileNames' =>$ImageNames, 'url' => $urlNames ];
         return $response;
     }
 }

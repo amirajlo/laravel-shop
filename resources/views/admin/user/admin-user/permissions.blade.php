@@ -1,3 +1,7 @@
+<?php
+    use App\Models\Main;
+$attributesName = Main::attributesName();
+?>
 @extends('admin.layouts.master')
 
 @section('head-tag')

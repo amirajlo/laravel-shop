@@ -29,7 +29,7 @@ class UpdateArticlesRequest extends FormRequest
             'canonical' => 'nullable|url:http,https',
             'is_commentable' => 'nullable',
             'gallery_images' => 'nullable|array|min:1|max:5',
-            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:4048',
+            'gallery_images.*' => 'image|mimes:svg,jpeg,png,jpg,gif,webp|max:4048',
 
         ];
         return array_merge(

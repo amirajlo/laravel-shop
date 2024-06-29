@@ -7,6 +7,7 @@ use App\Http\Controllers\MainController;
 use App\Http\Requests\StoreArticlesRequest;
 use App\Http\Requests\UpdateArticlesRequest;
 use App\Models\Article;
+use App\Models\File;
 use App\Models\Main;
 
 use App\Models\ModelHasTag;
@@ -54,13 +55,19 @@ class AdminArticlesController extends MainController
         ]);
 
 
-        $model = Article::create($request->except('tags'));
+        $model = Article::create($request->except('tags','main_image'));
         if ($request->hasFile('main_image')) {
             $file = $request->file('main_image');
             $uploadmainImage = $this->uploadMainImage($file);
 
             if ($uploadmainImage['status'] == Main::STATUS_ACTIVE) {
-                $model->sidebar = $uploadmainImage['fileName'];
+                $fileModel = new File();
+                $fileModel->model_id = $model->id;
+                $fileModel->model_type = get_class($model);
+                $fileModel->path = $uploadmainImage['fileName'];
+                $fileModel->type = Main::FILES_MAIN_IMAGE;
+                $fileModel->save();
+                $model->main_image = $fileModel->id;
                 $model->save();
             }
         }
@@ -106,8 +113,10 @@ class AdminArticlesController extends MainController
         $condition = Main::defaultCondition();
         $tags = Tags::where($condition)->get();
 
+        $mainImage=File::where(['model_id' => $model->id, 'model_type' => get_class($model), 'type' => Main::FILES_MAIN_IMAGE])->first();
 
-        return view('admin.articles.edit', compact('model', 'tags'));
+        return view('admin.articles.edit', compact('model','mainImage','tags'));
+
     }
 
     /**
@@ -140,13 +149,21 @@ class AdminArticlesController extends MainController
             'is_commentable' => $is_commentable,
         ]);
 
-        $model->update($request->except('tags'));
+        $model->update($request->except('tags','main_image'));
         if ($request->hasFile('main_image')) {
             $file = $request->file('main_image');
             $uploadmainImage = $this->uploadMainImage($file);
 
             if ($uploadmainImage['status'] == Main::STATUS_ACTIVE) {
-                $model->sidebar = $uploadmainImage['fileName'];
+                File::where(['model_id' => $model->id, 'model_type' => get_class($model), 'type' => Main::FILES_MAIN_IMAGE])->delete();
+
+                $fileModel = new File();
+                $fileModel->model_id = $model->id;
+                $fileModel->model_type = get_class($model);
+                $fileModel->path = $uploadmainImage['fileName'];
+                $fileModel->type = Main::FILES_MAIN_IMAGE;
+                $fileModel->save();
+                $model->main_image = $fileModel->id;
                 $model->save();
             }
         }

@@ -28,7 +28,7 @@ class UpdateProductsRequest extends FormRequest
             'redirect' => 'nullable|url:http,https',
             'canonical' => 'nullable|url:http,https',
             'gallery_images' => 'nullable|array|min:1|max:5',
-            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:4048',
+            'gallery_images.*' => 'image|mimes:svg,jpeg,png,jpg,gif,webp|max:10048',
 
         ];
         return array_merge(

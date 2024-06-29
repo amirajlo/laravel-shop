@@ -6,12 +6,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "intervention/image": "^3.7",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
         "morilog/jalali": "^3.4",
         "spatie/laravel-activitylog": "^4.8",
         "spatie/laravel-permission": "^6.7",
-
         "venturecraft/revisionable": "^1.41"
     },
     "require-dev": {

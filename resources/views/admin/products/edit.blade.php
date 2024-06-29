@@ -4,8 +4,9 @@ use App\Models\Main;
 
 $statusList = Main::userStatus();
 $attributesName = Main::attributesName();
-$perUrl=url()->route('admin.products.index');
-$pageName=$attributesName['update']." ". $attributesName['product'] ." ". $model->title;
+$filesTypeList = Main::filesTypeList();
+$perUrl = url()->route('admin.products.index');
+$pageName = $attributesName['update'] . " " . $attributesName['product'] . " " . $model->title;
 ?>
 @extends('admin.layouts.master')
 
@@ -27,8 +28,6 @@ $pageName=$attributesName['update']." ". $attributesName['product'] ." ". $model
 @endsection
 
 @section('content')
-
-
 
     <section class="row">
         <section class="col-12">
@@ -225,7 +224,7 @@ $pageName=$attributesName['update']." ". $attributesName['product'] ." ". $model
                                     </span>
                                 @enderror
                             </section>
-                            <section class="col-12 col-md-6">
+                            <section class="col-12 col-md-12">
                                 <div class="form-group">
                                     <label for="main_image">Main Image:</label>
                                     <input type="file" name="main_image" id="main_image" class="form-control "
@@ -239,11 +238,27 @@ $pageName=$attributesName['update']." ". $attributesName['product'] ." ". $model
                                     </span>
                                 @enderror
                             </section>
+                            @if($mainImage)
 
-                            <section class="col-12 col-md-6 ">
+                                <section class="row">
+                                    <div class="col-md-2"
+                                         id="{{$filesTypeList[$mainImage->type]}}-{{ $mainImage->id }}">
+                                        <a data-url="{{route('admin.file.delete',$mainImage->id)}}"
+                                           class="btn btn-sm btn-danger "
+                                           onclick="return  confirm('آیا مطمئن هستید که می خواهید این تصویر را حذف کنید؟')?   deleteFile(this.getAttribute('data-url')):'' "
+                                        >
+                                            <i class="fa fa-undo "></i>
+                                        </a>
+                                        <img class="card-img-top" style="width: 200px; height: 65px;"
+                                             src="{{ asset('uploads/'.$mainImage->path) }}" alt="{{$mainImage->alt}}">
+                                    </div>
+                                </section>
+                            @endif
+                            <section class="col-12 col-md-12 ">
                                 <div class="form-group">
                                     <label for="gallery_images">Gallery Images:</label>
-                                    <input type="file" name="gallery_images[]" id="gallery_images" class="form-control  "
+                                    <input type="file" name="gallery_images[]" id="gallery_images"
+                                           class="form-control  "
                                            multiple accept="image/*">
                                 </div>
                                 @error('gallery_images')
@@ -254,8 +269,26 @@ $pageName=$attributesName['update']." ". $attributesName['product'] ." ". $model
                                     </span>
                                 @enderror
                             </section>
+                            @if($galleryImages)
+                                <section class="row">
+                                    @foreach($galleryImages as $items )
 
+                                        <div class="col-md-2" id="{{$filesTypeList[$items->type]}}-{{ $items->id }}">
+                                            <a data-url="{{route('admin.file.delete',$items->id)}}"
+                                               class="btn btn-sm btn-danger "
+                                               onclick="return  confirm('آیا مطمئن هستید که می خواهید این تصویر را حذف کنید؟')?   deleteFile(this.getAttribute('data-url')):'' "
+                                            >
+                                                <i class="fa fa-undo "></i>
+                                            </a>
+                                            <img class="card-img-top"
+                                                 src="{{ asset('uploads/'.$items->path) }}" alt="{{$items->alt}}">
+                                        </div>
+                                    @endforeach
+                                </section>
+                            @endif
                         </section>
+
+
                         <section class="row mt-3">
 
                             <section class="col-12">
@@ -269,3 +302,9 @@ $pageName=$attributesName['update']." ". $attributesName['product'] ." ". $model
         </section>
     </section>
 @endsection
+
+
+
+
+
+

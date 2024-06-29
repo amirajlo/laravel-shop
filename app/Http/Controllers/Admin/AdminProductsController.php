@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\MainController;
 use App\Http\Requests\StoreProductsRequest;
 use App\Http\Requests\UpdateProductsRequest;
+use App\Models\File;
 use App\Models\Product;
 use App\Models\Main;
 
@@ -42,14 +43,40 @@ class AdminProductsController extends MainController
             'slug' => Str::slug($request->title, '-', null),
             'author_id' => Auth::user()->id,
         ]);
-        $model = Product::create($request->all());
+
+        $model = Product::create($request->except('main_image'));
         // Handle main image upload
+
         if ($request->hasFile('main_image')) {
             $file = $request->file('main_image');
             $uploadmainImage = $this->uploadMainImage($file);
 
             if ($uploadmainImage['status'] == Main::STATUS_ACTIVE) {
-                $model->sidebar = $uploadmainImage['fileName'];
+                $fileModel = new File();
+                $fileModel->model_id = $model->id;
+                $fileModel->model_type = get_class($model);
+                $fileModel->path = $uploadmainImage['fileName'];
+                $fileModel->type = Main::FILES_MAIN_IMAGE;
+                $fileModel->save();
+                $model->main_image = $fileModel->id;
+                $model->save();
+            }
+        }
+
+        if ($request->hasFile('gallery_images')) {
+            $files = $request->file('gallery_images');
+            $UploadGalleryImages = $this->UploadGalleryImages($files);
+
+            if ($UploadGalleryImages['status'] == Main::STATUS_ACTIVE) {
+                foreach ($UploadGalleryImages['fileNames'] as $items) {
+                    $fileModel = new File();
+                    $fileModel->model_id = $model->id;
+                    $fileModel->model_type = get_class($model);
+                    $fileModel->path = $items;
+                    $fileModel->type = Main::FILES_GALLERY_IMAGES;
+                    $fileModel->save();
+                }
+
                 $model->save();
             }
         }
@@ -73,7 +100,11 @@ class AdminProductsController extends MainController
      */
     public function edit(Product $model)
     {
-        return view('admin.products.edit', compact('model'));
+        $mainImage=File::where(['model_id' => $model->id, 'model_type' => get_class($model), 'type' => Main::FILES_MAIN_IMAGE])->first();
+
+        $headerImage=File::where(['model_id' => $model->id, 'model_type' => get_class($model), 'type' => Main::FILES_HEADER_IMAGE])->first();
+        $galleryImages=File::where(['model_id' => $model->id, 'model_type' => get_class($model), 'type' => Main::FILES_GALLERY_IMAGES])->get();
+        return view('admin.products.edit', compact('model','mainImage','headerImage','galleryImages'));
     }
 
     /**
@@ -85,15 +116,40 @@ class AdminProductsController extends MainController
             'slug' => Str::slug($request->title, '-', null),
             'author_id' => Auth::user()->id,
         ]);
-        $model->update($request->all());
+        $model->update($request->except('main_image'));
 
         if ($request->hasFile('main_image')) {
             $file = $request->file('main_image');
             $uploadmainImage = $this->uploadMainImage($file);
 
             if ($uploadmainImage['status'] == Main::STATUS_ACTIVE) {
-                $model->sidebar = $uploadmainImage['fileName'];
+                File::where(['model_id' => $model->id, 'model_type' => get_class($model), 'type' => Main::FILES_MAIN_IMAGE])->delete();
+
+                $fileModel = new File();
+                $fileModel->model_id = $model->id;
+                $fileModel->model_type = get_class($model);
+                $fileModel->path = $uploadmainImage['fileName'];
+                $fileModel->type = Main::FILES_MAIN_IMAGE;
+                $fileModel->save();
+                $model->main_image = $fileModel->id;
                 $model->save();
+            }
+        }
+
+
+        if ($request->hasFile('gallery_images')) {
+            $files = $request->file('gallery_images');
+            $UploadGalleryImages = $this->UploadGalleryImages($files);
+            if ($UploadGalleryImages['status'] == Main::STATUS_ACTIVE) {
+                File::where(['model_id' => $model->id, 'model_type' => get_class($model), 'type' => Main::FILES_GALLERY_IMAGES])->delete();
+                foreach ($UploadGalleryImages['fileNames'] as $items) {
+                    $fileModel = new File();
+                    $fileModel->model_id = $model->id;
+                    $fileModel->model_type = get_class($model);
+                    $fileModel->path = $items;
+                    $fileModel->type = Main::FILES_GALLERY_IMAGES;
+                    $fileModel->save();
+                }
             }
         }
         return redirect()->route('admin.products.index')->with('swal-success', 'محصول با موفقیت ویرایش شد');

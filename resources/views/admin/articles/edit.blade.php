@@ -17,6 +17,7 @@ if(!empty($model->published_at)){
 
 $statusList = Main::userStatus();
 $attributesName = Main::attributesName();
+$filesTypeList =Main::filesTypeList();
 $perUrl = url()->route('admin.articles.index');
 $pageName = $attributesName['update'] . " " . $attributesName['article'] . " " . $model->title;
 ?>
@@ -272,7 +273,7 @@ $pageName = $attributesName['update'] . " " . $attributesName['article'] . " " .
                                     </span>
                                 @enderror
                             </section>
-                            <section class="col-12 col-md-6">
+                            <section class="col-12 col-md-12">
                                 <div class="form-group">
                                     <label for="is_commentable">{{ $attributesName['is_commentable'] }}</label>
                                     <input type="checkbox" name="is_commentable" class="form-check-input" id="is_commentable"
@@ -289,7 +290,7 @@ $pageName = $attributesName['update'] . " " . $attributesName['article'] . " " .
                                     </span>
                                 @enderror
                             </section>
-                            <section class="col-12 col-md-6">
+                            <section class="col-12 col-md-12">
                                 <div class="form-group">
                                     <label for="main_image">Main Image:</label>
                                     <input type="file" name="main_image" id="main_image" class="form-control "
@@ -303,21 +304,20 @@ $pageName = $attributesName['update'] . " " . $attributesName['article'] . " " .
                                     </span>
                                 @enderror
                             </section>
+                            @if($mainImage)
 
-                            <section class="col-12 col-md-6 ">
-                                <div class="form-group">
-                                    <label for="gallery_images">Gallery Images:</label>
-                                    <input type="file" name="gallery_images[]" id="gallery_images" class="form-control  "
-                                           multiple accept="image/*">
-                                </div>
-                                @error('gallery_images')
-                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
+                                <section class="row">
+                                    <div class="col-md-2" id="{{$filesTypeList[$mainImage->type]}}-{{ $mainImage->id }}">
+                                        <a data-url="{{route('admin.file.delete',$mainImage->id)}}" class="btn btn-sm btn-danger "
+                                           onclick="return  confirm('آیا مطمئن هستید که می خواهید این تصویر را حذف کنید؟')?   deleteFile(this.getAttribute('data-url')):'' "
+                                        >
+                                            <i class="fa fa-undo "></i>
+                                        </a>
+                                        <img class="card-img-top" style="width: 200px; height: 65px;"
+                                             src="{{ asset('uploads/'.$mainImage->path) }}" alt="{{$mainImage->alt}}">
+                                    </div>
+                                </section>
+                            @endif
                         </section>
                         <section class="row mt-3">
 

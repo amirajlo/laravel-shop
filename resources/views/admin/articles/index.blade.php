@@ -162,10 +162,5 @@ $pageName = $attributesName['manage'] . " " . $attributesName['articles'];
             }
         }
     </script>
-
-
-
-
-
     @include('admin.alerts.sweetalert.delete-confirm', ['className' => 'delete'])
 @endsection

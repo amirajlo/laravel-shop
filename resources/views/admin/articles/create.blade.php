@@ -247,7 +247,7 @@ $perUrl=url()->route('admin.articles.index');
                                     </span>
                                 @enderror
                             </section>
-                            <section class="col-12 col-md-6">
+                            <section class="col-12 col-md-12">
                                 <div class="form-group">
                                     <label for="is_commentable">{{ $attributesName['is_commentable'] }}</label>
                                     <input type="checkbox" name="is_commentable" id="is_commentable"
@@ -263,7 +263,7 @@ checked
                                     </span>
                                 @enderror
                             </section>
-                            <section class="col-12 col-md-6">
+                            <section class="col-12 col-md-12">
                                 <div class="form-group">
                                     <label for="main_image">Main Image:</label>
                                     <input type="file" name="main_image" id="main_image"   class="form-control "
@@ -279,20 +279,6 @@ checked
                                 @enderror
                             </section>
 
-                            <section class="col-12 col-md-6 ">
-                                <div class="form-group">
-                                    <label for="gallery_images">Gallery Images:</label>
-                                    <input type="file" name="gallery_images[]" id="gallery_images" class="form-control  "
-                                           multiple accept="image/*">
-                                </div>
-                                @error('gallery_images')
-                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
                         </section>
                         <section class="row mt-3">
 
@@ -326,7 +312,9 @@ checked
         $(document).ready(function() {
 
             jalaliDatepicker.startWatch({
-             //   time:true,
+                time: true,
+               // initTime:"01:01:01",
+               // initDate: {year:1361,month:1,day:10}
             });
             document.querySelector("[data-jdp-miladi-input]").addEventListener("jdp:change", function (e) {
                 var miladiInput = document.getElementById(this.getAttribute("data-jdp-miladi-input"));

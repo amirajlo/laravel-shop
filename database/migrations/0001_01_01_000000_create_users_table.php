@@ -21,6 +21,8 @@ return new class extends Migration {
             $table->string('password');
             $table->tinyInteger('role')->default(Main::ROLE_ADMIN);
             $table->foreignId('user_id')->nullable()->index();
+            $table->foreignId('main_image')->nullable()->index();
+            $table->foreignId('header_image')->nullable()->index();
             $table->tinyInteger('type')->default(Main::USER_TYPE_HAGHIGHI)->comment("حقیقی-حقوقی");
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();

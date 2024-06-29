@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('en_title')->nullable();
             $table->text('description')->nullable();
+            $table->foreignId('main_image')->nullable()->index();
+            $table->foreignId('header_image')->nullable()->index();
             $table->string('seo_title')->nullable();
             $table->string('seo_description')->nullable();
             $table->string('content_title')->nullable()->comment('H1 in content');

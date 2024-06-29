@@ -10,8 +10,8 @@ class Main extends Model
 {
     public $tags;
     public $categories;
-    public $main_image;
-    public $gallery_images;
+
+
     use HasFactory;
     use RevisionableTrait;
 
@@ -53,7 +53,27 @@ class Main extends Model
     const IN_STOCK = 2;
 
     /***** END STOCK  ****/
+    const FILES_MAIN_IMAGE = 1;
+    const FILES_GALLERY_IMAGES = 2;
+    const FILES_PDF = 3;
+    const FILES_PODCAST = 4;
+    const FILES_VIDEO = 5;
+    const FILES_AVATAR = 1;
+    const FILES_HEADER_IMAGE = 6;
 
+    public static function filesTypeList($label = false)
+    {
+        $result = [
+            self::FILES_MAIN_IMAGE => "mainimage",
+            self::FILES_GALLERY_IMAGES => "galleryimage",
+            self::FILES_PDF => "pdf",
+            self::FILES_PODCAST => "podcast",
+            self::FILES_VIDEO => "video",
+            self::FILES_AVATAR => "avatar",
+            self::FILES_HEADER_IMAGE => "header",
+        ];
+        return $result;
+    }
     public static function categoriesTypeList($label = false)
     {
         $result = [

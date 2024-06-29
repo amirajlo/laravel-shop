@@ -222,7 +222,7 @@ $perUrl = url()->route('admin.products.index');
                             </section>
 
 
-                            <section class="col-12 col-md-6">
+                            <section class="col-12 col-md-12">
                                 <div class="form-group">
                                 <label for="main_image">Main Image:</label>
                                 <input type="file" name="main_image" id="main_image" class="form-control "
@@ -237,7 +237,7 @@ $perUrl = url()->route('admin.products.index');
                                 @enderror
                             </section>
 
-                            <section class="col-12 col-md-6 ">
+                            <section class="col-12 col-md-12 ">
                                 <div class="form-group">
                                 <label for="gallery_images">Gallery Images:</label>
                                 <input type="file" name="gallery_images[]" id="gallery_images" class="form-control  "

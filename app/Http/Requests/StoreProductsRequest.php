@@ -29,7 +29,7 @@ class StoreProductsRequest extends FormRequest
             'canonical' => 'nullable|url:http,https',
 
             'gallery_images' => 'nullable|array|min:1|max:5',
-            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:4048',
+            'gallery_images.*' => 'image|mimes:svg,jpeg,png,jpg,gif,webp|max:14048',
 
         ];
         return array_merge(

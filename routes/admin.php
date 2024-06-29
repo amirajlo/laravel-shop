@@ -11,11 +11,14 @@ use App\Http\Controllers\Admin\AdminBrandsController;
 use App\Http\Controllers\Admin\AdminArticlesController;
 use App\Http\Controllers\Admin\AdminProductsController;
 use App\Http\Controllers\Admin\AdminCommentsController;
+use App\Http\Controllers\Admin\AdminGalleriesController;
+use App\Http\Controllers\Admin\AdminFilesController;
 use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
 
 
 Route::group(['middleware' => ['role:admin']], function () {
+
     Route::post('/upload', [MainController::class, 'upload'])->name('main.upload');
     Route::get('/dashboard', [AdminDashboardController::class, 'dashboard']);
 
@@ -135,6 +138,25 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::delete('/destroy/{model}', [AdminCommentsController::class, 'destroy'])->name('admin.comments.destroy');
         Route::post('/status/{model}', [AdminCommentsController::class, 'status'])->name('admin.comments.status');
     });
+
+
+    Route::prefix('galleries')->group(function () {
+        Route::get('/', [AdminGalleriesController::class, 'index'])->name('admin.galleries.index');
+        Route::get('/create', [AdminGalleriesController::class, 'create'])->name('admin.galleries.create');
+        Route::post('/store', [AdminGalleriesController::class, 'store'])->name('admin.galleries.store');
+        Route::get('/edit/{model}', [AdminGalleriesController::class, 'edit'])->name('admin.galleries.edit');
+        Route::put('/update/{model}', [AdminGalleriesController::class, 'update'])->name('admin.galleries.update');
+        Route::delete('/destroy/{model}', [AdminGalleriesController::class, 'destroy'])->name('admin.galleries.destroy');
+        Route::post('/status/{model}', [AdminGalleriesController::class, 'status'])->name('admin.galleries.status');
+    });
+
+    Route::prefix('file')->group(function () {
+
+
+        Route::delete('/delete/{model}', [AdminfilesController::class, 'delete'])->name('admin.file.delete');
+
+    });
+
 
     Route::group(['middleware' => ['permission:create post']], function () {
         // Routes accessible only by users with the 'create post' permission
