@@ -35,10 +35,7 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->foreignId('payment_id')->nullable()
-                ->constrained(table: 'payments', indexName: 'orders_payment_id')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+
             $table->tinyInteger('payment_status')->default(Main::STATUS_DEFAULT);
             $table->string('ip')->nullable();
             $table->string('email')->nullable();

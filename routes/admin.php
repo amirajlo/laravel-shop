@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\AdminArticlesController;
 use App\Http\Controllers\Admin\AdminProductsController;
 use App\Http\Controllers\Admin\AdminCommentsController;
 use App\Http\Controllers\Admin\AdminGalleriesController;
+use App\Http\Controllers\Admin\AdminPaymentsController;
 use App\Http\Controllers\Admin\AdminDeliveriesController;
 use App\Http\Controllers\Admin\AdminAddressesController;
 use App\Http\Controllers\Admin\AdminFilesController;
@@ -162,6 +163,7 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::delete('/destroy/{model}', [AdminGalleriesController::class, 'destroy'])->name('admin.galleries.destroy');
         Route::post('/status/{model}', [AdminGalleriesController::class, 'status'])->name('admin.galleries.status');
     });
+
     Route::prefix('deliveries')->group(function () {
         Route::get('/', [AdminDeliveriesController::class, 'index'])->name('admin.deliveries.index');
         Route::get('/create', [AdminDeliveriesController::class, 'create'])->name('admin.deliveries.create');
@@ -172,6 +174,11 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::post('/status/{model}', [AdminDeliveriesController::class, 'status'])->name('admin.deliveries.status');
     });
 
+    Route::prefix('payments')->group(function () {
+        Route::get('/', [AdminPaymentsController::class, 'index'])->name('admin.payments.index');
+        Route::delete('/destroy/{model}', [AdminPaymentsController::class, 'destroy'])->name('admin.payments.destroy');
+        Route::get('/show/{model}', [AdminPaymentsController::class, 'show'])->name('admin.payments.show');
+    });
 
     Route::prefix('file')->group(function () {
 

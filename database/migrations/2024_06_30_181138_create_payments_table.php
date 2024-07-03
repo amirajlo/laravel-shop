@@ -19,8 +19,10 @@ return new class extends Migration
             $table->string('reference_number')->nullable();
             $table->string('trace_number')->nullable();
             $table->dateTime('payment_date')->nullable();
-            $table->bigInteger('order_id')->nullable();
-            $table->tinyInteger('status')->default(Main::STATUS_DEFAULT);
+            $table->foreignId('order_id')->nullable()
+                ->constrained(table: 'orders', indexName: 'payments_order_id')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->tinyInteger('is_deleted')->default(Main::STATUS_DISABLED);
             $table->softDeletes();
             $table->timestamps();

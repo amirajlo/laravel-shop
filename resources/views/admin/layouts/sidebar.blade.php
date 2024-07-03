@@ -74,6 +74,11 @@
                 <i class="fas fa-bars"></i>
                 <span>حمل و نقل</span>
             </a>
+
+            <a href="{{ route('admin.payments.index') }}" class="sidebar-link">
+                <i class="fas fa-bars"></i>
+                <span>پرداخت ها</span>
+            </a>
         </section>
     </section>
 </aside>
