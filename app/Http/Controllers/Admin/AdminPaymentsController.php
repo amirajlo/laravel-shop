@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+
 use App\Http\Controllers\MainController;
-use App\Http\Requests\StoreDeliveriesRequest;
-use App\Http\Requests\UpdateDeliveriesRequest;
 use App\Models\Payment;
 use App\Models\Main;
-
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
+
 
 class AdminPaymentsController extends MainController
 {

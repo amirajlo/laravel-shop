@@ -7,9 +7,6 @@ use App\Http\Controllers\MainController;
 use App\Models\File;
 use App\Models\Main;
 
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
 class AdminFilesController extends MainController
 {

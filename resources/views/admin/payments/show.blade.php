@@ -9,7 +9,7 @@ $pageName=$attributesName['show']." ". $attributesName['payment'] ." شماره 
 ?>
 @extends('admin.layouts.master')
 
-@section('head-payment')
+@section('head-tag')
     <title>
         {{ $pageName }}
     </title>

@@ -73,6 +73,8 @@ return new class extends Migration
                 ->constrained(table: 'products', indexName: 'order_items_product_id')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+
+            $table->string('guest_token')->nullable();
             $table->foreignId('user_id')->nullable()
                 ->constrained(table: 'users', indexName: 'order_items_user_id')
                 ->onUpdate('cascade')
@@ -85,7 +87,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->integer('discount_id')->nullable();
             $table->text('discount_description')->nullable();
-            $table->string('guest_token')->nullable();
+
             $table->tinyInteger('status')->default(Main::STATUS_ACTIVE);
             $table->tinyInteger('is_deleted')->default(Main::STATUS_DISABLED);
             $table->softDeletes();

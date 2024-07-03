@@ -61,6 +61,10 @@ class Main extends Model
     const FILES_AVATAR = 1;
     const FILES_HEADER_IMAGE = 6;
 
+    const DISCOUNT_TYPE_PRODUCT=1;
+    const DISCOUNT_TYPE_ORDERS=2;
+    const DISCOUNT_TYPE_DELIVERY=3;
+    const DISCOUNT_TYPE_CATEGORIES=4;
     public static function filesTypeList($label = false)
     {
         $result = [
@@ -160,6 +164,20 @@ class Main extends Model
         return [
             'deliveries_description' => 'توضیحات',
             'deliveries_fee' => 'هزینه ارسال',
+            'items' => 'آیتم ها',
+            'qty' => 'تعداد',
+            'discount' => 'تخفیف',
+            'orderitems_total' => 'مجموع',
+            'orderitems_fee' => 'فی',
+            'orderitems' => 'آیتم ها',
+            'orderitem' => 'آیتم',
+            'orders' => 'سفارش ها',
+            'order' => 'سفارش',
+            'address_id' => 'انتخاب آدرس',
+            'delivery_id' => 'انتخاب نحوه ارسال',
+            'delivery_id' => 'انتخاب نحوه ارسال',
+            'orders_description' => 'توضیحات سفارش',
+            'orderitems_description' => 'توضیحات آیتم',
             'deliveries' => 'حمل و نقل',
             'delivery' => 'حمل و نقل',
             'payments' => 'پرداخت ها',
@@ -238,6 +256,7 @@ class Main extends Model
             'home' => 'خانه',
             'user' => 'کاربر',
             'Back' => 'بازگشت',
+            'product_id' => 'نام محصول',
             'rolessLabel' => 'نقش ها',
             'comments' => 'کامنت ها',
             'comment' => 'کامنت',

@@ -10,7 +10,7 @@ $perUrl = url()->route('admin.products.index');
 ?>
 @extends('admin.layouts.master')
 
-@section('head-product')
+@section('head-tag')
     <title>
         {{ $pageName }}
     </title>

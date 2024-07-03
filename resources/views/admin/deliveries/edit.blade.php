@@ -9,7 +9,7 @@ $pageName=$attributesName['update']." ". $attributesName['delivery'] ." ". $mode
 ?>
 @extends('admin.layouts.master')
 
-@section('head-delivery')
+@section('head-tag')
     <title>
         {{ $pageName }}
     </title>

@@ -10,7 +10,7 @@ $perUrl=url()->route('admin.comments.index');
 ?>
 @extends('admin.layouts.master')
 
-@section('head-comment')
+@section('head-tag')
     <title>
         {{ $pageName }}
     </title>

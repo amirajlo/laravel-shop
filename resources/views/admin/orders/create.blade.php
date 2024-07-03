@@ -5,8 +5,8 @@ use App\Models\Main;
 $statusList = Main::userStatus();
 
 $attributesName = Main::attributesName();
-$pageName=$attributesName['create']." ". $attributesName['address'] ;
-$perUrl=url()->route('admin.addresses.index');
+$pageName=$attributesName['create']." ". $attributesName['order'] ;
+$perUrl=url()->route('admin.orders.index');
 ?>
 @extends('admin.layouts.master')
 
@@ -17,7 +17,7 @@ $perUrl=url()->route('admin.addresses.index');
 @endsection
 @section('breadCrumbs')
     <li class="breadcrumb-item font-size-12"><a
-            href="{{ $perUrl }}"> {{ $attributesName['manage'] ." ". $attributesName['addresses']  }}</a>
+            href="{{ $perUrl }}"> {{ $attributesName['manage'] ." ". $attributesName['orders']  }}</a>
     </li>
     <li class="breadcrumb-item font-size-12 active"
         aria-current="page"> {{ $pageName }}</li>
@@ -31,21 +31,19 @@ $perUrl=url()->route('admin.addresses.index');
             <section class="main-body-container">
                 <section class="main-body-container-header">
                     <h5>
-                        {{ $attributesName['create']." ". $attributesName['address'] }}
+                        {{ $attributesName['create']." ". $attributesName['order'] }}
                     </h5>
                 </section>
 
                 <section class="d-flex justify-content-between align-items-center mt-4 mb-3 border-bottom pb-2">
-                    <a href="{{ route('admin.addresses.index') }}"
+                    <a href="{{ route('admin.orders.index') }}"
                        class="btn btn-info btn-sm">{{ $attributesName['Back'] }}</a>
                 </section>
 
                 <section>
-                    <form action="{{ route('admin.addresses.store') }}" method="post"
+                    <form action="{{ route('admin.orders.store') }}" method="post"
                           enctype="multipart/form-data">
                         @csrf
-
-
                         <section class="row">
                             <section class="col-12 col-md-12">
                                 <div class="form-group">
@@ -61,7 +59,7 @@ $perUrl=url()->route('admin.addresses.index');
                                     </span>
                                 @enderror
                             </section>
-                            <section class="col-12 col-md-12">
+                            <section class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="">{{ $attributesName['title'] }}</label>
                                     <input type="text" name="title" class="form-control form-control-sm"
@@ -75,13 +73,13 @@ $perUrl=url()->route('admin.addresses.index');
                                     </span>
                                 @enderror
                             </section>
-                            <section class="col-12 col-md-12">
+                            <section class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label for="">{{ $attributesName['province_id'] }}</label>
-                                    <input type="text" name="province_id" class="form-control form-control-sm"
-                                           value="{{ old('province_id') }}">
+                                    <label for="">{{ $attributesName['address_id'] }}</label>
+                                    <input type="text" name="address_id" class="form-control form-control-sm"
+                                           value="{{ old('address_id') }}">
                                 </div>
-                                @error('province_id')
+                                @error('address_id')
                                 <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
                                         <strong>
                                             {{ $message }}
@@ -89,13 +87,13 @@ $perUrl=url()->route('admin.addresses.index');
                                     </span>
                                 @enderror
                             </section>
-                            <section class="col-12 col-md-12">
+                            <section class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label for="">{{ $attributesName['city_id'] }}</label>
-                                    <input type="text" name="city_id" class="form-control form-control-sm"
-                                           value="{{ old('city_id') }}">
+                                    <label for="">{{ $attributesName['delivery_id'] }}</label>
+                                    <input type="text" name="delivery_id" class="form-control form-control-sm"
+                                           value="{{ old('delivery_id') }}">
                                 </div>
-                                @error('city_id')
+                                @error('delivery_id')
                                 <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
                                         <strong>
                                             {{ $message }}
@@ -103,13 +101,13 @@ $perUrl=url()->route('admin.addresses.index');
                                     </span>
                                 @enderror
                             </section>
-                            <section class="col-12 col-md-12">
+                            <section class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label for="">{{ $attributesName['town_id'] }}</label>
-                                    <input type="text" name="town_id" class="form-control form-control-sm"
-                                           value="{{ old('town_id') }}">
+                                    <label for="">{{ $attributesName['email'] }}</label>
+                                    <input type="text" name="email" class="form-control form-control-sm"
+                                           value="{{ old('email') }}">
                                 </div>
-                                @error('town_id')
+                                @error('email')
                                 <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
                                         <strong>
                                             {{ $message }}
@@ -117,24 +115,6 @@ $perUrl=url()->route('admin.addresses.index');
                                     </span>
                                 @enderror
                             </section>
-                            <section class="col-12 col-md-12">
-                                <div class="form-group">
-                                    <label for="">{{ $attributesName['address_description'] }}</label>
-                                    <textarea type="text" name="description" style="height: 169px;"
-                                              class="form-control form-control-sm">{{ old('description') }}</textarea>
-                                </div>
-                                @error('description')
-                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
-
-
-                        </section>
-                        <section class="row">
                             <section class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="">{{ $attributesName['mobile'] }}</label>
@@ -163,30 +143,13 @@ $perUrl=url()->route('admin.addresses.index');
                                     </span>
                                 @enderror
                             </section>
-                        </section>
-
-                        <section class="row">
-                            <section class="col-12 col-md-6">
+                            <section class="col-12 col-md-12">
                                 <div class="form-group">
-                                    <label for="">{{ $attributesName['email'] }}</label>
-                                    <input type="text" name="email" class="form-control form-control-sm"
-                                           value="{{ old('email') }}">
+                                    <label for="">{{ $attributesName['orders_description'] }}</label>
+                                    <textarea type="text" name="description" style="height: 169px;"
+                                              class="form-control form-control-sm">{{ old('description') }}</textarea>
                                 </div>
-                                @error('email')
-                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
-                            <section class="col-12 col-md-6">
-                                <div class="form-group">
-                                    <label for="">{{ $attributesName['postal_code'] }}</label>
-                                    <input type="text" name="postal_code" class="form-control form-control-sm"
-                                           value="{{ old('postal_code') }}">
-                                </div>
-                                @error('postal_code')
+                                @error('description')
                                 <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
                                         <strong>
                                             {{ $message }}
@@ -195,40 +158,7 @@ $perUrl=url()->route('admin.addresses.index');
                                 @enderror
                             </section>
                         </section>
-
                         <section class="row">
-                            <section class="col-12 col-md-6">
-                                <div class="form-group">
-                                    <label for="">{{ $attributesName['latitude'] }}</label>
-                                    <input type="text" name="latitude" class="form-control form-control-sm"
-                                           value="{{ old('latitude') }}">
-                                </div>
-                                @error('latitude')
-                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
-                            <section class="col-12 col-md-6">
-                                <div class="form-group">
-                                    <label for="">{{ $attributesName['longitude'] }}</label>
-                                    <input type="text" name="longitude" class="form-control form-control-sm"
-                                           value="{{ old('longitude') }}">
-                                </div>
-                                @error('longitude')
-                                <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-                                @enderror
-                            </section>
-                        </section>
-
-                        <section class="row">
-
                             <section class="col-12">
                                 <button class="btn btn-primary btn-sm">{{ $attributesName['createButton'] }}</button>
                             </section>

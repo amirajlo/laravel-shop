@@ -7,13 +7,8 @@ use App\Http\Requests\AdminCustomerCreateRequest;
 use App\Http\Requests\AdminCustomerUpdateRequest;
 use App\Models\Main;
 use App\Models\User;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Services\Image\ImageService;
 

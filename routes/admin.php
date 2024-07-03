@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\AdminArticlesController;
 use App\Http\Controllers\Admin\AdminProductsController;
 use App\Http\Controllers\Admin\AdminCommentsController;
 use App\Http\Controllers\Admin\AdminGalleriesController;
+use App\Http\Controllers\Admin\AdminOrdersController;
+use App\Http\Controllers\Admin\AdminOrderItemsController;
 use App\Http\Controllers\Admin\AdminPaymentsController;
 use App\Http\Controllers\Admin\AdminDeliveriesController;
 use App\Http\Controllers\Admin\AdminAddressesController;
@@ -187,6 +189,27 @@ Route::group(['middleware' => ['role:admin']], function () {
 
     });
 
+
+    Route::prefix('orders')->group(function () {
+        Route::get('/', [AdminOrdersController::class, 'index'])->name('admin.orders.index');
+        Route::get('/create', [AdminOrdersController::class, 'create'])->name('admin.orders.create');
+        Route::post('/store', [AdminOrdersController::class, 'store'])->name('admin.orders.store');
+        Route::get('/edit/{model}', [AdminOrdersController::class, 'edit'])->name('admin.orders.edit');
+        Route::get('/show/{model}', [AdminOrdersController::class, 'show'])->name('admin.orders.show');
+        Route::put('/update/{model}', [AdminOrdersController::class, 'update'])->name('admin.orders.update');
+        Route::delete('/destroy/{model}', [AdminOrdersController::class, 'destroy'])->name('admin.orders.destroy');
+        Route::post('/status/{model}', [AdminOrdersController::class, 'status'])->name('admin.orders.status');
+    });
+
+    Route::prefix('orderitems')->group(function () {
+        Route::get('/', [AdminOrderItemsController::class, 'index'])->name('admin.orderitems.index');
+        Route::get('/create/{model}', [AdminOrderItemsController::class, 'create'])->name('admin.orderitems.create');
+        Route::post('/store', [AdminOrderItemsController::class, 'store'])->name('admin.orderitems.store');
+        Route::get('/edit/{model}', [AdminOrderItemsController::class, 'edit'])->name('admin.orderitems.edit');
+        Route::put('/update/{model}', [AdminOrderItemsController::class, 'update'])->name('admin.orderitems.update');
+        Route::delete('/destroy/{model}', [AdminOrderItemsController::class, 'destroy'])->name('admin.orderitems.destroy');
+        Route::post('/status/{model}', [AdminOrderItemsController::class, 'status'])->name('admin.orderitems.status');
+    });
 
     Route::group(['middleware' => ['permission:create post']], function () {
         // Routes accessible only by users with the 'create post' permission

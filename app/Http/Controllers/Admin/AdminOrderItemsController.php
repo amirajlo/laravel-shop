@@ -4,89 +4,99 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\MainController;
-use App\Http\Requests\StoreDeliveriesRequest;
-use App\Http\Requests\UpdateDeliveriesRequest;
-use App\Models\Delivery;
-use App\Models\Main;
 
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Main;
+use App\Http\Requests\UpdateOrderItemsRequest;
+use App\Http\Requests\StoreOrderItemsRequest;
+
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 
-class AdminDeliveriesController extends MainController
+class AdminOrderItemsController extends MainController
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $models = Delivery::where(['is_deleted' => Main::STATUS_DISABLED])->get();
-        return view('admin.deliveries.index', compact('models'));
+        $models = OrderItem::where(['is_deleted' => Main::STATUS_DISABLED])->where(['order_id'=>'is NULL'])->get();
+        return view('admin.orderitems.index', compact('models'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Order $model )
     {
-        return view('admin.deliveries.create');
+
+        return view('admin.orderitems.create', compact('model'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDeliveriesRequest $request)
+    public function store(StoreOrderItemsRequest $request)
     {
-        $request->merge([
 
+        $defaultValues=[
             'author_id'=>Auth::user()->id,
-        ]);
+        ];
 
-        Delivery::create($request->all());
-        return redirect()->route('admin.deliveries.index')->with('swal-success', 'حمل و نقل جدید با موفقیت ثبت شد');
+
+        $request->merge($defaultValues);
+
+        Order::create($request->all());
+        return redirect()->route('admin.orderitems.index')->with('swal-success', 'آیتم جدید با موفقیت ثبت شد');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Delivery $model)
+    public function show(OrderItem $model)
     {
-        return view('admin.deliveries.show', compact('model'));
+        return view('admin.orderitems.show', compact('model'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Delivery $model)
+    public function edit(OrderItem $model)
     {
-        return view('admin.deliveries.edit', compact('model'));
+        return view('admin.orderitems.edit', compact('model'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDeliveriesRequest $request, Delivery $model)
+    public function update(UpdateOrderItemsRequest $request, Order $model)
     {
-        $request->merge([
+        $defaultValues=[
             'author_id'=>Auth::user()->id,
-        ]);
+        ];
+
+
+        $request->merge($defaultValues);
         $model->update($request->all());
-        return redirect()->route('admin.deliveries.index')->with('swal-success', 'حمل و نقل با موفقیت ویرایش شد');
+        return redirect()->route('admin.orderitems.index')->with('swal-success', 'آیتم با موفقیت ویرایش شد');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Delivery $model)
+    public function destroy(OrderItem $model)
     {
         $model->is_deleted = Main::STATUS_ACTIVE;
-
+        $model->author_id =Auth::user()->id;
         $model->deleted_at = Carbon::now();
         $model->save();
-        return redirect()->route('admin.deliveries.index')->with('swal-success', 'حمل و نقل با موفقیت حذف شد');
+        return redirect()->route('admin.orderitems.index')->with('swal-success', 'آیتم با موفقیت حذف شد');
     }
 
-    public function status(Delivery $model)
+    public function status(OrderItem $model)
     {
 
         $outpot = ['status' => false, 'message' => "مشکلی در فرآیند به وجود آمده است."];
@@ -96,14 +106,14 @@ class AdminDeliveriesController extends MainController
                 $status = Main::STATUS_DISABLED;
             }
             $model->status = $status;
-
+            $model->author_id =Auth::user()->id;
             $result = $model->save();
             if ($result) {
                 $outpot = ['status' => true, "message" => 'وضعیت  به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
             }
         } else {
             $model->status = Main::STATUS_ACTIVE;
-
+            $model->author_id =Auth::user()->id;
             $model->save();
             $outpot = ['status' => true, 'message' => 'وضعیت کاربر به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
         }
