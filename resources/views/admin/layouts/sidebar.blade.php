@@ -66,6 +66,10 @@
                 <i class="fas fa-bars"></i>
                 <span>کامنت ها</span>
             </a>
+            <a href="{{ route('admin.addresses.index') }}" class="sidebar-link">
+                <i class="fas fa-bars"></i>
+                <span>آدرس ها</span>
+            </a>
         </section>
     </section>
 </aside>

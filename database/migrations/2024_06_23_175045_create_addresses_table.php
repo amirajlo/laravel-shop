@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('title')->nullable()->comment('عنوان آدرس');
             $table->text('description')->nullable()->comment('آدرس');
             $table->string('postal_code')->nullable();
+            $table->string('email')->nullable();
             $table->foreignId('author_id')->nullable()
                 ->constrained(table: 'users', indexName: 'addresses_author_id')
                 ->onUpdate('cascade')
@@ -25,13 +26,21 @@ return new class extends Migration
                 ->constrained(table: 'users', indexName: 'addresses_user_id')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+
             $table->string('mobile',11)->nullable();
             $table->string('phone',11)->nullable();
-            $table->integer('province_id')->nullable();
-            $table->integer('city_id')->nullable();
+            $table->foreignId('province_id')->nullable()
+                ->constrained(table: 'provinces', indexName: 'addresses_province_id')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('city_id')->nullable()
+                ->constrained(table: 'cities', indexName: 'addresses_city_id')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
             $table->integer('town_id')->nullable();
             $table->string('latitude')->nullable();
-            $table->string('longtitude')->nullable();
+            $table->string('longitude')->nullable();
             $table->tinyInteger('is_deleted')->default(Main::STATUS_DISABLED);
             $table->softDeletes();
             $table->timestamps();

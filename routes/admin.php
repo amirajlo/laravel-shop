@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\AdminArticlesController;
 use App\Http\Controllers\Admin\AdminProductsController;
 use App\Http\Controllers\Admin\AdminCommentsController;
 use App\Http\Controllers\Admin\AdminGalleriesController;
+use App\Http\Controllers\Admin\AdminAddressesController;
 use App\Http\Controllers\Admin\AdminFilesController;
 use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
@@ -137,6 +138,17 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::put('/update/{model}', [AdminCommentsController::class, 'update'])->name('admin.comments.update');
         Route::delete('/destroy/{model}', [AdminCommentsController::class, 'destroy'])->name('admin.comments.destroy');
         Route::post('/status/{model}', [AdminCommentsController::class, 'status'])->name('admin.comments.status');
+    });
+
+
+    Route::prefix('addresses')->group(function () {
+        Route::get('/', [AdminAddressesController::class, 'index'])->name('admin.addresses.index');
+        Route::get('/create', [AdminAddressesController::class, 'create'])->name('admin.addresses.create');
+        Route::post('/store', [AdminAddressesController::class, 'store'])->name('admin.addresses.store');
+        Route::get('/edit/{model}', [AdminAddressesController::class, 'edit'])->name('admin.addresses.edit');
+        Route::put('/update/{model}', [AdminAddressesController::class, 'update'])->name('admin.addresses.update');
+        Route::delete('/destroy/{model}', [AdminAddressesController::class, 'destroy'])->name('admin.addresses.destroy');
+        Route::post('/status/{model}', [AdminAddressesController::class, 'status'])->name('admin.addresses.status');
     });
 
 
