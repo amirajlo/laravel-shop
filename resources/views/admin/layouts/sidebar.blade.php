@@ -70,6 +70,10 @@
                 <i class="fas fa-bars"></i>
                 <span>آدرس ها</span>
             </a>
+            <a href="{{ route('admin.deliveries.index') }}" class="sidebar-link">
+                <i class="fas fa-bars"></i>
+                <span>حمل و نقل</span>
+            </a>
         </section>
     </section>
 </aside>

@@ -158,6 +158,10 @@ class Main extends Model
     public static function attributesName()
     {
         return [
+            'deliveries_description' => 'توضیحات',
+            'deliveries_fee' => 'هزینه ارسال',
+            'deliveries' => 'حمل و نقل',
+            'delivery' => 'حمل و نقل',
             'addresses' => 'آدرس ها',
             'address' => 'آدرس',
             'negative_points' => 'نکات منفی',

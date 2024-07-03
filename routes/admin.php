@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\AdminArticlesController;
 use App\Http\Controllers\Admin\AdminProductsController;
 use App\Http\Controllers\Admin\AdminCommentsController;
 use App\Http\Controllers\Admin\AdminGalleriesController;
+use App\Http\Controllers\Admin\AdminDeliveriesController;
 use App\Http\Controllers\Admin\AdminAddressesController;
 use App\Http\Controllers\Admin\AdminFilesController;
 use App\Http\Controllers\MainController;
@@ -161,6 +162,16 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::delete('/destroy/{model}', [AdminGalleriesController::class, 'destroy'])->name('admin.galleries.destroy');
         Route::post('/status/{model}', [AdminGalleriesController::class, 'status'])->name('admin.galleries.status');
     });
+    Route::prefix('deliveries')->group(function () {
+        Route::get('/', [AdminDeliveriesController::class, 'index'])->name('admin.deliveries.index');
+        Route::get('/create', [AdminDeliveriesController::class, 'create'])->name('admin.deliveries.create');
+        Route::post('/store', [AdminDeliveriesController::class, 'store'])->name('admin.deliveries.store');
+        Route::get('/edit/{model}', [AdminDeliveriesController::class, 'edit'])->name('admin.deliveries.edit');
+        Route::put('/update/{model}', [AdminDeliveriesController::class, 'update'])->name('admin.deliveries.update');
+        Route::delete('/destroy/{model}', [AdminDeliveriesController::class, 'destroy'])->name('admin.deliveries.destroy');
+        Route::post('/status/{model}', [AdminDeliveriesController::class, 'status'])->name('admin.deliveries.status');
+    });
+
 
     Route::prefix('file')->group(function () {
 
