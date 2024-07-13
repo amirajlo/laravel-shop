@@ -31,7 +31,7 @@ return new class extends Migration {
                 ->constrained(table: 'users', indexName: 'products_author_id')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreignId('band_id')->nullable()
+            $table->foreignId('brand_id')->nullable()
                 ->constrained(table: 'brands', indexName: 'products_brand_id')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
@@ -50,19 +50,19 @@ return new class extends Migration {
             $table->tinyInteger('show_price')->nullable()->default(Main::STATUS_ACTIVE)->comment('نمایش قیمت اگر یک بود-دو بود متن جایگزین');
 
             $table->tinyInteger('price_type')->default(Main::STATUS_ACTIVE)->comment('یک بود عادی - دو بود دلاری');
-            $table->decimal('price')->nullable()->default(Main::STATUS_DEFAULT)->comment('قیمت عادی');
-            $table->decimal('price_special')->nullable()->default(Main::STATUS_DEFAULT)->comment('قیمت فروش ویژه');
+            $table->double('price')->nullable()->default(Main::STATUS_DEFAULT)->comment('قیمت عادی');
+            $table->double('price_special')->nullable()->default(Main::STATUS_DEFAULT)->comment('قیمت فروش ویژه');
 
-            $table->decimal('price_currency')->nullable()->default(Main::STATUS_DEFAULT)->comment('قیمت دلار یا یورو عادی');
-            $table->decimal('price_currency_special')->nullable()->default(Main::STATUS_DEFAULT)->comment('قیمت دلار یا یورو فروش ویژه');
+            $table->double('price_currency')->nullable()->default(Main::STATUS_DEFAULT)->comment('قیمت دلار یا یورو عادی');
+            $table->double('price_currency_special')->nullable()->default(Main::STATUS_DEFAULT)->comment('قیمت دلار یا یورو فروش ویژه');
 
             $table->dateTime('price_special_from')->nullable();
             $table->dateTime('price_special_to')->nullable();
 
             $table->tinyInteger('manage_stock')->default(Main::STATUS_DISABLED)->comment('اگر غیر فعال باشد فقط وضعیت رو مشخص میکنه - موجود یا ناموجود');
             $table->tinyInteger('stock_status')->default(Main::STOCK)->comment('موجود=1 ناموجود=3');
-            $table->tinyInteger('stock_qty')->default(Main::STATUS_DEFAULT)->comment('تعداد موجودی');
-            $table->tinyInteger('low_stock')->default(Main::STATUS_DEFAULT)->comment('کمترین مقدار موجودی یا آستانه کم بودن موجودی');
+            $table->integer('stock_qty')->default(Main::STATUS_DEFAULT)->comment('تعداد موجودی');
+            $table->integer('low_stock')->default(Main::STATUS_DEFAULT)->comment('کمترین مقدار موجودی یا آستانه کم بودن موجودی');
             $table->tinyInteger('sitemap_check')->nullable()->default(Main::STATUS_DEFAULT);
             $table->softDeletes();
             $table->timestamps();

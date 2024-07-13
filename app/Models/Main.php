@@ -8,8 +8,8 @@ use Venturecraft\Revisionable\RevisionableTrait;
 
 class Main extends Model
 {
-    public $tags;
-    public $categories;
+   // public $tags;
+   // public $categories;
 
 
     use HasFactory;
@@ -164,7 +164,21 @@ class Main extends Model
         return [
             'deliveries_description' => 'توضیحات',
             'deliveries_fee' => 'هزینه ارسال',
+            'show_price' => 'نمایش قیمت',
+            'category_id' => 'دسته بندی',
             'items' => 'آیتم ها',
+            'discounts' => 'تخفیف ها',
+            'discount' => 'تخفیف',
+            'discount_fee' => 'مبلغ تخفیف',
+
+            'percent' => 'مبلغ تخفیف',
+            'discount_max' => 'حداکثر مبلیغ تخفیف',
+            'min_qty' => 'حداقل تعداد خرید(مثال:برای سفارش بیش از 10 تا تخفیف اعمال شود)',
+            'min_order' => 'حداقل مبلغ سفارش(زمانی که تخفیف روی سفارش است)',
+            'discount_description' => 'توضیحات تخفیف',
+            'discount_code' => 'کد تخفیف',
+            'type' => 'نوع',
+            'expired_at' => 'تاریخ انقضا',
             'qty' => 'تعداد',
             'discount' => 'تخفیف',
             'orderitems_total' => 'مجموع',
@@ -181,10 +195,21 @@ class Main extends Model
             'deliveries' => 'حمل و نقل',
             'delivery' => 'حمل و نقل',
             'payments' => 'پرداخت ها',
+            'price_type' => 'نوع قیمت',
             'payment' => 'پرداخت',
             'order_id' => 'شماره سفارش',
             'show' => 'نمایش',
             'amount' => 'مبلغ',
+            'price_special' => 'قیمت ویژه',
+            'price' => 'قیمت',
+            'manage_stock' => 'مدیریت موجودی',
+            'stock_status' => 'وضعیت موجودی',
+            'stock_qty' => 'تعداد موجودی',
+            'low_stock' => 'آستانه موجودی',
+            'price_special_from' => 'از تاریخ',
+            'price_special_to' => 'تا تاریخ',
+            'price_currency' => 'قیمت به دلار',
+            'price_currency_special' => 'قیمت به دلار ویژه',
             'payment_date' => 'تاریخ پرداخت',
             'reference_id' => 'reference_id',
             'reference_number' => 'reference_number',

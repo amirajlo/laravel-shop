@@ -4,8 +4,8 @@ $attributesName = Main::attributesName();
 ?>
 @extends('admin.layouts.master')
 
-@section('head-tag')
-    <title>ایجاد سطح دسترسی ادمین</title>
+@section('title-tag')
+    ایجاد سطح دسترسی ادمین
 @endsection
 
 @section('content')

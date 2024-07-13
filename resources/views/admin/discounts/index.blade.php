@@ -3,21 +3,19 @@
 use App\Models\Main;
 
 $attributesName = Main::attributesName();
-$pageName=$attributesName['manage'] ." ". $attributesName['products'] ;
+$pageName = $attributesName['manage'] . " " . $attributesName['discounts'];
 
 ?>
 @extends('admin.layouts.master')
 
 @section('title-tag')
-        {{ $pageName }}
+    {{ $pageName }}
 @endsection
 @section('breadCrumbs')
     <li class="breadcrumb-item font-size-12 "
         aria-current="page">{{ $pageName }}</li>
 @endsection
 @section('content')
-
-
 
     <section class="row">
         <section class="col-12">
@@ -29,8 +27,8 @@ $pageName=$attributesName['manage'] ." ". $attributesName['products'] ;
                 </section>
 
                 <section class="d-flex justify-content-between align-items-center mt-4 mb-3 border-bottom pb-2">
-                    <a href="{{ route('admin.products.create') }}"
-                       class="btn btn-info btn-sm">{{ $attributesName['create'] ." ". $attributesName['product'] . " ".$attributesName['new'] }}</a>
+                    <a href="{{ route('admin.discounts.create') }}"
+                       class="btn btn-info btn-sm">{{ $attributesName['create'] ." ". $attributesName['discount'] . " ".$attributesName['new'] }}</a>
                     <div class="max-width-16-rem">
                         <input type="text" class="form-control form-control-sm form-text"
                                placeholder="{{ $attributesName['searchPlaceHolder'] }}">
@@ -43,14 +41,12 @@ $pageName=$attributesName['manage'] ." ". $attributesName['products'] ;
                         <tr>
                             <th>#</th>
                             <th>{{ $attributesName['title'] }}</th>
-                            <th>{{ $attributesName['sub_title'] }}</th>
-                            <th>{{ $attributesName['slug'] }}</th>
-                            <th>{{ $attributesName['content_title'] }}</th>
-
-                            <th>{{ $attributesName['price'] }}</th>
+                            <th>{{ $attributesName['discount_code'] }}</th>
+                            <th>{{ $attributesName['type'] }}</th>
+                            <th>{{ $attributesName['expired_at'] }} </th>
                             <th>{{ $attributesName['status'] }}</th>
                             <th class="max-width-16-rem text-center">
-                                <i  class="fa fa-cogs"></i>
+                                <i class="fa fa-cogs"></i>
                                 {{ $attributesName['setting'] }}
                             </th>
                         </tr>
@@ -62,27 +58,26 @@ $pageName=$attributesName['manage'] ." ". $attributesName['products'] ;
                             <tr>
                                 <th>{{ $key + 1 }}</th>
                                 <td>{{ $model->title }} </td>
-                                <td>{{ $model->sub_title }}</td>
-                                <td>{{ $model->slug }}</td>
-                                <td>{{ $model->content_title }}</td>
-
-                                <td>{{   number_format($model->calculatePrice())  }}</td>
+                                <td>{{ $model->discount_code }} </td>
+                                <td>{{ $model->type }} </td>
+                                <td>{{\Morilog\Jalali\Jalalian::forge($model->expired_at)->format('%Y-%m-%d')}}</td>
                                 <td id="status-{{ $model->id }}">
                                     {!! Main::userStatus(true)[$model->status] !!}
                                 </td>
-
                                 <td class="width-22-rem text-left">
-                                    <a  id="statusb-{{ $model->id }}" class="btn btn-warning btn-sm"
-                                           onclick="changeStatus({{ $model->id }})"
-                                           data-url="{{ route('admin.products.status', $model->id) }}">
+
+
+                                    <a id="statusb-{{ $model->id }}" class="btn btn-warning btn-sm"
+                                       onclick="changeStatus({{ $model->id }})"
+                                       data-url="{{ route('admin.discounts.status', $model->id) }}">
                                         <i class="fa fa-undo "></i>
                                     </a>
 
-                                    <a href="{{ route('admin.products.edit', $model->id) }}"
+                                    <a href="{{ route('admin.discounts.edit', $model->id) }}"
                                        class="btn btn-primary btn-sm"><i
                                             class="fa fa-edit"></i> {{ $attributesName['edit'] }}</a>
                                     <form class="d-inline"
-                                          action="{{ route('admin.products.destroy', $model->id) }}"
+                                          action="{{ route('admin.discounts.destroy', $model->id) }}"
                                           method="post">
                                         @csrf
                                         {{ method_field('delete') }}
@@ -118,12 +113,12 @@ $pageName=$attributesName['manage'] ." ". $attributesName['products'] ;
                 },
                 success: function (response) {
                     if (response.status) {
-                        document.getElementById('status-'+id).innerHTML = response.result;
-                        successToast( response.message)
+                        document.getElementById('status-' + id).innerHTML = response.result;
+                        successToast(response.message)
 
                     } else {
 
-                        errorToast( response.message)
+                        errorToast(response.message)
                     }
                 },
                 error: function () {

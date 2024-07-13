@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\AdminArticlesController;
 use App\Http\Controllers\Admin\AdminProductsController;
 use App\Http\Controllers\Admin\AdminCommentsController;
 use App\Http\Controllers\Admin\AdminGalleriesController;
+use App\Http\Controllers\Admin\AdminDiscountsController;
 use App\Http\Controllers\Admin\AdminOrdersController;
 use App\Http\Controllers\Admin\AdminOrderItemsController;
 use App\Http\Controllers\Admin\AdminPaymentsController;
@@ -26,7 +27,8 @@ Route::group(['middleware' => ['role:admin']], function () {
 
     Route::post('/upload', [MainController::class, 'upload'])->name('main.upload');
     Route::get('/dashboard', [AdminDashboardController::class, 'dashboard']);
-
+    Route::get('/ajax',  [AdminDashboardController::class, 'ajax']);
+    Route::get('/address/{id}', [AdminDashboardController::class, 'getAddress']);
     Route::get('/', [AdminDashboardController::class, 'dashboard']);
 
 
@@ -174,6 +176,17 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::put('/update/{model}', [AdminDeliveriesController::class, 'update'])->name('admin.deliveries.update');
         Route::delete('/destroy/{model}', [AdminDeliveriesController::class, 'destroy'])->name('admin.deliveries.destroy');
         Route::post('/status/{model}', [AdminDeliveriesController::class, 'status'])->name('admin.deliveries.status');
+    });
+
+
+    Route::prefix('discounts')->group(function () {
+        Route::get('/', [AdminDiscountsController::class, 'index'])->name('admin.discounts.index');
+        Route::get('/create', [AdminDiscountsController::class, 'create'])->name('admin.discounts.create');
+        Route::post('/store', [AdminDiscountsController::class, 'store'])->name('admin.discounts.store');
+        Route::get('/edit/{model}', [AdminDiscountsController::class, 'edit'])->name('admin.discounts.edit');
+        Route::put('/update/{model}', [AdminDiscountsController::class, 'update'])->name('admin.discounts.update');
+        Route::delete('/destroy/{model}', [AdminDiscountsController::class, 'destroy'])->name('admin.discounts.destroy');
+        Route::post('/status/{model}', [AdminDiscountsController::class, 'status'])->name('admin.discounts.status');
     });
 
     Route::prefix('payments')->group(function () {

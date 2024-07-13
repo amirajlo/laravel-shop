@@ -17,20 +17,20 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('discount_code')->nullable();
             $table->text('description')->nullable();
-            $table->tinyInteger('type')->default(Main::DISCOUNT_TYPE_PRODUCT);
-            $table->tinyInteger('percent')->default(Main::STATUS_DEFAULT);
-            $table->float('qty')->default(Main::STATUS_ACTIVE);
-            $table->float('fee')->default(Main::STATUS_DEFAULT);
-            $table->float('min_order')->default(Main::STATUS_DEFAULT);
-            $table->float('min_qty')->default(Main::STATUS_DEFAULT)->comment('مثلا تعداد خرید محصول یک بیشتر از 10 تا بود تخفیف اعمال بشه');
-            $table->float('max')->default(Main::STATUS_DEFAULT);
+            $table->tinyInteger('type')->nullable()->default(Main::DISCOUNT_TYPE_PRODUCT);
+            $table->tinyInteger('percent')->nullable()->default(Main::STATUS_DEFAULT);
+            $table->float('qty')->nullable()->default(Main::STATUS_ACTIVE);
+            $table->float('fee')->nullable()->default(Main::STATUS_DEFAULT);
+            $table->float('min_order')->nullable()->default(Main::STATUS_DEFAULT);
+            $table->float('min_qty')->nullable()->default(Main::STATUS_DEFAULT)->comment('مثلا تعداد خرید محصول یک بیشتر از 10 تا بود تخفیف اعمال بشه');
+            $table->float('max')->nullable()->default(Main::STATUS_DEFAULT);
             $table->dateTime('expired_at')->nullable();
             $table->foreignId('product_id')->nullable()
                 ->constrained(table: 'products', indexName: 'discounts_items_product_id')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->tinyInteger('is_deleted')->default(Main::STATUS_DISABLED);
-            $table->tinyInteger('status')->default(Main::STATUS_ACTIVE);
+            $table->tinyInteger('is_deleted')->nullable()->default(Main::STATUS_DISABLED);
+            $table->tinyInteger('status')->nullable()->default(Main::STATUS_ACTIVE);
             $table->foreignId('author_id')->nullable()
                 ->constrained(table: 'users', indexName: 'discounts_author_id')
                 ->onUpdate('cascade')

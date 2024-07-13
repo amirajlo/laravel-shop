@@ -10,11 +10,47 @@ class Product extends Main
 {
     use HasFactory;
 
+    const  PRICE_TYPE_ORDINARY = 1;
+    const  PRICE_TYPE_DOLLAR = 2;
+
+
+    const  MANAGE_STOCK_ACTIVE = 1;
+    const  MANAGE_STOCK_DISABLE = 3;
+
+
+    const  STOCK_STATUS_STOCK = 1;
+    const  STOCK_STATUS_INSTOCK = 2;
+
+    public static function priceTypeList()
+    {
+        $result = [
+            self::PRICE_TYPE_ORDINARY => "عادی",
+            self::PRICE_TYPE_DOLLAR => "دلاری",
+        ];
+        return $result;
+    }
+
+    public static function manageStockList()
+    {
+        $result = [
+            self::MANAGE_STOCK_ACTIVE => "فعال",
+            self::MANAGE_STOCK_DISABLE => "غیر فعال",
+        ];
+        return $result;
+    }
+
+    public static function stockStatusList()
+    {
+        $result = [
+            self::STOCK_STATUS_STOCK => "موجود",
+            self::STOCK_STATUS_INSTOCK => "ناموجود",
+        ];
+        return $result;
+    }
 
     protected $fillable = [
         'main_image',
         'header_image',
-
         'title',
         'sub_title',
         'en_title',
@@ -26,7 +62,7 @@ class Product extends Main
         'content_title',
         'slug',
         'status',
-        'band_id',
+        'brand_id',
         'author_id',
         'redirect',
         'canonical',
@@ -42,6 +78,7 @@ class Product extends Main
         'created_at',
         'updated_at',
         'deleted_at',
+
         'show_price',
         'price_type',
         'price',
@@ -50,6 +87,7 @@ class Product extends Main
         'price_currency_special',
         'price_special_from',
         'price_special_to',
+
         'manage_stock',
         'stock_status',
         'stock_qty',
@@ -58,9 +96,85 @@ class Product extends Main
     ];
 
 
+    public static function getCategoriesChild()
+    {
+        return Categories::where(['type' => Main::CATEGORY_TYPE_PRODUCT, 'is_deleted' => Main::STATUS_DISABLED])->whereNull('parent_id')->with('children')->get();
+    }
+
+    public function calculatePrice()
+    {
+        $price = $this->price;
+        if (!empty($this->price_special)) {
+            $now = new \DateTime();
+            $today = $now->format('Y-m-d H:i:s');
+
+            if (!empty($this->price_special_from) && empty($this->price_special_to)) {
+                if ($this->price_special_from <= $today) {
+                    $price = $this->price_special;
+                }
+                else{
+                    $price = $this->price;
+                }
+            } elseif (!empty($this->price_special_from) && !empty($this->price_special_to)) {
+                if ($today >= $this->price_special_from && $today < $this->price_special_to) {
+                    $price = $this->price_special;
+                }
+                else{
+                    $price = $this->price;
+                }
+
+            } elseif (empty($this->price_special_from) && !empty($this->price_special_to)) {
+                if ($today < $this->price_special_to) {
+                    $price = $this->price_special;
+                }
+                else{
+                    $price = $this->price;
+                }
+            } else {
+                $price = $this->price_special;
+            }
+        }
+
+        if ($this->price_type == self::PRICE_TYPE_DOLLAR) {
+
+            if (!empty($this->price_currency_special)) {
+                $now = new \DateTime();
+                $today = $now->format('Y-m-d H:i:s');
+
+                if (!empty($this->price_special_from) && empty($this->price_special_to)) {
+                    if ($this->price_special_from <= $today) {
+                        $price = $this->price_currency_special;
+                    }
+                    else{
+                        $price = $this->price_currency;
+                    }
+                } elseif (!empty($this->price_special_from) && !empty($this->price_special_to)) {
+                    if ($today >= $this->price_special_from && $today < $this->price_special_to) {
+                        $price = $this->price_currency_special;
+                    }
+                    else{
+                        $price = $this->price_currency;
+                    }
+
+                } elseif (empty($this->price_special_from) && !empty($this->price_special_to)) {
+                    if ($today < $this->price_special_to) {
+                        $price = $this->price_currency_special;
+                    }
+                    else{
+                        $price = $this->price_currency;
+                    }
+                } else {
+                    $price = $this->price_currency_special;
+                }
+            }
+            $price *= 60000; //curent currency price
+        }
+
+        return $price;
+    }
 
     public function tags(): MorphToMany
     {
-        return $this->morphToMany(Tags::class, 'taggable','taggables','tag_id');
+        return $this->morphToMany(Tags::class, 'taggable', 'taggables', 'tag_id');
     }
 }

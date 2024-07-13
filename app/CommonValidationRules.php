@@ -44,7 +44,7 @@ trait CommonValidationRules
     protected function columnUniqueRules($is_new = true,$modelId,$table,$column)
     {
         $next = Rule::unique($table, $column);
-        $result = [ ];
+        $result = ['required','min:3'];
         if (!$is_new) {
             $next = Rule::unique($table, $column)->ignore($modelId);
         }
@@ -56,7 +56,7 @@ trait CommonValidationRules
     protected function passwordRules($is_new = true)
     {
         $next = "required";
-        $result = [Password::min(8)->letters()->mixedCase()->numbers()->symbols()];
+        $result = [Password::min(8)->letters()->mixedCase()->numbers()];
         if (!$is_new) {
             $next = "nullable";
         }

@@ -23,7 +23,7 @@ $pageName = $attributesName['update'] . " " . $attributesName['article'] . " " .
 ?>
 @extends('admin.layouts.master')
 
-@section('head-tag')
+@section('title-tag')
 
     <link rel="stylesheet" href="{{ asset('admin-assets/datepicker_majid/jalalidatepicker.min.css') }}">
 @endsection

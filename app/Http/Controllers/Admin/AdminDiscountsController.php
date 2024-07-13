@@ -4,24 +4,24 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\MainController;
-use App\Http\Requests\StoreDeliveriesRequest;
-use App\Http\Requests\UpdateDeliveriesRequest;
-use App\Models\Delivery;
+use App\Http\Requests\StoreDiscountsRequest;
+use App\Http\Requests\UpdateDiscountsRequest;
+use App\Models\Discount;
 use App\Models\Main;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 
-class AdminDeliveriesController extends MainController
+class AdminDiscountsController extends MainController
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $models = Delivery::where(['is_deleted' => Main::STATUS_DISABLED])->get();
-        return view('admin.deliveries.index', compact('models'));
+        $models = Discount::where(['is_deleted' => Main::STATUS_DISABLED])->get();
+        return view('admin.discounts.index', compact('models'));
     }
 
     /**
@@ -29,64 +29,65 @@ class AdminDeliveriesController extends MainController
      */
     public function create()
     {
-        return view('admin.deliveries.create');
+        $model = new Discount();
+        return view('admin.discounts.create', compact('model'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDeliveriesRequest $request)
+    public function store(StoreDiscountsRequest $request)
     {
         $request->merge([
 
-            'author_id'=>Auth::user()->id,
+            'author_id' => Auth::user()->id,
         ]);
 
-        Delivery::create($request->all());
-        return redirect()->route('admin.deliveries.index')->with('swal-success', 'حمل و نقل جدید با موفقیت ثبت شد');
+        Discount::create($request->all());
+        return redirect()->route('admin.discounts.index')->with('swal-success', 'تخفیف جدید با موفقیت ثبت شد');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Delivery $model)
+    public function show(Discount $model)
     {
-        return view('admin.deliveries.show', compact('model'));
+        return view('admin.discounts.show', compact('model'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Delivery $model)
+    public function edit(Discount $model)
     {
-        return view('admin.deliveries.edit', compact('model'));
+        return view('admin.discounts.edit', compact('model'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDeliveriesRequest $request, Delivery $model)
+    public function update(UpdateDiscountsRequest $request, Discount $model)
     {
         $request->merge([
-            'author_id'=>Auth::user()->id,
+            'author_id' => Auth::user()->id,
         ]);
         $model->update($request->all());
-        return redirect()->route('admin.deliveries.index')->with('swal-success', 'حمل و نقل با موفقیت ویرایش شد');
+        return redirect()->route('admin.discounts.index')->with('swal-success', 'تخفیف با موفقیت ویرایش شد');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Delivery $model)
+    public function destroy(Discount $model)
     {
         $model->is_deleted = Main::STATUS_ACTIVE;
 
         $model->deleted_at = Carbon::now();
         $model->save();
-        return redirect()->route('admin.deliveries.index')->with('swal-success', 'حمل و نقل با موفقیت حذف شد');
+        return redirect()->route('admin.discounts.index')->with('swal-success', 'تخفیف با موفقیت حذف شد');
     }
 
-    public function status(Delivery $model)
+    public function status(Discount $model)
     {
 
         $outpot = ['status' => false, 'message' => "مشکلی در فرآیند به وجود آمده است."];

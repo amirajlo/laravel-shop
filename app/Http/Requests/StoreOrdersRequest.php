@@ -25,6 +25,8 @@ class StoreOrdersRequest extends FormRequest
     {
         $rules = [
             'user_id' => 'required|exists:users,id',
+            'delivery_id' => 'required|exists:deliveries,id',
+            'address_id' => 'required|exists:addresses,id',
             'title' => 'nullable|min:3',
             'delivery_price' => 'nullable|numeric',
             'delivery_discount' => 'nullable|numeric',

@@ -25,7 +25,10 @@ return new class extends Migration
             $table->float('delivery_discount')->nullable();
             $table->float('delivery_total')->nullable();
             $table->text('delivery_description')->nullable();
-            $table->integer('discount_id')->nullable();
+            $table->foreignId('discount_id')->nullable()
+                ->constrained(table: 'discounts', indexName: 'orders_discount_id')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->float('total_price')->default(Main::STATUS_DEFAULT)->comment('قیمت کل سفارش');
             $table->float('total_discount')->default(Main::STATUS_DEFAULT)->comment('قیمت کل تخفیف');
             $table->float('total')->default(Main::STATUS_DEFAULT)->comment('قیمت کل سفارش بعد از کسر تخفیف و جمع مالیات و ارسال');
@@ -85,7 +88,10 @@ return new class extends Migration
                 ->onDelete('cascade');
 
             $table->text('description')->nullable();
-            $table->integer('discount_id')->nullable();
+            $table->foreignId('discount_id')->nullable()
+                ->constrained(table: 'discounts', indexName: 'order_items_discount_id')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->text('discount_description')->nullable();
 
             $table->tinyInteger('status')->default(Main::STATUS_ACTIVE);

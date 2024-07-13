@@ -11,10 +11,10 @@ $perUrl = url()->route('admin.orders.show', $model);
 ?>
 @extends('admin.layouts.master')
 
-@section('head-tag')
-    <title>
+@section('title-tag')
+
         {{ $pageName }}
-    </title>
+
 @endsection
 @section('breadCrumbs')
     <li class="breadcrumb-item font-size-12">

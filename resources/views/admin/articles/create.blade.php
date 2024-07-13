@@ -9,7 +9,7 @@ $pageName=$attributesName['create']." ". $attributesName['article'] ;
 $perUrl=url()->route('admin.articles.index');
 ?>
 @extends('admin.layouts.master')
-@section('head-tag')
+@section('title-tag')
     <link rel="stylesheet" href="{{ asset('admin-assets/datepicker_majid/jalalidatepicker.min.css') }}">
 @endsection
 @section('title-tag')

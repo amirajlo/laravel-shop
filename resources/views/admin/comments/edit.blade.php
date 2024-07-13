@@ -9,10 +9,10 @@ $pageName=$attributesName['update']." ". $attributesName['comment'] ." ". $model
 ?>
 @extends('admin.layouts.master')
 
-@section('head-tag')
-    <title>
+@section('title-tag')
+
         {{ $pageName }}
-    </title>
+
 @endsection
 
 

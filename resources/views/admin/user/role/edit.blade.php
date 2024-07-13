@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
-@section('head-tag')
-    <title>ایجاد نقش</title>
+@section('title-tag')
+    ایجاد نقش
 @endsection
 
 @section('content')

@@ -4,15 +4,16 @@ use App\Models\Main;
 
 $statusList = Main::userStatus();
 $attributesName = Main::attributesName();
-$perUrl=url()->route('admin.addresses.index');
-$pageName=$attributesName['update']." ". $attributesName['address'] ." ". $model->title;
+$perUrl=url()->route('admin.discounts.index');
+$pageName=$attributesName['update']." ". $attributesName['discount'] ." ". $model->title;
 ?>
 @extends('admin.layouts.master')
 
-@section('title-tag')
-
+@section('head-tag')
+    <link rel="stylesheet" href="{{ asset('admin-assets/datepicker_majid/jalalidatepicker.min.css') }}">
+@endsection
+    @section('title-tag')
         {{ $pageName }}
-
 @endsection
 
 
@@ -20,7 +21,7 @@ $pageName=$attributesName['update']." ". $attributesName['address'] ." ". $model
 @section('breadCrumbs')
 
     <li class="breadcrumb-item font-size-12"><a
-            href="{{ $perUrl  }}"> {{ $attributesName['manage'] ." ". $attributesName['addresses']  }}</a>
+            href="{{ $perUrl  }}"> {{ $attributesName['manage'] ." ". $attributesName['discounts']  }}</a>
     </li>
     <li class="breadcrumb-item font-size-12 active"
         aria-current="page"> {{ $pageName }}</li>
@@ -45,16 +46,12 @@ $pageName=$attributesName['update']." ". $attributesName['address'] ." ". $model
                 </section>
 
                 <section>
-                    <form action="{{ route('admin.addresses.update', $model->id) }}" method="post"
+                    <form action="{{ route('admin.discounts.update', $model->id) }}" method="post"
                           enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
-
-                        @include('admin.addresses._form',['model'=>$model,'statusList'=>$statusList,'attributesName'=>$attributesName])
-
-
-
+                        @include('admin.discounts._form',['model'=>$model,'statusList'=>$statusList,'attributesName'=>$attributesName])
 
                         <section class="row">
 

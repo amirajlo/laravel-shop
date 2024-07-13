@@ -24,7 +24,7 @@ class StoreProductsRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'title' => 'required|min:3',
+            'categories' => 'required',
             'redirect' => 'nullable|url:http,https',
             'canonical' => 'nullable|url:http,https',
 

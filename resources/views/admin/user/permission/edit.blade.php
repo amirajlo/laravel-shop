@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
-@section('head-tag')
-    <title>ویرایش دسترسی</title>
+@section('title-tag')
+    ویرایش دسترسی
 @endsection
 
 @section('content')

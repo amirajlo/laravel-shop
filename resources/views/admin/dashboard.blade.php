@@ -2,8 +2,8 @@
 
 
 
-@section('head-tag')
-    <title>داشبورد اصلی</title>
+@section('title-tag')
+    داشبورد اصلی
 @endsection
 
 

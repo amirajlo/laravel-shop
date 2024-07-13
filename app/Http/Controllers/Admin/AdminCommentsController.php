@@ -105,7 +105,7 @@ class AdminCommentsController extends MainController
             $model->status = Main::STATUS_ACTIVE;
 
             $model->save();
-            $outpot = ['status' => true, 'message' => 'وضعیت کاربر به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
+            $outpot = ['status' => true, 'message' => 'وضعیت  به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
         }
 
 

@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\MainController;
 use App\Http\Requests\StoreProductsRequest;
 use App\Http\Requests\UpdateProductsRequest;
+use App\Models\Categories;
 use App\Models\File;
 use App\Models\Product;
 use App\Models\Main;
@@ -30,7 +31,10 @@ class AdminProductsController extends MainController
      */
     public function create()
     {
-        return view('admin.products.create');
+        $model = new Product();
+        $model->show_price=1;
+        $categories = Product::getCategoriesChild();
+        return view('admin.products.create', compact('categories', 'model'));
     }
 
     /**
@@ -39,9 +43,15 @@ class AdminProductsController extends MainController
     public function store(StoreProductsRequest $request)
     {
 
+        $show_price=1;
+        if(is_null($request->show_price)){
+            $show_price=0;
+        }
+
         $request->merge([
             'slug' => Str::slug($request->title, '-', null),
             'author_id' => Auth::user()->id,
+            'show_price' => $show_price,
         ]);
 
         $model = Product::create($request->except('main_image'));
@@ -100,11 +110,12 @@ class AdminProductsController extends MainController
      */
     public function edit(Product $model)
     {
-        $mainImage=File::where(['model_id' => $model->id, 'model_type' => get_class($model), 'type' => Main::FILES_MAIN_IMAGE])->first();
 
-        $headerImage=File::where(['model_id' => $model->id, 'model_type' => get_class($model), 'type' => Main::FILES_HEADER_IMAGE])->first();
-        $galleryImages=File::where(['model_id' => $model->id, 'model_type' => get_class($model), 'type' => Main::FILES_GALLERY_IMAGES])->get();
-        return view('admin.products.edit', compact('model','mainImage','headerImage','galleryImages'));
+        $categories = Product::getCategoriesChild();
+        $mainImage = File::where(['model_id' => $model->id, 'model_type' => get_class($model), 'type' => Main::FILES_MAIN_IMAGE])->first();
+        $headerImage = File::where(['model_id' => $model->id, 'model_type' => get_class($model), 'type' => Main::FILES_HEADER_IMAGE])->first();
+        $galleryImages = File::where(['model_id' => $model->id, 'model_type' => get_class($model), 'type' => Main::FILES_GALLERY_IMAGES])->get();
+        return view('admin.products.edit', compact('model', 'categories', 'mainImage', 'headerImage', 'galleryImages'));
     }
 
     /**
@@ -112,9 +123,15 @@ class AdminProductsController extends MainController
      */
     public function update(UpdateProductsRequest $request, Product $model)
     {
+
+        $show_price=1;
+        if(is_null($request->show_price)){
+            $show_price=0;
+        }
         $request->merge([
             'slug' => Str::slug($request->title, '-', null),
             'author_id' => Auth::user()->id,
+            'show_price' => $show_price,
         ]);
         $model->update($request->except('main_image'));
 
@@ -186,7 +203,7 @@ class AdminProductsController extends MainController
             $model->status = Main::STATUS_ACTIVE;
             $model->author_id = Auth::user()->id;
             $model->save();
-            $outpot = ['status' => true, 'message' => 'وضعیت کاربر به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
+            $outpot = ['status' => true, 'message' => 'وضعیت  به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
         }
 
 

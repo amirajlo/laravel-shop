@@ -16,10 +16,10 @@ $perUrl=url()->route('admin.categories.index',$type);
 ?>
 @extends('admin.layouts.master')
 
-@section('head-tag')
-    <title>
+@section('title-tag')
+
         {{ $pageName }}
-    </title>
+
 @endsection
 @section('breadCrumbs')
     <li class="breadcrumb-item font-size-12"><a
@@ -147,22 +147,7 @@ $perUrl=url()->route('admin.categories.index',$type);
                                     <label for="">{{ $attributesName['parent_id'] }}</label>
                                     <select name="parent_id" id="parent_id" class="form-control form-control-sm">
                                         <option value="">{{ $attributesName['DropdownLabel'] }}</option>
-                                        @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}"
-                                                    @if ($category->id ==  old('parent_id') )
-                                                        selected
-                                                @endif
-                                            >{{ $category->title }}</option>
-                                            @if ($category->children->count())
-                                                @foreach ($category->children as $child)
-                                                    <option value="{{ $child->id }}"
-                                                            @if ($child->id ==  old('parent_id') )
-                                                                selected
-                                                        @endif
-                                                    >- {{ $child->title }}</option>
-                                                @endforeach
-                                            @endif
-                                        @endforeach
+                                        @include('components.load-categories-dropdown', ['categories' => $categories])
                                     </select>
                                 </div>
                                 @error('parent_id')

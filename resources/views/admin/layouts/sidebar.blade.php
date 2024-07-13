@@ -88,7 +88,10 @@
                 <i class="fas fa-bars"></i>
                 <span>خرید های ناتمام</span>
             </a>
-
+            <a href="{{ route('admin.discounts.index') }}" class="sidebar-link">
+                <i class="fas fa-bars"></i>
+                <span>تخفیف ها</span>
+            </a>
         </section>
     </section>
 </aside>

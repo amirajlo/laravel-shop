@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
-@section('head-tag')
-    <title>دسترسی های نقش</title>
+@section('title-tag')
+    دسترسی های نقش
 @endsection
 
 @section('content')

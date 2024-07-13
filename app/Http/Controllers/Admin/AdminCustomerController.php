@@ -49,7 +49,7 @@ class AdminCustomerController extends MainController
         $inputs['password'] = Hash::make($request->password);
         $inputs['role']=Main::ROLE_CUSTOMER;
         $model = User::create($inputs);
-        return redirect()->route('admin.user.customer.index')->with('swal-success', 'ادمین جدید با موفقیت ثبت شد');
+        return redirect()->route('admin.user.customer.index')->with('swal-success', 'مشتری جدید با موفقیت ثبت شد');
     }
 
     /**
@@ -85,7 +85,7 @@ class AdminCustomerController extends MainController
 
 
 
-        return redirect()->route('admin.user.customer.index')->with('swal-success', 'ادمین سایت شما با موفقیت ویرایش شد');
+        return redirect()->route('admin.user.customer.index')->with('swal-success', 'مشتری سایت شما با موفقیت ویرایش شد');
     }
 
     /**
@@ -99,7 +99,7 @@ class AdminCustomerController extends MainController
         $model->is_deleted = Main::STATUS_ACTIVE;
         $model->deleted_at = Carbon::now();
         $model->save();
-        return redirect()->route('admin.user.customer.index')->with('swal-success', 'ادمین شما با موفقیت حذف شد');
+        return redirect()->route('admin.user.customer.index')->with('swal-success', 'مشتری شما با موفقیت حذف شد');
     }
 
     public function status(User $model)
@@ -114,12 +114,12 @@ class AdminCustomerController extends MainController
                 $model->status = $status;
                 $result = $model->save();
                 if ($result) {
-                    $outpot = ['status' => true, "message" => 'وضعیت کاربر به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
+                    $outpot = ['status' => true, "message" => 'وضعیت  به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
                 }
             } else {
                 $model->status = Main::STATUS_ACTIVE;
                 $model->save();
-                $outpot = ['status' => true, 'message' => 'وضعیت کاربر به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
+                $outpot = ['status' => true, 'message' => 'وضعیت  به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
             }
 
 

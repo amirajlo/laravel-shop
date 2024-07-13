@@ -7,8 +7,8 @@ $attributesName=Main::attributesName();
 ?>
 @extends('admin.layouts.master')
 
-@section('head-tag')
-    <title>ویرایش کاربر ادمین</title>
+@section('title-tag')
+    ویرایش کاربر ادمین
 @endsection
 
 @section('content')

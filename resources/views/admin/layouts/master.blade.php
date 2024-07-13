@@ -3,8 +3,10 @@
 
 <head>
     @include('admin.layouts.head-tag')
+
     @yield('head-tag')
-<title>  @yield('title-tag')</title>
+
+  <title>@yield('title-tag')</title>
 </head>
 
 <body dir="rtl">

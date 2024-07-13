@@ -33,5 +33,10 @@ class Address extends Main
         'deleted_at',
     ];
 
+public static function addressesList ($user_id)
+{
+    $addresses = Address::where(['user_id'=> $user_id,'is_deleted'=>Main::STATUS_DISABLED])->pluck('title', 'id');
 
+    return $addresses;
+}
 }

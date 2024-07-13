@@ -3,9 +3,10 @@
 namespace App\Http\Requests;
 
 use App\CommonValidationRules;
+use App\Models\Main;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateProductsRequest extends FormRequest
+class StoreDiscountsRequest extends FormRequest
 {
     use CommonValidationRules;
     /**
@@ -24,18 +25,19 @@ class UpdateProductsRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'categories' => 'required',
-            'redirect' => 'nullable|url:http,https',
-            'canonical' => 'nullable|url:http,https',
-            'gallery_images' => 'nullable|array|min:1|max:5',
-            'gallery_images.*' => 'image|mimes:svg,jpeg,png,jpg,gif,webp|max:10048',
-
+            'title' => 'required|min:3',
+            'description' => 'nullable',
+            'discount_code' => 'required',
+            'percent' => 'nullable|numeric',
+            'qty' => 'nullable|numeric',
+            'fee' => 'nullable|numeric',
+            'min_order' => 'nullable|numeric',
+            'min_qty' => 'nullable|numeric',
+            'max' => 'nullable|numeric',
+            'product_id' => 'nullable|exists:products,id',
         ];
         return array_merge(
             $rules,
-            $this->columnUniqueRules(false, $this->model->id,'products','title'),
-            $this->columnImageRules(true,null,'products','main_image'),
-        //$this->columnGalleryImageRules(true,null,'products','gallery_images'),
         );
     }
 }

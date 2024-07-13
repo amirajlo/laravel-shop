@@ -117,12 +117,12 @@ class AdminUserController extends MainController
                 $model->status = $status;
                 $result = $model->save();
                 if ($result) {
-                    $outpot = ['status' => true, "message" => 'وضعیت کاربر به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
+                    $outpot = ['status' => true, "message" => 'وضعیت  به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
                 }
             } else {
                 $model->status = Main::STATUS_ACTIVE;
                 $model->save();
-                $outpot = ['status' => true, 'message' => 'وضعیت کاربر به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
+                $outpot = ['status' => true, 'message' => 'وضعیت  به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
             }
         } else {
             $outpot = ['status' => false, 'message' => "مجوز ندارید."];

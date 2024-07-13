@@ -8,10 +8,10 @@ $perUrl=url()->route('admin.user.admin-user.index');
 ?>
 @extends('admin.layouts.master')
 
-@section('head-tag')
-    <title>
+@section('title-tag')
+
         {{ $pageName }}
-    </title>
+
 @endsection
 
 @section('breadCrumbs')

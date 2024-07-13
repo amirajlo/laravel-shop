@@ -29,7 +29,8 @@ class AdminAddressesController extends MainController
      */
     public function create()
     {
-        return view('admin.addresses.create');
+        $model=new Address();
+        return view('admin.addresses.create',compact('model'));
     }
 
     /**
@@ -104,7 +105,7 @@ class AdminAddressesController extends MainController
             $model->status = Main::STATUS_ACTIVE;
 
             $model->save();
-            $outpot = ['status' => true, 'message' => 'وضعیت کاربر به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
+            $outpot = ['status' => true, 'message' => 'وضعیت  به روزرسانی شد.', 'result' => Main::userStatus(true)[$model->status]];
         }
 
 

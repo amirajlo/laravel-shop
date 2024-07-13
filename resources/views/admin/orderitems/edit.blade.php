@@ -9,10 +9,10 @@ $pageName=$attributesName['update']." ". $attributesName['order'] ." شماره 
 ?>
 @extends('admin.layouts.master')
 
-@section('head-tag')
-    <title>
+@section('title-tag')
+
         {{ $pageName }}
-    </title>
+
 @endsection
 
 

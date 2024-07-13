@@ -13,10 +13,10 @@ $perUrl=url()->route('admin.categories.index',$type);
 ?>
 @extends('admin.layouts.master')
 
-@section('head-tag')
-    <title>
+@section('title-tag')
+
         {{ $pageName }}
-    </title>
+
 @endsection
 
 @section('breadCrumbs')
