@@ -48,6 +48,41 @@ class Product extends Main
         return $result;
     }
 
+    public function calculateStock($qty)
+    {
+        $result = [];
+
+        $statusActive = self::MANAGE_STOCK_ACTIVE;
+        $statusDiactive = self::MANAGE_STOCK_ACTIVE;
+        $isStock = Main::STOCK;
+        $inStock = Main::IN_STOCK;
+
+        if ($this->manage_stock == $statusActive) {
+            $stockStatus = $isStock;
+            $currentQty = $this->stock_qty;
+            if ($currentQty <= 0) {
+                $stockStatus = $inStock;
+            } else {
+                if ($qty > $currentQty) {
+                    $qty = $currentQty;
+                }
+                $result['currentQty'] = $currentQty;
+                $result['qty'] = $qty;
+            }
+            $result['status'] = $stockStatus;
+
+        } else {
+            $stockStatus = $inStock;
+            if ($this->stock_status == $statusActive) {
+                $stockStatus = $isStock;
+            }
+            $result['status'] = $stockStatus;
+        }
+
+
+        return $result;
+    }
+
     protected $fillable = [
         'main_image',
         'header_image',
@@ -101,33 +136,32 @@ class Product extends Main
         return Categories::where(['type' => Main::CATEGORY_TYPE_PRODUCT, 'is_deleted' => Main::STATUS_DISABLED])->whereNull('parent_id')->with('children')->get();
     }
 
+
+
     public function calculatePrice()
     {
         $price = $this->price;
-        if (!empty($this->price_special)) {
+        if (doubleval($this->price_special) > 0) {
             $now = new \DateTime();
             $today = $now->format('Y-m-d H:i:s');
 
             if (!empty($this->price_special_from) && empty($this->price_special_to)) {
                 if ($this->price_special_from <= $today) {
                     $price = $this->price_special;
-                }
-                else{
+                } else {
                     $price = $this->price;
                 }
             } elseif (!empty($this->price_special_from) && !empty($this->price_special_to)) {
                 if ($today >= $this->price_special_from && $today < $this->price_special_to) {
                     $price = $this->price_special;
-                }
-                else{
+                } else {
                     $price = $this->price;
                 }
 
             } elseif (empty($this->price_special_from) && !empty($this->price_special_to)) {
                 if ($today < $this->price_special_to) {
                     $price = $this->price_special;
-                }
-                else{
+                } else {
                     $price = $this->price;
                 }
             } else {
@@ -136,31 +170,28 @@ class Product extends Main
         }
 
         if ($this->price_type == self::PRICE_TYPE_DOLLAR) {
+            if (doubleval($this->price_currency_special) > 0) {
 
-            if (!empty($this->price_currency_special)) {
                 $now = new \DateTime();
                 $today = $now->format('Y-m-d H:i:s');
 
                 if (!empty($this->price_special_from) && empty($this->price_special_to)) {
                     if ($this->price_special_from <= $today) {
                         $price = $this->price_currency_special;
-                    }
-                    else{
+                    } else {
                         $price = $this->price_currency;
                     }
                 } elseif (!empty($this->price_special_from) && !empty($this->price_special_to)) {
                     if ($today >= $this->price_special_from && $today < $this->price_special_to) {
                         $price = $this->price_currency_special;
-                    }
-                    else{
+                    } else {
                         $price = $this->price_currency;
                     }
 
                 } elseif (empty($this->price_special_from) && !empty($this->price_special_to)) {
                     if ($today < $this->price_special_to) {
                         $price = $this->price_currency_special;
-                    }
-                    else{
+                    } else {
                         $price = $this->price_currency;
                     }
                 } else {

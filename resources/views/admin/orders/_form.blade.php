@@ -1,15 +1,15 @@
 @php
-$deliveryList=\App\Models\Delivery::deliveryList();
-  $addressesList=\App\Models\Address::addressesList($model->user_id);
 
-
- @endphp
+    $deliveryList=\App\Models\Delivery::deliveryList();
+    $addressesList=\App\Models\Address::addressesList($model->user_id);
+    $orderStatusList=\App\Models\Order::orderStatusList();
+@endphp
 <section class="row">
     <section class="col-12 col-md-6">
         <div class="form-group">
             <label for="">{{ $attributesName['user_id'] }}</label>
 
-            <select id="user_id" class="form-control"  name="user_id">
+            <select id="user_id" class="form-control" name="user_id">
                 @if($model->user_id)
                     <option value="{{$model->user->id}}"
                             data-select2-id="select2-data-28-j3ms">{{$model->user->first_name." ".$model->user->last_name . " - ".$model->user->username}}</option>
@@ -25,11 +25,14 @@ $deliveryList=\App\Models\Delivery::deliveryList();
                                     </span>
         @enderror
     </section>
-    <section class="col-12 col-md-6">
+    <section class="col-12">
         <div class="form-group">
-            <label for="">{{ $attributesName['title'] }}</label>
-            <input type="text" name="title" class="form-control form-control-sm"
-                   value="{{ old('title',$model->title) }}">
+
+            <label for="">{{ $attributesName['status'] }}</label>
+            <select id="status" name="status" class="form-control">
+                <option value="">{{ $attributesName['DropdownLabel'] }} </option>
+                    @include('components.load-types-dropdown', ['typeList' => $orderStatusList,'model'=>$model,'column'=>'status'])
+            </select>
         </div>
         @error('title')
         <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
@@ -44,15 +47,9 @@ $deliveryList=\App\Models\Delivery::deliveryList();
             <label for="">{{ $attributesName['address_id'] }}</label>
             <select id="address_id" name="address_id" class="form-control">
                 <option value="">{{ $attributesName['DropdownLabel'] }} </option>
-
                 @if($model->user_id)
-
-                @include('components.load-types-dropdown', ['typeList' => $addressesList,'model'=>$model,'column'=>'address_id'])
+                    @include('components.load-types-dropdown', ['typeList' => $addressesList,'model'=>$model,'column'=>'address_id'])
                 @endif
-
-
-
-
             </select>
 
 
@@ -70,7 +67,7 @@ $deliveryList=\App\Models\Delivery::deliveryList();
             <label for="">{{ $attributesName['delivery_id'] . $model->delivery_id }}</label>
             <select class="form-control form-control-sm" name="delivery_id">
                 <option value="">{{ $attributesName['DropdownLabel'] }} </option>
-            @include('components.load-types-dropdown', ['typeList' => $deliveryList,'model'=>$model,'column'=>'delivery_id'])
+                @include('components.load-types-dropdown', ['typeList' => $deliveryList,'model'=>$model,'column'=>'delivery_id'])
             </select>
         </div>
         @error('delivery_id')
@@ -160,7 +157,7 @@ $deliveryList=\App\Models\Delivery::deliveryList();
                     return {
                         results: $.map(data, function (item) {
                             return {
-                                text: item.first_name + " " + item.last_name + " - " + item.username ,
+                                text: item.first_name + " " + item.last_name + " - " + item.username,
                                 id: item.id
                             }
                         })
@@ -171,20 +168,20 @@ $deliveryList=\App\Models\Delivery::deliveryList();
             }
         });
 
-        $('#user_id').change(function(){
+        $('#user_id').change(function () {
             var user_id = $(this).val();
 
 
-            if(user_id){
+            if (user_id) {
                 $.ajax({
                     url: '/admin/address/' + user_id,
                     type: 'GET',
                     dataType: 'json',
-                    success: function(data){
+                    success: function (data) {
                         $('#address_id').empty();
                         $('#address_id').append('<option value="">--انتخاب کنید--</option>');
-                        $.each(data, function(key, value){
-                            $('#address_id').append('<option value="'+value.id+'">'+value.title+'</option>');
+                        $.each(data, function (key, value) {
+                            $('#address_id').append('<option value="' + value.id + '">' + value.title + '</option>');
                         });
                     }
                 });

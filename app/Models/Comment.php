@@ -28,7 +28,7 @@ class Comment extends Main
         'ip',
         'score',
         'like',
-        'diss_like',
+        'dis_like',
         'is_deleted',
         'created_at',
         'updated_at',

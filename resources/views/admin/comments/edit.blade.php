@@ -170,11 +170,11 @@ $pageName=$attributesName['update']." ". $attributesName['comment'] ." ". $model
                             </section>
                             <section class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label for="">{{ $attributesName['diss_like'] }}</label>
-                                    <input type="text" name="diss_like" class="form-control form-control-sm"
-                                           value="{{ old('diss_like', $model->diss_like) }}">
+                                    <label for="">{{ $attributesName['dis_like'] }}</label>
+                                    <input type="text" name="dis_like" class="form-control form-control-sm"
+                                           value="{{ old('dis_like', $model->dis_like) }}">
                                 </div>
-                                @error('diss_like')
+                                @error('dis_like')
                                 <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
                                         <strong>
                                             {{ $message }}

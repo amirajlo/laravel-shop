@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Main;
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -33,11 +34,110 @@ return new class extends Migration
             $table->tinyInteger('status')->default(Main::STATUS_DISABLED);
             $table->tinyInteger('is_deleted')->default(Main::STATUS_DISABLED);
             $table->integer('like')->default(Main::STATUS_DEFAULT);
-            $table->integer('diss_like')->default(Main::STATUS_DEFAULT);
+            $table->integer('dis_like')->default(Main::STATUS_DEFAULT);
             $table->softDeletes();
             $table->timestamps();
             $table->index(array('model_id', 'model_type'));
         });
+        $comments = [
+            [
+                'title' => 'نقد 1',
+                'description' => "مفید بود",
+                'positive_points' => "نکات مثبت یک  ",
+                'negative_points' =>  "نکات منفی یک ",
+                'email' =>  "ajloo.ir@gmail.com",
+                'website' =>  "https://ajloo.ir",
+                'mobile' =>  "09354818352",
+                'score' =>  "5",
+                'model_type' =>  "app/Models/Product",
+                'model_id' =>  1,
+                'like' => 20,
+                'dis_like' => 10,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'title' => 'نقد 1',
+                'description' => "مفید بود",
+                'positive_points' => "نکات مثبت یک  ",
+                'negative_points' =>  "نکات منفی یک ",
+                'email' =>  "ajloo.ir@gmail.com",
+                'website' =>  "https://ajloo.ir",
+                'mobile' =>  "09354818352",
+                'score' =>  "5",
+                'model_type' =>  "app/Models/Product",
+                'model_id' =>  3,
+                'like' => 20,
+                'dis_like' => 10,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'title' => 'نقد 1',
+                'description' => "مفید بود",
+                'positive_points' => "نکات مثبت یک  ",
+                'negative_points' =>  "نکات منفی یک ",
+                'email' =>  "ajloo.ir@gmail.com",
+                'website' =>  "https://ajloo.ir",
+                'mobile' =>  "09354818352",
+                'score' =>  "5",
+                'model_type' =>  "app/Models/Product",
+                'model_id' =>  2,
+                'like' => 20,
+                'dis_like' => 10,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'title' => 'نقد 1',
+                'description' => "مفید بود",
+                'positive_points' => "نکات مثبت یک  ",
+                'negative_points' =>  "نکات منفی یک ",
+                'email' =>  "ajloo.ir@gmail.com",
+                'website' =>  "https://ajloo.ir",
+                'mobile' =>  "09354818352",
+                'score' =>  "5",
+                'model_type' =>  "app/Models/Product",
+                'model_id' =>  1,
+                'like' => 20,
+                'dis_like' => 10,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'title' => 'نقد 1',
+                'description' => "مفید بود",
+                'positive_points' => "نکات مثبت یک  ",
+                'negative_points' =>  "نکات منفی یک ",
+                'email' =>  "ajloo.ir@gmail.com",
+                'website' =>  "https://ajloo.ir",
+                'mobile' =>  "09354818352",
+                'score' =>  "5",
+                'model_type' =>  "app/Models/Product",
+                'model_id' =>  3,
+                'like' => 20,
+                'dis_like' => 10,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'title' => 'نقد 1',
+                'description' => "مفید بود",
+                'positive_points' => "نکات مثبت یک  ",
+                'negative_points' =>  "نکات منفی یک ",
+                'email' =>  "ajloo.ir@gmail.com",
+                'website' =>  "https://ajloo.ir",
+                'mobile' =>  "09354818352",
+                'score' =>  "5",
+                'model_type' =>  "app/Models/Product",
+                'model_id' =>  2,
+                'like' => 20,
+                'dis_like' => 10,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+        ];
+        DB::table('comments')->insert($comments);
     }
 
     /**

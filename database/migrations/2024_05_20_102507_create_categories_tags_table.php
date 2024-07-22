@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Main;
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -41,6 +42,30 @@ return new class extends Migration {
             $table->softDeletes();
             $table->timestamps();
         });
+
+
+        $cats = [
+            [
+                'title' => 'کالای دیجیتال',
+                'slug' => 'کالای-دیجیتال',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'title' => 'موبایل',
+                'slug' => 'موبایل',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'title' => 'لپتاپ',
+                'slug' => 'لپتاپ',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+
+        ];
+        DB::table('categories')->insert($cats);
 
         Schema::create('tags', function (Blueprint $table) {
             $table->id();

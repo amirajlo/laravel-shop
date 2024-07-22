@@ -2,9 +2,10 @@
 
 use App\Models\Main;
 
+
 $attributesName = Main::attributesName();
-$pageName = $attributesName['manage'] . " " . $attributesName['orderitems']." سفارش ".$model->id;
-$perUrl=url()->route('admin.orders.index');
+$pageName = $attributesName['manage'] . " " . $attributesName['orderitems'] ." - ".  $attributesName['order'] ." ". $model->orderTitle();
+$perUrl = url()->route('admin.orders.index');
 ?>
 @extends('admin.layouts.master')
 
@@ -31,6 +32,8 @@ $perUrl=url()->route('admin.orders.index');
 
                 <section class="d-flex justify-content-between align-items-center mt-4 mb-3 border-bottom pb-2">
                     <a href="{{ route('admin.orderitems.create',$model) }}"
+                       class="btn btn-success btn-sm">  نهایی کردن سفارش </a>
+                    <a href="{{ route('admin.orderitems.create',$model) }}"
                        class="btn btn-info btn-sm">{{ $attributesName['create'] ." ". $attributesName['orderitems'] . " ".$attributesName['new'] }}</a>
                     <div class="max-width-16-rem">
                         <input type="text" class="form-control form-control-sm form-text"
@@ -43,7 +46,7 @@ $perUrl=url()->route('admin.orders.index');
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>{{ $attributesName['order_id'] }}</th>
+                            <th>{{ $attributesName['product_id'] }}</th>
                             <th>{{ $attributesName['qty'] }}</th>
                             <th>{{ $attributesName['orderitems_fee'] }}</th>
                             <th>{{ $attributesName['discount'] }}</th>
@@ -60,19 +63,26 @@ $perUrl=url()->route('admin.orders.index');
 
                             <tr>
                                 <th>{{ $key + 1 }}</th>
-                                <td>{{ $model->order_id }} </td>
-                                <td>{{ $model->qty }} </td>
-                                <td>{{ $model->fee }} </td>
-                                <td>{{ $model->discount }} </td>
-                                <td>{{ $model->total }} </td>
+                                <td>{{ $model->product->title }} </td>
+                                <td>{{ number_format($model->qty) }} </td>
+                                <td>{{ number_format($model->fee) }} </td>
+                                <td>{{ number_format($model->discount) }} </td>
+                                <td>{{ number_format($model->total) }} </td>
                                 <td class="width-22-rem text-left">
 
                                     <a href="{{ route('admin.orderitems.edit', $model->id) }}"
                                        class="btn btn-primary btn-sm">
-                                        <i  class="fa fa-edit"></i>
+                                        <i class="fa fa-edit"></i>
                                         {{ $attributesName['edit'] }}
                                     </a>
-
+                                    <form class="d-inline"
+                                          action="{{ route('admin.orderitems.destroy', $model->id) }}"
+                                          method="post">
+                                        @csrf
+                                        {{ method_field('delete') }}
+                                        <button class="btn btn-danger btn-sm delete" type="submit"><i
+                                                class="fa fa-trash-alt"></i> {{ $attributesName['delete'] }}</button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach

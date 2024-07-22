@@ -41,10 +41,18 @@ $pageName = $attributesName['manage'] . " " . $attributesName['orders'];
                         <tr>
                             <th>#</th>
                             <th>{{ $attributesName['title'] }}</th>
+                            <th>{{ $attributesName['tax'] }}</th>
+                            <th>{{ $attributesName['delivery_total'] }}</th>
+                            <th>{{ $attributesName['total_price'] }}</th>
 
-
-
+                            <th>{{ $attributesName['total_discount'] }}</th>
+                            <th>{{ $attributesName['discount'] }}</th>
+                            <th>{{ $attributesName['total'] }}</th>
                             <th>{{ $attributesName['status'] }}</th>
+
+
+
+
                             <th class="max-width-16-rem text-center"><i
                                     class="fa fa-cogs"></i> {{ $attributesName['setting'] }}</th>
                         </tr>
@@ -56,22 +64,23 @@ $pageName = $attributesName['manage'] . " " . $attributesName['orders'];
                             <tr>
                                 <th>{{ $key + 1 }}</th>
                                 <td>{{ $model->title }} </td>
+                                <td>{{ number_format($model->tax) }} </td>
+                                <td>{{ number_format($model->delivery_total) }} </td>
+                                <td>{{ number_format($model->total_price) }} </td>
+                                <td>{{ number_format($model->total_discount) }} </td>
+                                <td>{{ number_format($model->discount) }} </td>
+                                <td>{{ number_format($model->total) }} </td>
+                                <td>{{ $model->status }} </td>
 
-
-                                <td id="status-{{ $model->id }}">
-                                    {!! Main::userStatus(true)[$model->status] !!}
-                                </td>
 
                                 <td class="width-22-rem text-left">
 
                                     <a href="{{ route('admin.orders.show', $model->id) }}"
                                        class="btn btn-primary btn-sm"><i
                                             class="fa fa-list"></i> {{ $attributesName['items'] }}</a>
-                                    <a id="statusb-{{ $model->id }}" class="btn btn-warning btn-sm"
-                                       onclick="changeStatus({{ $model->id }})"
-                                       data-url="{{ route('admin.orders.status', $model->id) }}">
-                                        <i class="fa fa-undo "></i>
-                                    </a>
+
+
+
 
                                     <a href="{{ route('admin.orders.edit', $model->id) }}"
                                        class="btn btn-primary btn-sm"><i

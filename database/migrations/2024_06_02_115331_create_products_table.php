@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Main;
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -67,6 +68,63 @@ return new class extends Migration {
             $table->softDeletes();
             $table->timestamps();
         });
+        $products = [
+            [
+                'title' => 'A14',
+                'categories' => 2,
+                'slug' => 'A14',
+                'author_id' => 1,
+                'show_price' => 1,
+                'price_type' => 1,
+                'manage_stock' => 1,
+                'stock_status' => 1,
+                'stock_qty' => 8,
+                'low_stock' => 2,
+                'price' => 250520,
+                'price_special' => 240420,
+                'price_currency' => 0,
+                'price_currency_special' => 0,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'title' => 'A34',
+                'categories' => 2,
+                'slug' => 'A34',
+                'author_id' => 1,
+                'show_price' => 1,
+                'price_type' => 1,
+                'manage_stock' => 1,
+                'stock_status' => 1,
+                'stock_qty' => 10,
+                'low_stock' => 1,
+                'price' => 750000,
+                'price_special' => 650000,
+                'price_currency' => 0,
+                'price_currency_special' => 0,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'title' => 'Legion',
+                'categories' => 3,
+                'slug' => 'Legion',
+                'author_id' => 1,
+                'show_price' => 1,
+                'price_type' => 2,
+                'manage_stock' => 3,
+                'stock_status' => 1,
+                'stock_qty' => 0,
+                'low_stock' => 0,
+                'price' => 0,
+                'price_special' => 0,
+                'price_currency' => 15.25,
+                'price_currency_special' => 14.99,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+        ];
+        DB::table('products')->insert($products);
     }
 
     /**

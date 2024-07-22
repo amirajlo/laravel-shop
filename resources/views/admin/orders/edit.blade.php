@@ -5,7 +5,7 @@ use App\Models\Main;
 $statusList = Main::userStatus();
 $attributesName = Main::attributesName();
 $perUrl=url()->route('admin.orders.index');
-$pageName=$attributesName['update']." ". $attributesName['order'] ." شماره سفارش '". $model->id."'";
+$pageName=$attributesName['update']." ". $attributesName['order'] ."  ".  $model->orderTitle();
 ?>
 @extends('admin.layouts.master')
 

@@ -32,7 +32,7 @@ class UpdateCommentsRequest extends FormRequest
             'negative_points' => 'string',
             'website' => 'nullable|url:http,https',
             'like' => 'nullable|numeric',
-            'diss_like' => 'nullable|numeric',
+            'dis_like' => 'nullable|numeric',
         ];
         return array_merge(
             $rules,

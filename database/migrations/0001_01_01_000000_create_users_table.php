@@ -6208,14 +6208,34 @@ $provinces = [
                 'username' => 'amirajloo',
                 'email' => 'ajloo.ir@gmail.com',
                 'mobile' => '09129247442',
+                'role' => Main::ROLE_ADMIN,
+                'sex' => Main::USER_SEX_MALE,
                 'national_code' => '0014291789',
                 'economical_code' => '00142917890001',
                 'birthday' => Carbon::createFromDate(1991, 10, 12),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
+            [
+                'first_name' => 'سمیرا',
+                'last_name' => 'وظیفه',
+                'password' => Hash::make('Salam123!@'),
+                'phone1' => '02188098472',
+                'postal_code' => '1468683351',
+                'username' => 'samiravazife',
+                'email' => 'samiravazife@gmail.com',
+                'mobile' => '09212788597',
+                'role' => Main::ROLE_CUSTOMER,
+                'sex' => Main::USER_SEX_FEMALE,
+                'national_code' => '0018057856',
+                'economical_code' => '00180578560001',
+                'birthday' => Carbon::createFromDate(1993, 7, 8),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
         ];
         DB::table('users')->insert($users);
+
     }
 
     /**

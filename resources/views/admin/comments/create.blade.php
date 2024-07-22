@@ -166,11 +166,11 @@ $perUrl=url()->route('admin.comments.index');
                             </section>
                             <section class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label for="">{{ $attributesName['diss_like'] }}</label>
-                                    <input type="text" name="diss_like" class="form-control form-control-sm"
-                                           value="{{ old('diss_like') }}">
+                                    <label for="">{{ $attributesName['dis_like'] }}</label>
+                                    <input type="text" name="dss_like" class="form-control form-control-sm"
+                                           value="{{ old('dis_like') }}">
                                 </div>
-                                @error('diss_like')
+                                @error('dis_like')
                                 <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
                                         <strong>
                                             {{ $message }}

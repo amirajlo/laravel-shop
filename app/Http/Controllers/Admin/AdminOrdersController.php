@@ -32,6 +32,7 @@ class AdminOrdersController extends MainController
     public function create()
     {
         $model=new Order();
+        $model->status=Order::STATUS_ACTIVE;
         return view('admin.orders.create',compact('model'));
     }
 
@@ -43,6 +44,7 @@ class AdminOrdersController extends MainController
 
         $defaultValues = [
             'author_id' => Auth::user()->id,
+            //'status' => Main::STATUS_DISABLED,
         ];
 
         if (empty($request->input('title'))) {
@@ -82,6 +84,7 @@ class AdminOrdersController extends MainController
     {
         $defaultValues = [
             'author_id' => Auth::user()->id,
+          //  'status' => Main::STATUS_DISABLED,
         ];
 
         if (empty($request->input('title'))) {

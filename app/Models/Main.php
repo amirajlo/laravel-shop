@@ -65,6 +65,7 @@ class Main extends Model
     const DISCOUNT_TYPE_ORDERS=2;
     const DISCOUNT_TYPE_DELIVERY=3;
     const DISCOUNT_TYPE_CATEGORIES=4;
+    const TAX=10;
     public static function filesTypeList($label = false)
     {
         $result = [
@@ -166,12 +167,18 @@ class Main extends Model
             'deliveries_fee' => 'هزینه ارسال',
             'show_price' => 'نمایش قیمت',
             'category_id' => 'دسته بندی',
+            'tax' => 'مالیات',
+            'delivery_total' => 'هزینه ارسال',
+            'total_price' => 'هزینه کالاها',
+            'total_discount' => 'مجموع تخفیف کالاها',
+            'total' => 'قیمت نهایی سفارش',
             'items' => 'آیتم ها',
             'discounts' => 'تخفیف ها',
+            'createButtonAdd' => 'ذخیره و ثبت مورد جدید',
             'discount' => 'تخفیف',
-            'discount_fee' => 'مبلغ تخفیف',
+            'discount_fee' => 'مبلغ تخفیف مقدار',
 
-            'percent' => 'مبلغ تخفیف',
+            'discount_percent' => 'مبلغ تخفیف درصد',
             'discount_max' => 'حداکثر مبلیغ تخفیف',
             'min_qty' => 'حداقل تعداد خرید(مثال:برای سفارش بیش از 10 تا تخفیف اعمال شود)',
             'min_order' => 'حداقل مبلغ سفارش(زمانی که تخفیف روی سفارش است)',
@@ -238,7 +245,7 @@ class Main extends Model
             'score' => 'امتیاز',
             'address_description' => 'آدرس',
             'like' => 'لایک',
-            'diss_like' => 'دیس لایک',
+            'dis_like' => 'دیس لایک',
             'city' => 'شهرستان',
             'city_id' => 'شهرستان',
             'phone1' => 'تلفن 1',

@@ -24,15 +24,11 @@ class UpdateOrderItemsRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'order_id' => 'nullable',
+            'order_id' => 'required|exists:orders,id',
             'qty' => 'numeric',
-            'fee' => 'numeric',
-            'total' => 'numeric',
             'discount_id' => 'numeric|exists:discounts,id',
             'discount' => 'numeric',
-            'discount_description' => 'nullable',
             'product_id' => 'numeric|exists:products,id',
-            'guest_token' => 'nullable',
             'description' => 'nullable',
         ];
         return array_merge(

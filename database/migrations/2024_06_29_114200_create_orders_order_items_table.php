@@ -21,18 +21,24 @@ return new class extends Migration
                 ->constrained(table: 'deliveries', indexName: 'orders_delivery_id')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->float('delivery_price')->nullable();
-            $table->float('delivery_discount')->nullable();
-            $table->float('delivery_total')->nullable();
+            $table->float('delivery_price')->nullable()->default(0);
+
+            $table->foreignId('delivery_discount_id')->nullable()
+                ->constrained(table: 'discounts', indexName: 'orders_delivery_discount_id')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->float('delivery_discount')->nullable()->default(0);
+            $table->float('delivery_total')->nullable()->default(0);
             $table->text('delivery_description')->nullable();
             $table->foreignId('discount_id')->nullable()
                 ->constrained(table: 'discounts', indexName: 'orders_discount_id')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->float('total_price')->default(Main::STATUS_DEFAULT)->comment('قیمت کل سفارش');
-            $table->float('total_discount')->default(Main::STATUS_DEFAULT)->comment('قیمت کل تخفیف');
-            $table->float('total')->default(Main::STATUS_DEFAULT)->comment('قیمت کل سفارش بعد از کسر تخفیف و جمع مالیات و ارسال');
+            $table->float('total_price')->default(Main::STATUS_DEFAULT)->comment('قیمت آیتم ها');
+            $table->float('total_discount')->default(Main::STATUS_DEFAULT)->comment('تخفیف آیتم ها');
 
+            $table->float('discount')->nullable()->default(0)->comment('تخفیف سفارش');
+            $table->float('total')->default(Main::STATUS_DEFAULT)->comment('قیمت کل سفارش بعد از کسر تخفیف و جمع مالیات و ارسال');
             $table->foreignId('address_id')->nullable()
                 ->constrained(table: 'addresses', indexName: 'orders_address_id')
                 ->onUpdate('cascade')
@@ -68,10 +74,10 @@ return new class extends Migration
                 ->constrained(table: 'orders', indexName: 'order_items_order_id')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->float('qty')->nullable();
-            $table->float('fee')->nullable();
-            $table->float('discount')->nullable();
-            $table->float('total')->nullable();
+            $table->float('qty')->nullable()->default(1);
+            $table->float('fee')->nullable()->default(0);
+            $table->float('discount')->nullable()->default(0);
+            $table->float('total')->nullable()->default(0);
             $table->foreignId('product_id')->nullable()
                 ->constrained(table: 'products', indexName: 'order_items_product_id')
                 ->onUpdate('cascade')

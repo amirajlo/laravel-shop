@@ -43,6 +43,10 @@ $pageName = $attributesName['manage'] . " " . $attributesName['discounts'];
                             <th>{{ $attributesName['title'] }}</th>
                             <th>{{ $attributesName['discount_code'] }}</th>
                             <th>{{ $attributesName['type'] }}</th>
+                            <th>{{ $attributesName['qty'] }}</th>
+                            <th>{{ $attributesName['discount_fee'] }}</th>
+                            <th>{{ $attributesName['discount_percent'] }}</th>
+                            <th>{{ $attributesName['discount_max'] }}</th>
                             <th>{{ $attributesName['expired_at'] }} </th>
                             <th>{{ $attributesName['status'] }}</th>
                             <th class="max-width-16-rem text-center">
@@ -60,6 +64,10 @@ $pageName = $attributesName['manage'] . " " . $attributesName['discounts'];
                                 <td>{{ $model->title }} </td>
                                 <td>{{ $model->discount_code }} </td>
                                 <td>{{ $model->type }} </td>
+                                <td>{{ $model->qty }} </td>
+                                <td>{{ $model->fee }} </td>
+                                <td>{{ $model->percent }} </td>
+                                <td>{{ $model->max }} </td>
                                 <td>{{\Morilog\Jalali\Jalalian::forge($model->expired_at)->format('%Y-%m-%d')}}</td>
                                 <td id="status-{{ $model->id }}">
                                     {!! Main::userStatus(true)[$model->status] !!}

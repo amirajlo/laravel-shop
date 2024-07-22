@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Main;
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -46,6 +47,38 @@ return new class extends Migration
             $table->timestamps();
 
         });
+        $addresses = [
+            [
+
+                'user_id' => 2,
+                'title' => "منزل",
+                'description' => "شهرک غرب بلوار شهید دادمان",
+                'province_id' =>8,
+                'city_id' =>301,
+                'postal_code' =>"1468683351",
+                'email' =>"samiravazife@gmail.com",
+                'mobile' =>"09212788597",
+                'phone' =>"02188098472",
+                'updated_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+
+                'user_id' => 2,
+                'title' => "شرکت",
+                'description' => "میرداماد میدان مادر",
+                'province_id' =>8,
+                'city_id' =>301,
+                'postal_code' =>"1468683351",
+                'email' =>"samiravazife@gmail.com",
+                'mobile' =>"09212788597",
+                'phone' =>"02188098472",
+                'updated_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+
+        ];
+        DB::table('addresses')->insert($addresses);
     }
 
     /**

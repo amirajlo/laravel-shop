@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Main;
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -27,6 +28,20 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
+
+
+
+        //default users
+        $deliveries = [
+            [
+                'title' => 'پیک',
+                'fee' => '50000',
+
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+        ];
+        DB::table('deliveries')->insert($deliveries);
     }
 
     /**

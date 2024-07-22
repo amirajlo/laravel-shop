@@ -32,9 +32,61 @@ class Discount extends Main
         'updated_at',
         'deleted_at',
     ];
+
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+
+    public static function checkDiscount($condition,$price,$qty=null)
+    {
+        $cond1=$qty;
+        $cond2="min_qty";
+        $discount = 0;
+        $discount_id= 0;
+        if(is_null($qty)){
+            $cond1=$price;
+            $cond2="min_order";
+        }
+        $hasDiscount = Discount::where($condition)->where(Main::defaultCondition())->first();
+        if ($hasDiscount) {
+            if ($hasDiscount->used < $hasDiscount->qty) {
+                if ($cond1 >= $hasDiscount->$cond2) {
+
+                    if (!empty($hasDiscount->fee)) {
+                        $discount += $hasDiscount->fee;
+                    }
+                    if (!empty($hasDiscount->percent)) {
+                        $percent = ($hasDiscount->percent * $price) / 100;
+                        $discount += $percent;
+                    }
+                    if(!is_null($qty)){
+                        $discount *= $cond1;
+                    }
+
+                    if ($discount > 0) {
+                       $discount_id= $hasDiscount->id;
+                        if ($hasDiscount->max != 0) {
+                            if ($discount > $hasDiscount->max) {
+                                $discount = $hasDiscount->max;
+                            }
+                        }
+                        $hasDiscount->used += 1;
+                        $hasDiscount->save();
+
+                    }
+
+
+                }
+            }
+        }
+
+        return [
+            'discount_id' => $discount_id,
+            'discount' => $discount,
+        ];
+
+    }
+
 
 }

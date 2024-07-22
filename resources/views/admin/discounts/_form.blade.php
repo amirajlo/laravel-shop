@@ -120,7 +120,7 @@ if(!empty($model->expired_at)){
     </section>
     <section class="col-12 col-md-6">
         <div class="form-group">
-            <label for="">{{ $attributesName['percent'] }}</label>
+            <label for="">{{ $attributesName['discount_percent'] }}</label>
             <input type="text" name="percent" class="form-control form-control-sm"
                    value="{{ old('percent',$model->percent) }}">
         </div>

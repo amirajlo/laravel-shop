@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Main;
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -37,6 +38,22 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
+        $brands = [
+            [
+                'title' => 'سامسونگ',
+                'slug' => 'سامسونگ',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'title' => 'ایسوس',
+                'slug' => 'ایسوس',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+
+        ];
+        DB::table('brands')->insert($brands);
     }
 
     /**
