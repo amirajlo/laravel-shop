@@ -11,6 +11,7 @@ use App\Models\Main;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 
 class AdminDiscountsController extends MainController
@@ -38,9 +39,21 @@ class AdminDiscountsController extends MainController
      */
     public function store(StoreDiscountsRequest $request)
     {
+
+        $generate = 1;
+        if (is_null($request->generate_checkbox)) {
+            $generate = 0;
+        }
+        if($generate == 1 ){
+            $code=Str::random(5);
+        }
+        else{
+            $code=$request->discount_code;
+        }
         $request->merge([
 
             'author_id' => Auth::user()->id,
+            'discount_code' =>$code,
         ]);
 
         Discount::create($request->all());

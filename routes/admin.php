@@ -209,6 +209,7 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::post('/store', [AdminOrdersController::class, 'store'])->name('admin.orders.store');
         Route::get('/edit/{model}', [AdminOrdersController::class, 'edit'])->name('admin.orders.edit');
         Route::get('/show/{model}', [AdminOrdersController::class, 'show'])->name('admin.orders.show');
+        Route::post('/checkout/{model}', [AdminOrdersController::class, 'checkout'])->name('admin.orders.checkout');
         Route::put('/update/{model}', [AdminOrdersController::class, 'update'])->name('admin.orders.update');
         Route::delete('/destroy/{model}', [AdminOrdersController::class, 'destroy'])->name('admin.orders.destroy');
         Route::post('/status/{model}', [AdminOrdersController::class, 'status'])->name('admin.orders.status');

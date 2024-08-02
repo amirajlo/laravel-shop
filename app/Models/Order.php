@@ -113,7 +113,7 @@ class Order extends Main
         $discount_id=$checkDiscount['discount_id'];
         if ($discount > 0) {
             $this->discount_id =$discount_id;
-            $this->discount = $discount;
+            $this->discount =0;// $discount;
             DiscountUsed::addUsed($discount_id, get_class($this), $this->id);
         }
 
@@ -140,9 +140,10 @@ class Order extends Main
     public function calculateTotal()
     {
         $itemsPrice = $this->total_price - $this->total_discount;
-        $itemsPriceDiscount = ($itemsPrice - $this->discount);
-        $this->calculateTax($itemsPriceDiscount);
-        $this->total = $itemsPriceDiscount + $this->tax + $this->delivery_total;
+        $this->calculateTax($itemsPrice);
+      //  $itemsPriceDiscount = ($itemsPrice - $this->discount);
+
+        $this->total = $itemsPrice + $this->tax + $this->delivery_total;
     }
 
     public static function itemsOfOrder($order_id)
@@ -153,6 +154,19 @@ class Order extends Main
     }
 
 
+    public static function checkOut($order_id)
+    {
+        $order = Order::where(['id' => $order_id])->first();
+        $order->calculateItems($order->id);
+        $order->calculateDiscount();
+        $order->calculateDeliveryDiscount();
+        $order->calculateTotal();
+        $order->save();
+    }
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
     public function calculateItems($order_id)
     {
         $sum = 0;

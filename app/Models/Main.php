@@ -8,8 +8,8 @@ use Venturecraft\Revisionable\RevisionableTrait;
 
 class Main extends Model
 {
-   // public $tags;
-   // public $categories;
+    // public $tags;
+    // public $categories;
 
 
     use HasFactory;
@@ -52,6 +52,9 @@ class Main extends Model
     const STOCK = 1;
     const IN_STOCK = 2;
 
+    const STOCK_INCREASE = 1;
+    const STOCK_DECREASE = 0;
+
     /***** END STOCK  ****/
     const FILES_MAIN_IMAGE = 1;
     const FILES_GALLERY_IMAGES = 2;
@@ -61,11 +64,12 @@ class Main extends Model
     const FILES_AVATAR = 1;
     const FILES_HEADER_IMAGE = 6;
 
-    const DISCOUNT_TYPE_PRODUCT=1;
-    const DISCOUNT_TYPE_ORDERS=2;
-    const DISCOUNT_TYPE_DELIVERY=3;
-    const DISCOUNT_TYPE_CATEGORIES=4;
-    const TAX=10;
+    const DISCOUNT_TYPE_PRODUCT = 1;
+    const DISCOUNT_TYPE_ORDERS = 2;
+    const DISCOUNT_TYPE_DELIVERY = 3;
+    const DISCOUNT_TYPE_CATEGORIES = 4;
+    const TAX = 10;
+
     public static function filesTypeList($label = false)
     {
         $result = [
@@ -79,6 +83,7 @@ class Main extends Model
         ];
         return $result;
     }
+
     public static function categoriesTypeList($label = false)
     {
         $result = [
@@ -106,6 +111,25 @@ class Main extends Model
             $result = [
                 self::USER_TYPE_HAGHIGHI => "<label class='btn btn-primary btn-sm'>حقیقی</label>",
                 self::USER_TYPE_HOGHOGHI => "<label class='btn btn-success btn-sm'>حقوقی</label>",
+            ];
+        }
+        return $result;
+    }
+
+    public static function discountTypeList($label = false)
+    {
+        $result = [
+            self::DISCOUNT_TYPE_PRODUCT => "محصول",
+            self::DISCOUNT_TYPE_ORDERS => "سفارش",
+            self::DISCOUNT_TYPE_DELIVERY => "حمل و نقل",
+            self::DISCOUNT_TYPE_CATEGORIES => "دسته بندی",
+        ];
+        if ($label) {
+            $result = [
+                self::DISCOUNT_TYPE_PRODUCT => "<label class='btn btn-primary btn-sm'>محصول</label>",
+                self::DISCOUNT_TYPE_ORDERS => "<label class='btn btn-success btn-sm'>سفارش</label>",
+                self::DISCOUNT_TYPE_DELIVERY => "<label class='btn btn-info btn-sm'>حمل و نق</label>",
+                self::DISCOUNT_TYPE_CATEGORIES => "<label class='btn btn-warning btn-sm'>دسته بندی</label>",
             ];
         }
         return $result;
@@ -163,8 +187,11 @@ class Main extends Model
     public static function attributesName()
     {
         return [
+            'cat_id' => 'دسته بندی',
+            'generate_checkbox' => 'تولید خودکار',
             'deliveries_description' => 'توضیحات',
             'deliveries_fee' => 'هزینه ارسال',
+            'checkOut' => 'محاسبه مجدد',
             'show_price' => 'نمایش قیمت',
             'category_id' => 'دسته بندی',
             'tax' => 'مالیات',

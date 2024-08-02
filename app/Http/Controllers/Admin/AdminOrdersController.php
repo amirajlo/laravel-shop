@@ -10,6 +10,8 @@ use App\Models\Order;
 use App\Models\Main;
 
 use App\Models\OrderItem;
+use App\Models\Product;
+use App\Models\ProductStock;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -67,7 +69,11 @@ class AdminOrdersController extends MainController
         $models = OrderItem::where(['is_deleted' => Main::STATUS_DISABLED, 'order_id' => $model->id])->get();
         return view('admin.orders.show', compact('model','models'));
     }
-
+    public function checkout(Order $model)
+    {
+       Order::checkOut($model->id);
+        return redirect()->route('admin.orders.index')->with('swal-success', 'سفارش به روزرسانی شد');
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -106,6 +112,21 @@ class AdminOrdersController extends MainController
         $model->is_deleted = Main::STATUS_ACTIVE;
         $model->author_id = Auth::user()->id;
         $model->deleted_at = Carbon::now();
+
+        $items=$model->orderItems;
+
+        foreach ($items as $item){
+
+            $product=Product::where(['id'=>$item->product_id])->first();
+            if($item->is_deleted == Main::STATUS_DISABLED){
+                $product->backStock($item->qty,$item->id,ProductStock::REASON_REMOVE_ORDER);
+            }
+            $item->is_deleted = Main::STATUS_ACTIVE;
+            $item->author_id = Auth::user()->id;
+            $item->deleted_at = Carbon::now();
+            $product->save();
+            $item->save();
+        }
         $model->save();
         return redirect()->route('admin.orders.index')->with('swal-success', 'سفارش با موفقیت حذف شد');
     }

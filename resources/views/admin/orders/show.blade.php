@@ -30,15 +30,11 @@ $perUrl = url()->route('admin.orders.index');
                     </h5>
                 </section>
 
-                <section class="d-flex justify-content-between align-items-center mt-4 mb-3 border-bottom pb-2">
+                <section class="  justify-content-between align-items-center mt-4 mb-3 border-bottom pb-2">
+                    <a href="{{ route('admin.orders.index') }}"
+                       class="btn btn-info btn-sm">{{ $attributesName['Back'] }}</a>
                     <a href="{{ route('admin.orderitems.create',$model) }}"
-                       class="btn btn-success btn-sm">  نهایی کردن سفارش </a>
-                    <a href="{{ route('admin.orderitems.create',$model) }}"
-                       class="btn btn-info btn-sm">{{ $attributesName['create'] ." ". $attributesName['orderitems'] . " ".$attributesName['new'] }}</a>
-                    <div class="max-width-16-rem">
-                        <input type="text" class="form-control form-control-sm form-text"
-                               placeholder="{{ $attributesName['searchPlaceHolder'] }}">
-                    </div>
+                       class="btn btn-success btn-sm">{{ $attributesName['create'] ." ". $attributesName['orderitem'] . " ".$attributesName['new'] }}</a>
                 </section>
 
                 <section class="table-responsive">

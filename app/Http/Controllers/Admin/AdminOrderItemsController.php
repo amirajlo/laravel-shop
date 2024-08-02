@@ -14,6 +14,7 @@ use App\Http\Requests\UpdateOrderItemsRequest;
 use App\Http\Requests\StoreOrderItemsRequest;
 
 use App\Models\Product;
+use App\Models\ProductStock;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -59,6 +60,7 @@ class AdminOrderItemsController extends MainController
         $product = Product::where(['id' => $product_id])->where(Main::defaultCondition())->first();
 
         $stock = $product->calculateStock($qty);
+
         if ($stock['status'] == Product::IN_STOCK) {
             $redirectPath = 'admin.orders.show';
             $message = 'محصول موجود نیست';
@@ -68,8 +70,8 @@ class AdminOrderItemsController extends MainController
                 $qty = $stock['qty'];
                 $product->stock_qty -= $qty;
                 $product->save();
-
             }
+
             $model = OrderItem::where(['order_id' => $order_id, 'product_id' => $product_id])->where(Main::defaultCondition())->first();
             if (!$model) {
                 $defaultValues = [
@@ -88,12 +90,8 @@ class AdminOrderItemsController extends MainController
                 $model->qty = $totalQty;
                 $model->save();
             }
-
-            $order = Order::where(['id' => $order_id])->first();
-            $order->calculateItems($order->id);
-            $order->calculateDiscount();
-            $order->calculateDeliveryDiscount();
-            $order->save();
+            ProductStock::insertNew($product->id, $qty,ProductStock::REASON_ADD_ITEM_ORDER,Main::STOCK_DECREASE,$model->id);
+            Order::checkOut($order_id);
 
         }
 
@@ -124,6 +122,7 @@ class AdminOrderItemsController extends MainController
     public function update(UpdateOrderItemsRequest $request, OrderItem $model)
     {
 
+        $newStockQty=$request->qty;
         $redirectPath = 'admin.orders.show';
         $swal = 'swal-success';
         $message = 'عملیات با موفقیت انجام شد.';
@@ -136,15 +135,14 @@ class AdminOrderItemsController extends MainController
 
         $qty = $request->input('qty');
         $product = Product::where(['id' => $product_id])->where(Main::defaultCondition())->first();
-        $product->stock_qty +=$oldQty;
+        $stock = $product->calculateStock($qty,$oldQty,$model->id);
         $product->save();
-
-        $stock = $product->calculateStock($qty);
         if ($stock['status'] == Product::IN_STOCK) {
             $redirectPath = 'admin.orders.show';
             $message = 'محصول موجود نیست';
             $swal = 'swal-error';
         } else {
+
             if (isset($stock['qty'])) {
                 $qty = $stock['qty'];
                 $product->stock_qty -= $qty;
@@ -159,16 +157,13 @@ class AdminOrderItemsController extends MainController
             ];
             $request->merge($defaultValues);
             $model->update($request->all());
-            if(!is_null($model->discount_id)){
+            ProductStock::insertNew($product->id,$qty,ProductStock::REASON_UPDATE_ITEM_ORDER,Main::STOCK_DECREASE,$model->id);
+           if(!is_null($model->discount_id)){
                 DiscountUsed::minusUsed($model->discount_id,get_class($model),$model->id);
             }
 
-            $order = Order::where(['id' => $order_id])->first();
+            Order::checkOut($order_id);
 
-            $order->calculateItems($order->id);
-            $order->calculateDiscount();
-            $order->calculateDeliveryDiscount();
-            $order->save();
         }
         return redirect()->route($redirectPath, $order_id)->with($swal, $message);
     }
@@ -176,27 +171,7 @@ class AdminOrderItemsController extends MainController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(OrderItem $model)
-    {
-        $order_id = $model->order_id;
-        $model->is_deleted = Main::STATUS_ACTIVE;
-        $model->author_id = Auth::user()->id;
-        $model->deleted_at = Carbon::now();
-        $model->save();
-        $product=Product::where(['id'=>$model->product_id])->first();
-        $product->stock_qty +=$model->qty;
-        $product->save();
-        if(!is_null($model->discount_id)){
-            DiscountUsed::minusUsed($model->discount_id,get_class($model),$model->id);
-        }
-        if(!is_null($model->order->discount_id)){
-            DiscountUsed::minusUsed($model->order->discount_id,get_class($model->order),$model->order->id);
-        }
-        if(!is_null($model->order->delivery_discount_id)){
-            DiscountUsed::minusUsed($model->order->delivery_discount_id,get_class($model->order),$model->order->id);
-        }
-        return redirect()->route('admin.orders.show', $order_id)->with('swal-success', 'آیتم با موفقیت حذف شد');
-    }
+
 
     public function status(OrderItem $model)
     {
@@ -225,4 +200,28 @@ class AdminOrderItemsController extends MainController
 
 
     }
+
+    public function destroy(OrderItem $model)
+    {
+        $order_id = $model->order_id;
+        $model->is_deleted = Main::STATUS_ACTIVE;
+        $model->author_id = Auth::user()->id;
+        $model->deleted_at = Carbon::now();
+        $model->save();
+        $product=Product::where(['id'=>$model->product_id])->first();
+        $product->backStock($model->qty,$model->id,ProductStock::REASON_REMOVE_ITEM_ORDER);
+        $product->save();
+        if(!is_null($model->discount_id)){
+            DiscountUsed::minusUsed($model->discount_id,get_class($model),$model->id);
+        }
+        if(!is_null($model->order->discount_id)){
+            DiscountUsed::minusUsed($model->order->discount_id,get_class($model->order),$model->order->id);
+        }
+        if(!is_null($model->order->delivery_discount_id)){
+            DiscountUsed::minusUsed($model->order->delivery_discount_id,get_class($model->order),$model->order->id);
+        }
+        Order::checkOut($order_id);
+        return redirect()->route('admin.orders.show', $order_id)->with('swal-success', 'آیتم با موفقیت حذف شد');
+    }
+
 }

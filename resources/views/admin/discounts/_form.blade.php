@@ -1,5 +1,6 @@
 @php
-    $oldExpired="";
+$oldExpired="";
+
 if(!empty($model->expired_at)){
     $dateTimeInput = explode(' ', $model->expired_at);
     $date = explode('-', $dateTimeInput[0]);
@@ -7,11 +8,27 @@ if(!empty($model->expired_at)){
     $datePart0 = implode('/', $datePart0);
     $oldExpired = $datePart0;
 }
-
+$discountTypeList=\App\Models\Main::discountTypeList();
 @endphp
 <section class="row">
+    <section class="col-12 col-md-12">
+        <div class="form-group">
+            <label for="">{{ $attributesName['type'] }}</label>
 
-    <section class="col-12 col-md-6">
+            <select name="type" id="type" class="form-control form-control-sm">
+                <option value="">{{ $attributesName['DropdownLabel'] }}</option>
+                @include('components.load-types-dropdown', ['typeList' => $discountTypeList,'model'=>$model,'column'=>'type'])
+            </select>
+        </div>
+        @error('type')
+        <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
+        @enderror
+    </section>
+    <section class="col-12 col-md-12">
         <div class="form-group">
             <label for="">{{ $attributesName['title'] }}</label>
             <input type="text" name="title" class="form-control form-control-sm"
@@ -25,13 +42,45 @@ if(!empty($model->expired_at)){
                                     </span>
         @enderror
     </section>
-    <section class="col-12 col-md-6">
+    <section class="col-12 col-md-12">
         <div class="form-group">
-            <label for="">{{ $attributesName['discount_code'] }}</label>
-            <input type="text" name="discount_code" class="form-control form-control-sm"
+            <label for="">{{ $attributesName['discount_code'] }} &nbsp;</label>
+            @if(!isset($model->id))
+                <br/>
+                <label for="">{{ $attributesName['generate_checkbox'] }} &nbsp;</label>
+                <input type="checkbox" onchange="changeCheckbox()" name="generate_checkbox" id="generate_checkbox"
+                       class="form-check-input">
+            @endif
+
+        </div>
+    </section>
+    <section class="col-12 col-md-12">
+        <div class="form-group">
+            <input id="discount_code" type="text" name="discount_code" class="form-control form-control-sm"
+                   placeholder="کد تخفیف را وارد کنید یا آن را خالی بگذارید"
                    value="{{ old('discount_code',$model->discount_code) }}">
         </div>
         @error('discount_code')
+        <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
+                                        <strong>
+                                            {{ $message }}
+                                        </strong>
+                                    </span>
+        @enderror
+    </section>
+    <section class="col-12 col-md-12">
+        <div class="form-group">
+            <label for="">{{ $attributesName['cat_id'] }}</label>
+
+            <select id="cat_id" class="form-control form-control-sm" style="width:500px;" name="cat_id">
+                @if($model->cat_id)
+                    <option value="{{$model->cat->id}}"
+                            data-select2-id="select2-data-28-j3ms">{{$model->cat->title}}</option>
+                @endif
+            </select>
+
+        </div>
+        @error('cat_id')
         <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
                                         <strong>
                                             {{ $message }}
@@ -75,21 +124,8 @@ if(!empty($model->expired_at)){
         @enderror
     </section>
 
-    <section class="col-12 col-md-6">
-        <div class="form-group">
-            <label for="">{{ $attributesName['type'] }}</label>
-            <input type="text" name="type" class="form-control form-control-sm"
-                   value="{{ old('type',$model->type) }}">
-        </div>
-        @error('type')
-        <span class="alert_required bg-danger text-white p-1 rounded" role="alert">
-                                        <strong>
-                                            {{ $message }}
-                                        </strong>
-                                    </span>
-        @enderror
-    </section>
-    <section class="col-12 col-md-6">
+
+    <section class="col-12 col-md-12">
         <div class="form-group">
             <label for="">{{ $attributesName['qty'] }}</label>
             <input type="text" name="qty" class="form-control form-control-sm"
@@ -104,7 +140,7 @@ if(!empty($model->expired_at)){
         @enderror
     </section>
 
-    <section class="col-12 col-md-6">
+    <section class="col-12 col-md-12">
         <div class="form-group">
             <label for="">{{ $attributesName['discount_fee'] }}</label>
             <input type="text" name="fee" class="form-control form-control-sm"
@@ -118,7 +154,7 @@ if(!empty($model->expired_at)){
                                     </span>
         @enderror
     </section>
-    <section class="col-12 col-md-6">
+    <section class="col-12 col-md-12">
         <div class="form-group">
             <label for="">{{ $attributesName['discount_percent'] }}</label>
             <input type="text" name="percent" class="form-control form-control-sm"
@@ -134,7 +170,7 @@ if(!empty($model->expired_at)){
     </section>
 
 
-    <section class="col-12 col-md-6">
+    <section class="col-12 col-md-12">
         <div class="form-group">
             <label for="">{{ $attributesName['min_order'] }}</label>
             <input type="text" name="min_order" class="form-control form-control-sm"
@@ -148,7 +184,7 @@ if(!empty($model->expired_at)){
                                     </span>
         @enderror
     </section>
-    <section class="col-12 col-md-6">
+    <section class="col-12 col-md-12">
         <div class="form-group">
             <label for="">{{ $attributesName['min_qty'] }}</label>
             <input type="text" name="min_qty" class="form-control form-control-sm"
@@ -163,7 +199,7 @@ if(!empty($model->expired_at)){
         @enderror
     </section>
 
-    <section class="col-12 col-md-6">
+    <section class="col-12 col-md-12">
         <div class="form-group">
             <label for="">{{ $attributesName['discount_max'] }}</label>
             <input type="text" name="max" class="form-control form-control-sm"
@@ -177,12 +213,13 @@ if(!empty($model->expired_at)){
                                     </span>
         @enderror
     </section>
-    <section class="col-12 col-md-6">
+    <section class="col-12 col-md-12">
         <div class="form-group">
             <label for="">{{ $attributesName['expired_at'] }}</label>
             <input type="hidden" name="expired_at" id="expired_at" value="{{old('expired_at',$model->expired_at)}}"
                    class="form-control form-control-sm">
-            <input type="text" data-jdp data-jdp-miladi-input="expired_at" {{old('expired_at_view',$oldExpired)}} autocomplete="off"
+            <input type="text" data-jdp data-jdp-miladi-input="expired_at"
+                   {{old('expired_at_view',$oldExpired)}} autocomplete="off"
                    id="expired_at_view" class="form-control form-control-sm">
 
 
@@ -208,6 +245,17 @@ if(!empty($model->expired_at)){
 
 
     <script>
+        function changeCheckbox() {
+            const discount_code = document.getElementById('discount_code');
+            if (document.getElementById('generate_checkbox').checked) {
+                discount_code.style.display = 'none';
+            } else {
+                discount_code.style.display = 'flex';
+            }
+
+
+        }
+
         $(document).ready(function () {
 
             jalaliDatepicker.startWatch({
@@ -243,7 +291,33 @@ if(!empty($model->expired_at)){
 
 
                     return query;
-                }  ,
+                },
+                delay: 250,
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.title,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
+        $('#cat_id').select2({
+            placeholder: 'عنوان را وارد کنید',
+            ajax: {
+                url: '/admin/ajax',
+                dataType: 'json',
+                data: function (params) {
+                    var query = {
+                        q: params.term,
+                        table: 'categories'
+                    }
+                    return query;
+                },
                 delay: 250,
                 processResults: function (data) {
                     return {

@@ -25,10 +25,14 @@ class UpdateProductsRequest extends FormRequest
     {
         $rules = [
             'categories' => 'required',
+            'stock_qty' => 'nullable',
             'redirect' => 'nullable|url:http,https',
             'canonical' => 'nullable|url:http,https',
             'gallery_images' => 'nullable|array|min:1|max:5',
             'gallery_images.*' => 'image|mimes:svg,jpeg,png,jpg,gif,webp|max:10048',
+            'price_type' => 'required',
+            'manage_stock' => 'required',
+            'status' => 'required',
 
         ];
         return array_merge(

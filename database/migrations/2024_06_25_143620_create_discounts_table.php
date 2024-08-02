@@ -28,7 +28,11 @@ return new class extends Migration
             $table->float('max')->nullable()->default(Main::STATUS_DEFAULT);
             $table->dateTime('expired_at')->nullable();
             $table->foreignId('product_id')->nullable()
-                ->constrained(table: 'products', indexName: 'discounts_items_product_id')
+                ->constrained(table: 'products', indexName: 'discounts_product_id')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('cat_id')->nullable()
+                ->constrained(table: 'categories', indexName: 'discounts_cat_id')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->tinyInteger('is_deleted')->nullable()->default(Main::STATUS_DISABLED);
@@ -44,6 +48,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('discount_id')->nullable()
                 ->constrained(table: 'discounts', indexName: 'discount_used_discount_id')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()
+                ->constrained(table: 'users', indexName: 'discount_used_user_id')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->string('model_type')->nullable();
@@ -103,7 +111,7 @@ return new class extends Migration
                 'title' => 'تخفیف روی سفارش',
                 'discount_code' => 'Ab112HC',
                 'type' => Main::DISCOUNT_TYPE_ORDERS,
-                'percent' => 0,
+                'percent' => 3,
                 'fee' => 20000,
                 'qty' => 10,
                 'min_order' => 2,
@@ -114,67 +122,7 @@ return new class extends Migration
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
-            [
-                'title' => 'تخفیف روی سفارش',
-                'discount_code' => 'Ab113r2HC',
-                'type' => Main::DISCOUNT_TYPE_ORDERS,
-                'percent' => 3,
-                'fee' => 0,
-                'qty' => 10,
-                'product_id' => null,
-                'min_order' => 2,
-                'min_qty' => 2,
-                'max' => 100000,
-                'author_id' => 1,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'title' => 'تخفیف روی سفارش',
-                'discount_code' => 'Ab113r2HC',
-                'type' => Main::DISCOUNT_TYPE_ORDERS,
-                'percent' => 3,
-                'fee' => 25000,
-                'qty' => 10,
-                'min_order' => 2,
-                'min_qty' => 2,
-                'max' => 100000,
-                'product_id' => null,
-                'author_id' => 1,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
 
-            [
-                'title' => 'تخفیف روی ارسال',
-                'discount_code' => 'DAb113r2H3C',
-                'type' => Main::DISCOUNT_TYPE_DELIVERY,
-                'percent' => 3,
-                'fee' => 25000,
-                'qty' => 10,
-                'min_order' => 2,
-                'product_id' => null,
-                'min_qty' => 2,
-                'max' => 100000,
-                'author_id' => 1,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
-            [
-                'title' => 'تخفیف روی ارسال',
-                'discount_code' => 'DAb113r2HC2',
-                'type' => Main::DISCOUNT_TYPE_DELIVERY,
-                'percent' => 3,
-                'fee' => 0,
-                'qty' => 10,
-                'min_order' => 2,
-                'min_qty' => 2,
-                'max' => 100000,
-                'product_id' => null,
-                'author_id' => 1,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ],
             [
                 'title' => 'تخفیف روی ارسال',
                 'discount_code' => 'DAb113r2HC1',
@@ -186,6 +134,21 @@ return new class extends Migration
                 'min_qty' => 2,
                 'product_id' => null,
                 'max' => 100000,
+                'author_id' => 1,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'title' => 'تخفیف روی دسته بندی',
+                'discount_code' => 'Azw2HC',
+                'type' => Main::DISCOUNT_TYPE_CATEGORIES,
+                'percent' => 10,
+                'fee' => 0,
+                'qty' => 10,
+                'min_order' => 2,
+                'min_qty' => 2,
+                'max' => 100000,
+                'product_id' => 1,
                 'author_id' => 1,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),

@@ -25,15 +25,17 @@ class StoreDiscountsRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
+            'type' => 'required|numeric',
             'title' => 'required|min:3',
             'description' => 'nullable',
-            'discount_code' => 'required',
+            'discount_code' => 'nullable|min:3|unique:discounts,discount_code',
             'percent' => 'nullable|numeric',
             'qty' => 'nullable|numeric',
             'fee' => 'nullable|numeric',
             'min_order' => 'nullable|numeric',
             'min_qty' => 'nullable|numeric',
             'max' => 'nullable|numeric',
+            'cat_id' => 'nullable|exists:categories,id',
             'product_id' => 'nullable|exists:products,id',
         ];
         return array_merge(

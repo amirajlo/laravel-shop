@@ -30,8 +30,6 @@ class AdminDashboardController extends MainController
     public function ajax()
     {
         $data = [];
-
-
         if (isset($_GET['q'])) {
             $q = $_GET['q'];
             if($_GET['table'] == 'users'){

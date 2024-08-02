@@ -44,9 +44,8 @@ $pageName=$attributesName['manage'] ." ". $attributesName['products'] ;
                             <th>#</th>
                             <th>{{ $attributesName['title'] }}</th>
                             <th>{{ $attributesName['sub_title'] }}</th>
-                            <th>{{ $attributesName['slug'] }}</th>
+                            <th>{{ $attributesName['stock_qty'] }}</th>
                             <th>{{ $attributesName['content_title'] }}</th>
-
                             <th>{{ $attributesName['price'] }}</th>
                             <th>{{ $attributesName['status'] }}</th>
                             <th class="max-width-16-rem text-center">
@@ -63,7 +62,8 @@ $pageName=$attributesName['manage'] ." ". $attributesName['products'] ;
                                 <th>{{ $key + 1 }}</th>
                                 <td>{{ $model->title }} </td>
                                 <td>{{ $model->sub_title }}</td>
-                                <td>{{ $model->slug }}</td>
+                                <td>{{ $model->stock_qty }}</td>
+
                                 <td>{{ $model->content_title }}</td>
 
                                 <td>{{   number_format($model->calculatePrice())  }}</td>

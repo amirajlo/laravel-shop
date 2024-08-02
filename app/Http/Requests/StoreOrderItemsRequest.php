@@ -28,7 +28,7 @@ class StoreOrderItemsRequest extends FormRequest
             'qty' => 'numeric|gt:0',
             'discount_id' => 'numeric|exists:discounts,id',
             'discount' => 'numeric',
-            'product_id' => 'numeric|exists:products,id',
+            'product_id' => 'required|numeric|exists:products,id',
             'description' => 'nullable',
         ];
         return array_merge(

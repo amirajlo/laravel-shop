@@ -10,7 +10,7 @@ class Discount extends Main
 {
     use HasFactory;
 
-
+public $generate_code;
     protected $fillable = [
 
         'title',
@@ -25,17 +25,23 @@ class Discount extends Main
         'max',
         'expired_at',
         'product_id',
+        'cat_id',
         'status',
         'author_id',
         'is_deleted',
         'created_at',
         'updated_at',
         'deleted_at',
+        'generate_code',
     ];
 
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id');
+    }
+    public function cat()
+    {
+        return $this->belongsTo(Categories::class, 'cat_id');
     }
 
     public static function checkDiscount($condition,$price,$qty=null)
@@ -87,6 +93,7 @@ class Discount extends Main
         ];
 
     }
+
 
 
 }

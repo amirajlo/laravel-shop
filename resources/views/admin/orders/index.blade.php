@@ -26,13 +26,10 @@ $pageName = $attributesName['manage'] . " " . $attributesName['orders'];
                     </h5>
                 </section>
 
-                <section class="d-flex justify-content-between align-items-center mt-4 mb-3 border-bottom pb-2">
+                <section class="justify-content-between align-items-center mt-4 mb-3 border-bottom pb-2">
                     <a href="{{ route('admin.orders.create') }}"
-                       class="btn btn-info btn-sm">{{ $attributesName['create'] ." ". $attributesName['order'] . " ".$attributesName['new'] }}</a>
-                    <div class="max-width-16-rem">
-                        <input type="text" class="form-control form-control-sm form-text"
-                               placeholder="{{ $attributesName['searchPlaceHolder'] }}">
-                    </div>
+                       class="btn btn-success btn-sm">{{ $attributesName['create'] ." ". $attributesName['order'] . " ".$attributesName['new'] }}</a>
+
                 </section>
 
                 <section class="table-responsive">
@@ -74,17 +71,28 @@ $pageName = $attributesName['manage'] . " " . $attributesName['orders'];
 
 
                                 <td class="width-22-rem text-left">
+                                    <form class="d-inline"
+                                          action="{{ route('admin.orders.checkout', $model->id) }}"
+                                          method="post">
+                                        @csrf
 
+                                        <button class="btn btn-warning btn-sm" type="submit"><i
+                                                class="fa fa-check"></i> {{ $attributesName['checkOut'] }}</button>
+                                    </form>
                                     <a href="{{ route('admin.orders.show', $model->id) }}"
-                                       class="btn btn-primary btn-sm"><i
-                                            class="fa fa-list"></i> {{ $attributesName['items'] }}</a>
+                                       class="btn btn-success btn-sm">
+                                        <i class="fa fa-list"></i>
+                                        {{ $attributesName['items'] }}
+                                    </a>
+
+                                    <a href="{{ route('admin.orders.edit', $model->id) }}" class="btn btn-primary btn-sm">
+                                        <i class="fa fa-edit"></i>
+                                        {{ $attributesName['edit'] }}
+                                    </a>
 
 
 
 
-                                    <a href="{{ route('admin.orders.edit', $model->id) }}"
-                                       class="btn btn-primary btn-sm"><i
-                                            class="fa fa-edit"></i> {{ $attributesName['edit'] }}</a>
                                     <form class="d-inline"
                                           action="{{ route('admin.orders.destroy', $model->id) }}"
                                           method="post">

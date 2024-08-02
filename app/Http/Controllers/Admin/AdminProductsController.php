@@ -11,6 +11,7 @@ use App\Models\File;
 use App\Models\Product;
 use App\Models\Main;
 
+use App\Models\ProductStock;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -32,7 +33,9 @@ class AdminProductsController extends MainController
     public function create()
     {
         $model = new Product();
-        $model->show_price=1;
+        $model->stock_status = Main::STATUS_ACTIVE;
+        $model->show_price = Main::STATUS_ACTIVE;
+        $model->status = Main::STATUS_ACTIVE;
         $categories = Product::getCategoriesChild();
         return view('admin.products.create', compact('categories', 'model'));
     }
@@ -43,24 +46,37 @@ class AdminProductsController extends MainController
     public function store(StoreProductsRequest $request)
     {
 
-        $show_price=1;
-        if(is_null($request->show_price)){
-            $show_price=0;
+        $show_price = 1;
+        if (is_null($request->show_price)) {
+            $show_price = 0;
+        }
+
+        $stock_qty = 0;
+        if (floor($request->stock_qty) > 0) {
+            $stock_qty = $request->stock_qty;
+        }
+        $low_stock = 0;
+        if (floor($request->low_stock) > 0) {
+            $low_stock = $request->low_stock;
         }
 
         $request->merge([
             'slug' => Str::slug($request->title, '-', null),
             'author_id' => Auth::user()->id,
             'show_price' => $show_price,
+            'stock_qty' => $stock_qty,
+            'low_stock' => $low_stock,
         ]);
 
         $model = Product::create($request->except('main_image'));
+        if ($model->manage_stock == Main::STATUS_ACTIVE) {
+            ProductStock::insertNew($model->id, $model->stock_qty,ProductStock::REASON_NEW_PRODUCT,Main::STOCK_INCREASE);
+        }
         // Handle main image upload
 
         if ($request->hasFile('main_image')) {
             $file = $request->file('main_image');
             $uploadmainImage = $this->uploadMainImage($file);
-
             if ($uploadmainImage['status'] == Main::STATUS_ACTIVE) {
                 $fileModel = new File();
                 $fileModel->model_id = $model->id;
@@ -124,9 +140,11 @@ class AdminProductsController extends MainController
     public function update(UpdateProductsRequest $request, Product $model)
     {
 
-        $show_price=1;
-        if(is_null($request->show_price)){
-            $show_price=0;
+        $oldStockQty = $model->stock_qty;
+        $newStockQty = $request->stock_qty;
+        $show_price = 1;
+        if (is_null($request->show_price)) {
+            $show_price = 0;
         }
         $request->merge([
             'slug' => Str::slug($request->title, '-', null),
@@ -134,6 +152,8 @@ class AdminProductsController extends MainController
             'show_price' => $show_price,
         ]);
         $model->update($request->except('main_image'));
+
+        ProductStock::calculateStock($model->id,$oldStockQty,$newStockQty);
 
         if ($request->hasFile('main_image')) {
             $file = $request->file('main_image');
@@ -153,7 +173,6 @@ class AdminProductsController extends MainController
             }
         }
 
-
         if ($request->hasFile('gallery_images')) {
             $files = $request->file('gallery_images');
             $UploadGalleryImages = $this->UploadGalleryImages($files);
@@ -169,6 +188,7 @@ class AdminProductsController extends MainController
                 }
             }
         }
+
         return redirect()->route('admin.products.index')->with('swal-success', 'محصول با موفقیت ویرایش شد');
     }
 

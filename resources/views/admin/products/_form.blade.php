@@ -127,14 +127,7 @@ if(!empty($model->price_special_from)){
             <label for="">{{ $attributesName['status'] }}</label>
             <select class="form-control form-control-sm" name="status">
                 <option value="">{{ $attributesName['DropdownLabel'] }}</option>
-                @foreach ($statusList as $index => $item)
-                    <option value="{{ $index }}"
-                            @if ($index == $model->status )
-                                selected
-                        @endif
-                    >
-                        {{ $item }}</option>
-                @endforeach
+                @include('components.load-types-dropdown', ['typeList' => $statusList,'model'=>$model,'column'=>'status'])
 
             </select>
         </div>

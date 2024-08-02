@@ -48,37 +48,43 @@ class Product extends Main
         return $result;
     }
 
-    public function calculateStock($qty)
+    public function backStock($oldQty = null, $itemId = null, $reason)
     {
-        $result = [];
+        $this->stock_qty += $oldQty;
+        ProductStock::insertNew($this->id, $oldQty, $reason, Main::STOCK_INCREASE, $itemId);
+    }
 
+    public function calculateStock($qty, $oldQty = null, $itemId = null)
+    {
+        if (!is_null($oldQty)) {
+            $this->backStock($oldQty, $itemId, ProductStock::REASON_UPDATE_PRODUCT);
+        }
+        $result = [];
         $statusActive = self::MANAGE_STOCK_ACTIVE;
-        $statusDiactive = self::MANAGE_STOCK_ACTIVE;
         $isStock = Main::STOCK;
         $inStock = Main::IN_STOCK;
-
+        $currentQty = $this->stock_qty;
         if ($this->manage_stock == $statusActive) {
             $stockStatus = $isStock;
-            $currentQty = $this->stock_qty;
+
             if ($currentQty <= 0) {
                 $stockStatus = $inStock;
-            } else {
-                if ($qty > $currentQty) {
-                    $qty = $currentQty;
-                }
-                $result['currentQty'] = $currentQty;
-                $result['qty'] = $qty;
             }
-            $result['status'] = $stockStatus;
+            if ($qty > $currentQty) {
+                $qty = $currentQty;
+            }
 
         } else {
             $stockStatus = $inStock;
             if ($this->stock_status == $statusActive) {
                 $stockStatus = $isStock;
             }
-            $result['status'] = $stockStatus;
         }
 
+
+        $result['currentQty'] = $currentQty;
+        $result['qty'] = $qty;
+        $result['status'] = $stockStatus;
 
         return $result;
     }
@@ -135,7 +141,6 @@ class Product extends Main
     {
         return Categories::where(['type' => Main::CATEGORY_TYPE_PRODUCT, 'is_deleted' => Main::STATUS_DISABLED])->whereNull('parent_id')->with('children')->get();
     }
-
 
 
     public function calculatePrice()
