@@ -48,18 +48,28 @@ return new class extends Migration {
             [
                 'title' => 'کالای دیجیتال',
                 'slug' => 'کالای-دیجیتال',
+                'parent_id' => null,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'title' => 'آشپزخانه',
+                'slug' => 'آشپزخانه',
+                'parent_id' => null,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
                 'title' => 'موبایل',
                 'slug' => 'موبایل',
+                'parent_id' => 1,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
                 'title' => 'لپتاپ',
                 'slug' => 'لپتاپ',
+                'parent_id' => 1,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],

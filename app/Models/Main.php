@@ -354,13 +354,14 @@ class Main extends Model
         ];
     }
 
+
+
     public static function breadCrumbs($list)
     {
         $attributesName = self::attributesName();
         $result = [
             '<li class="breadcrumb-item font-size-12"><a href="/admin">' . $attributesName['home'] . '</a></li>'
         ];
-
 
         return $result;
     }

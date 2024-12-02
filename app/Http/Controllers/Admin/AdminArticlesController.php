@@ -11,6 +11,7 @@ use App\Models\File;
 use App\Models\Main;
 
 use App\Models\ModelHasTag;
+use App\Models\Product;
 use App\Models\Tags;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -33,11 +34,12 @@ class AdminArticlesController extends MainController
      */
     public function create()
     {
-
+        $model = new Article();
 
         $condition = Main::defaultCondition();
         $tags = Tags::where($condition)->get();
-        return view('admin.articles.create', compact('tags'));
+        $categories = Main::buildCategoryDropdown();
+        return view('admin.articles.create', compact('categories','tags','model'));
     }
 
     /**
@@ -110,12 +112,11 @@ class AdminArticlesController extends MainController
      */
     public function edit(Article $model)
     {
-        $condition = Main::defaultCondition();
-        $tags = Tags::where($condition)->get();
 
+        $categories = Main::buildCategoryDropdown();
         $mainImage=File::where(['model_id' => $model->id, 'model_type' => get_class($model), 'type' => Main::FILES_MAIN_IMAGE])->first();
 
-        return view('admin.articles.edit', compact('model','mainImage','tags'));
+        return view('admin.articles.edit', compact('categories','model','mainImage','tags'));
 
     }
 

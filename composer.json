@@ -9,6 +9,7 @@
         "intervention/image": "^3.7",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
+        "maatwebsite/excel": "^3.1",
         "morilog/jalali": "^3.4",
         "spatie/laravel-activitylog": "^4.8",
         "spatie/laravel-permission": "^6.7",

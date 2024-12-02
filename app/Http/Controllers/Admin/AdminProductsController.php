@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Models\Main;
 
 use App\Models\ProductStock;
+use App\Models\Tags;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -36,8 +37,10 @@ class AdminProductsController extends MainController
         $model->stock_status = Main::STATUS_ACTIVE;
         $model->show_price = Main::STATUS_ACTIVE;
         $model->status = Main::STATUS_ACTIVE;
-        $categories = Product::getCategoriesChild();
-        return view('admin.products.create', compact('categories', 'model'));
+
+        $categories = Categories::buildCategoryDropdown();
+        $tags = Tags::buildTagsDropdown();
+        return view('admin.products.create', compact('tags', 'categories', 'model'));
     }
 
     /**
@@ -59,18 +62,28 @@ class AdminProductsController extends MainController
         if (floor($request->low_stock) > 0) {
             $low_stock = $request->low_stock;
         }
-
+        $categories = $request->categories;
+        if (is_array($categories)) {
+            $categories = implode(',', $categories);
+        }
+        $tags = $request->tags;
+        if (is_array($tags)) {
+            $tags =Tags::addToDatabase($tags);
+            $tags = implode(',', $tags);
+        }
         $request->merge([
             'slug' => Str::slug($request->title, '-', null),
             'author_id' => Auth::user()->id,
             'show_price' => $show_price,
             'stock_qty' => $stock_qty,
+            'categories' => $categories,
+            'tags' => $tags,
             'low_stock' => $low_stock,
         ]);
 
         $model = Product::create($request->except('main_image'));
         if ($model->manage_stock == Main::STATUS_ACTIVE) {
-            ProductStock::insertNew($model->id, $model->stock_qty,ProductStock::REASON_NEW_PRODUCT,Main::STOCK_INCREASE);
+            ProductStock::insertNew($model->id, $model->stock_qty, ProductStock::REASON_NEW_PRODUCT, Main::STOCK_INCREASE);
         }
         // Handle main image upload
 
@@ -112,31 +125,6 @@ class AdminProductsController extends MainController
         return redirect()->route('admin.products.index')->with('swal-success', 'محصول جدید با موفقیت ثبت شد');
     }
 
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Product $model)
-    {
-        return view('admin.products.show', compact('model'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Product $model)
-    {
-
-        $categories = Product::getCategoriesChild();
-        $mainImage = File::where(['model_id' => $model->id, 'model_type' => get_class($model), 'type' => Main::FILES_MAIN_IMAGE])->first();
-        $headerImage = File::where(['model_id' => $model->id, 'model_type' => get_class($model), 'type' => Main::FILES_HEADER_IMAGE])->first();
-        $galleryImages = File::where(['model_id' => $model->id, 'model_type' => get_class($model), 'type' => Main::FILES_GALLERY_IMAGES])->get();
-        return view('admin.products.edit', compact('model', 'categories', 'mainImage', 'headerImage', 'galleryImages'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateProductsRequest $request, Product $model)
     {
 
@@ -146,14 +134,26 @@ class AdminProductsController extends MainController
         if (is_null($request->show_price)) {
             $show_price = 0;
         }
+        $categories = $request->categories;
+        if (is_array($categories)) {
+            $categories = implode(',', $categories);
+        }
+        $tags = $request->tags;
+        if (is_array($tags)) {
+            $tags =Tags::addToDatabase($tags);
+            $tags = implode(',', $tags);
+        }
+
         $request->merge([
             'slug' => Str::slug($request->title, '-', null),
             'author_id' => Auth::user()->id,
             'show_price' => $show_price,
+            'categories' => $categories,
+            'tags' => $tags,
         ]);
         $model->update($request->except('main_image'));
 
-        ProductStock::calculateStock($model->id,$oldStockQty,$newStockQty);
+        ProductStock::calculateStock($model->id, $oldStockQty, $newStockQty);
 
         if ($request->hasFile('main_image')) {
             $file = $request->file('main_image');
@@ -191,6 +191,35 @@ class AdminProductsController extends MainController
 
         return redirect()->route('admin.products.index')->with('swal-success', 'محصول با موفقیت ویرایش شد');
     }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Product $model)
+    {
+        return view('admin.products.show', compact('model'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Product $model)
+    {
+        $tags = Tags::buildTagsDropdown();
+        $categories = Categories::buildCategoryDropdown();
+        $mainImage = File::where(['model_id' => $model->id, 'model_type' => get_class($model), 'type' => Main::FILES_MAIN_IMAGE])->first();
+        $headerImage = File::where(['model_id' => $model->id, 'model_type' => get_class($model), 'type' => Main::FILES_HEADER_IMAGE])->first();
+        $galleryImages = File::where(['model_id' => $model->id, 'model_type' => get_class($model), 'type' => Main::FILES_GALLERY_IMAGES])->get();
+
+     $model->tags=explode(',',$model->tags);
+     $model->categories=explode(',',$model->categories);
+
+        return view('admin.products.edit', compact('model','tags', 'categories', 'mainImage', 'headerImage', 'galleryImages'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
 
     /**
      * Remove the specified resource from storage.

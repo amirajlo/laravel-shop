@@ -45,4 +45,29 @@ class Categories extends Main
     {
         return $this->belongsTo(Categories::class, 'parent_id');
     }
+
+    public static function buildCategoryDropdown($parent_id = null, $level = 0)
+    {
+        $categories = self::getCategories($parent_id);
+        //$result = '';
+
+        $result = [];
+        foreach ($categories as $category) {
+            $result[$category->id] = str_repeat('- ', $level) . $category->title;
+            $result += self::buildCategoryDropdown($category->id, $level + 1);
+
+        }
+
+        return $result;
+    }
+
+
+    public static function getCategories($parent = null,$type = Main::CATEGORY_TYPE_PRODUCT)
+    {
+        $deleteStatus=Main::STATUS_DISABLED;
+        $condition = ['type' => $type,'is_deleted'=>$deleteStatus,'parent_id'=>$parent];
+
+
+        return Categories::where($condition)->get();
+    }
 }

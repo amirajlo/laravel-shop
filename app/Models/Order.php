@@ -176,6 +176,7 @@ class Order extends Main
         foreach ($items as $item) {
             //per product calculate fee and total
             $item->calculateProductDiscount();
+
             $item->total = ($item->qty * $item->fee) ;
             $item->save();
             $sum += $item->total;

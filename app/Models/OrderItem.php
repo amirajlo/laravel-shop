@@ -38,7 +38,7 @@ class OrderItem extends Main
         $product = Product::where(['id' => $this->product_id])->where(Main::defaultCondition())->first();
         $this->fee = $product->calculatePrice();
 
-        $checkDiscount = Discount::checkDiscount(['product_id' => $product->id], $this->qty, $product->calculatePrice());
+        $checkDiscount = Discount::checkDiscount(['product_id' => $product->id], $this->qty,  $this->fee);
         $discount=$checkDiscount['discount'];
         $discount_id=$checkDiscount['discount_id'];
         if ($discount > 0) {
@@ -46,6 +46,7 @@ class OrderItem extends Main
             $this->discount = $discount;
             DiscountUsed::addUsed($discount_id, get_class($this), $this->id);
         }
+
     }
 
     public function order()

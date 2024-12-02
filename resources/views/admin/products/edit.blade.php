@@ -57,7 +57,7 @@ $pageName = $attributesName['update'] . " " . $attributesName['product'] . " " .
                         @csrf
                         @method('PUT')
 
-                        @include('admin/products/_form', ['categories' => $categories,'model'=>$model,'attributesName'=>$attributesName])
+                        @include('admin/products/_form', ['tags' => $tags,'categories' => $categories,'model'=>$model,'attributesName'=>$attributesName])
 
 
                         <section class="row mt-3">

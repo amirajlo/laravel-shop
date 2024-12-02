@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateCategoriesRequest;
 use App\Models\Categories;
 use App\Models\Main;
 
+use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -36,9 +37,9 @@ class AdminCategoriesController extends MainController
      */
     public function create($type = Main::CATEGORY_TYPE_PRODUCT)
     {
-
-        $categories = Categories::where(['type' => $type, 'is_deleted' => Main::STATUS_DISABLED])->whereNull('parent_id')->with('children')->get();
-        return view('admin.categories.create', compact('categories'));
+        $model = new Categories();
+        $categories =Main::buildCategoryDropdown();
+        return view('admin.categories.create', compact('categories','model'));
     }
 
     /**
@@ -69,7 +70,7 @@ class AdminCategoriesController extends MainController
      */
     public function edit(Categories $model)
     {
-        $categories = Categories::where(['type' => $model->type, 'is_deleted' => Main::STATUS_DISABLED])->whereNull('parent_id')->with('children')->get();
+        $categories =Main::buildCategoryDropdown();
 
         return view('admin.categories.edit', compact('model', 'categories'));
     }

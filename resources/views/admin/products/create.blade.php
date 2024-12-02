@@ -54,7 +54,7 @@ $perUrl = url()->route('admin.products.index');
                         @csrf
 
 
-                       @include('admin/products/_form', ['categories' => $categories,'model'=>$model,'attributesName'=>$attributesName])
+                       @include('admin/products/_form', ['tags' => $tags,'categories' => $categories,'model'=>$model,'attributesName'=>$attributesName])
 
                         <section class="row mt-3">
 

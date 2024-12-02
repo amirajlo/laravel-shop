@@ -84,12 +84,12 @@ class AdminOrderItemsController extends MainController
 
             }
             else {
-
                 $totalQty = $model->qty + $qty;
                 $model->description += $description;
                 $model->qty = $totalQty;
                 $model->save();
             }
+
             ProductStock::insertNew($product->id, $qty,ProductStock::REASON_ADD_ITEM_ORDER,Main::STOCK_DECREASE,$model->id);
             Order::checkOut($order_id);
 

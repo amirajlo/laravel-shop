@@ -54,7 +54,7 @@ public $generate_code;
             $cond1=$price;
             $cond2="min_order";
         }
-        $hasDiscount = Discount::where($condition)->where(Main::defaultCondition())->first();
+        $hasDiscount = Discount::where($condition)->where(Main::defaultCondition())->where('discount_code is null or discount_code = ""')->first();
         if ($hasDiscount) {
             if ($hasDiscount->used < $hasDiscount->qty) {
                 if ($cond1 >= $hasDiscount->$cond2) {
