@@ -1,6 +1,6 @@
 @foreach ($categories as $id => $title)
     <option value="{{ $id }}"
-            @if (in_array($id,$model->categories) )
+            @if (!empty($model->categories) &&  in_array($id,$model->categories) )
                 selected
         @endif
     >{{ $title }} </option>

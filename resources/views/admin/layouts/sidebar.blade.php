@@ -46,6 +46,7 @@
                 <section class="sidebar-dropdown">
                     <a href="{{ route('admin.categories.index',\App\Models\Main::CATEGORY_TYPE_PRODUCT) }}">دسته بندی محصولات</a>
                     <a href="{{ route('admin.categories.index',\App\Models\Main::CATEGORY_TYPE_ARTICLE) }}">دسته بندی مقالات</a>
+
                     <a href="{{ route('admin.tags.index') }}">مدیریت برچسب ها</a>
                 </section>
             </section>

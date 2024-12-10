@@ -38,7 +38,8 @@ class AdminCategoriesController extends MainController
     public function create($type = Main::CATEGORY_TYPE_PRODUCT)
     {
         $model = new Categories();
-        $categories =Main::buildCategoryDropdown();
+        $categories =Categories::buildCategoryDropdown(null,0,$type);
+
         return view('admin.categories.create', compact('categories','model'));
     }
 
@@ -70,7 +71,7 @@ class AdminCategoriesController extends MainController
      */
     public function edit(Categories $model)
     {
-        $categories =Main::buildCategoryDropdown();
+        $categories =Categories::buildCategoryDropdown(null,0,$model->type);
 
         return view('admin.categories.edit', compact('model', 'categories'));
     }

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('brands', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
-            $table->string('en_title')->nullable();
+            $table->string('second_title')->nullable();
             $table->text('description')->nullable();
             $table->foreignId('main_image')->nullable()->index();
             $table->foreignId('header_image')->nullable()->index();
@@ -31,7 +31,7 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->string('redirect')->nullable();
+
             $table->string('canonical')->nullable();
             $table->text('sidebar')->nullable();
             $table->tinyInteger('is_deleted')->default(Main::STATUS_DISABLED);

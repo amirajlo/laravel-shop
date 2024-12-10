@@ -29,7 +29,7 @@ return new class extends Migration
                 ->onDelete('cascade');
 
             $table->string('mobile',11)->nullable();
-            $table->string('phone',11)->nullable();
+            $table->string('phone',50)->nullable();
             $table->foreignId('province_id')->nullable()
                 ->constrained(table: 'provinces', indexName: 'addresses_province_id')
                 ->onUpdate('cascade')

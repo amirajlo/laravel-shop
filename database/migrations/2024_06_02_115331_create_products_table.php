@@ -16,8 +16,9 @@ return new class extends Migration {
             $table->id();
             $table->string('title')->nullable();
             $table->string('sub_title')->nullable();
-            $table->string('en_title')->nullable();
+            $table->string('second_title')->nullable();
             $table->text('description')->nullable();
+            $table->text('lead')->nullable();
             $table->string('seo_title')->nullable();
             $table->foreignId('main_image')->nullable()->index();
             $table->foreignId('header_image')->nullable()->index();
@@ -26,17 +27,21 @@ return new class extends Migration {
             $table->string('content_title')->nullable()->comment('H1 in content');
             $table->string('slug')->nullable();
             $table->tinyInteger('status')->default(Main::STATUS_ACTIVE);
-            $table->string('categories')->nullable();
+            $table->string('cat_list')->nullable()->comment('میخوام وقتی کوئری میزنم نرم فوریچ بذارم.از اول آی دی هارو اینجا ذخیره کنم');
             $table->string('tags')->nullable();
             $table->foreignId('author_id')->nullable()
                 ->constrained(table: 'users', indexName: 'products_author_id')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('cat_id')->nullable()
+                ->constrained(table: 'categories', indexName: 'products_cat_id')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->foreignId('brand_id')->nullable()
                 ->constrained(table: 'brands', indexName: 'products_brand_id')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->string('redirect')->nullable();
+
             $table->string('canonical')->nullable();
             $table->text('sidebar')->nullable();
             $table->string('related_articles')->nullable();
@@ -64,7 +69,7 @@ return new class extends Migration {
             $table->tinyInteger('stock_status')->default(Main::STOCK)->comment('موجود=1 ناموجود=3');
             $table->integer('stock_qty')->default(Main::STATUS_DEFAULT)->comment('تعداد موجودی');
             $table->integer('low_stock')->default(Main::STATUS_DEFAULT)->comment('کمترین مقدار موجودی یا آستانه کم بودن موجودی');
-            $table->tinyInteger('sitemap_check')->nullable()->default(Main::STATUS_DEFAULT);
+
             $table->softDeletes();
             $table->timestamps();
         });

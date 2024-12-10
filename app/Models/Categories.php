@@ -46,11 +46,9 @@ class Categories extends Main
         return $this->belongsTo(Categories::class, 'parent_id');
     }
 
-    public static function buildCategoryDropdown($parent_id = null, $level = 0)
+    public static function buildCategoryDropdown($parent_id = null, $level = 0,$type=Main::CATEGORY_TYPE_PRODUCT)
     {
-        $categories = self::getCategories($parent_id);
-        //$result = '';
-
+        $categories = self::getCategories($parent_id,$type);
         $result = [];
         foreach ($categories as $category) {
             $result[$category->id] = str_repeat('- ', $level) . $category->title;

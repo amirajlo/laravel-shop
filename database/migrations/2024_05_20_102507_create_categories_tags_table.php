@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->tinyInteger('type')->default(Main::CATEGORY_TYPE_PRODUCT)->comment("محصول یا مقاله و...");
             $table->string('title')->nullable();
-            $table->string('en_title')->nullable();
+            $table->string('second_title')->nullable();
             $table->text('description')->nullable();
             $table->foreignId('main_image')->nullable()->index();
             $table->foreignId('header_image')->nullable()->index();
@@ -35,7 +35,7 @@ return new class extends Migration {
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->string('redirect')->nullable();
+
             $table->string('canonical')->nullable();
             $table->text('sidebar')->nullable();
             $table->tinyInteger('is_deleted')->default(Main::STATUS_DISABLED);
@@ -76,11 +76,20 @@ return new class extends Migration {
 
         ];
         DB::table('categories')->insert($cats);
+        $ArticleCats=[
+            'title' => 'دسته بندی نشده',
+            'slug' => 'دسته-بندی-نشده',
+            'parent_id' => null,
+            'type' => Main::CATEGORY_TYPE_ARTICLE,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ];
+        DB::table('categories')->insert($ArticleCats);
 
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
-            $table->string('en_title')->nullable();
+            $table->string('second_title')->nullable();
             $table->text('description')->nullable();
             $table->string('seo_title')->nullable();
             $table->string('seo_description')->nullable();
@@ -96,7 +105,7 @@ return new class extends Migration {
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->string('redirect')->nullable();
+
             $table->string('canonical')->nullable();
             $table->text('sidebar')->nullable();
             $table->tinyInteger('is_deleted')->default(Main::STATUS_DISABLED);

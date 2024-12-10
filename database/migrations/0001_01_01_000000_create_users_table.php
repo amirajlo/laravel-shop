@@ -6143,8 +6143,8 @@ $provinces = [
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('username')->unique()->nullable()->comment("slug");
-            $table->string('email')->unique()->nullable();
-            $table->string('mobile', 11)->unique()->nullable();
+            $table->string('email')->nullable();
+            $table->string('mobile', 11)->nullable();
             $table->string('password');
             $table->tinyInteger('role')->default(Main::ROLE_ADMIN);
             $table->foreignId('user_id')->nullable()->index();
@@ -6159,9 +6159,9 @@ $provinces = [
             $table->string('phone1', 11)->nullable();
             $table->string('phone2', 11)->nullable();
             $table->string('phone3', 11)->nullable();
-            $table->string('national_code', 10)->unique()->nullable();
-            $table->string('economical_code', 14)->unique()->nullable();
-            $table->string('register_code')->unique()->nullable();
+            $table->string('national_code', 10)->nullable();
+            $table->string('economical_code', 14)->nullable();
+            $table->string('register_code')->nullable();
             $table->string('website')->nullable();
             $table->date('birthday')->nullable();
             $table->text('description')->nullable()->comment("بیوگرافی");
@@ -6207,7 +6207,7 @@ $provinces = [
                 'postal_code' => '1468683351',
                 'username' => 'amirajloo',
                 'email' => 'ajloo.ir@gmail.com',
-                'mobile' => '09129247442',
+                'mobile' => '09354818352',
                 'role' => Main::ROLE_ADMIN,
                 'sex' => Main::USER_SEX_MALE,
                 'national_code' => '0014291789',

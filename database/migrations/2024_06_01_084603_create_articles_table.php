@@ -25,14 +25,18 @@ return new class extends Migration
             $table->string('content_title')->nullable()->comment('H1 in content');
             $table->string('slug')->nullable();
             $table->tinyInteger('status')->default(Main::STATUS_ACTIVE);
+            $table->string('cat_list')->nullable()->comment('میخوام وقتی کوئری میزنم نرم فوریچ بذارم.از اول آی دی هارو اینجا ذخیره کنم');
 
-
+            $table->foreignId('cat_id')->nullable()
+                ->constrained(table: 'categories', indexName: 'articles_cat_id')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->foreignId('author_id')->nullable()
                 ->constrained(table: 'users', indexName: 'articles_author_id')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->string('redirect')->nullable();
+
             $table->string('canonical')->nullable();
             $table->text('sidebar')->nullable();
             $table->string('related_articles')->nullable();

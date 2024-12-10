@@ -70,6 +70,7 @@ return new class extends Migration
 
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->nullable()->comment('نام محصول');
             $table->foreignId('order_id')->nullable()
                 ->constrained(table: 'orders', indexName: 'order_items_order_id')
                 ->onUpdate('cascade')

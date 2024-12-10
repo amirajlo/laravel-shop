@@ -46,6 +46,7 @@ class Main extends Model
     const CATEGORY_TYPE_PRODUCT = 1;
     const CATEGORY_TYPE_ARTICLE = 2;
     const CATEGORY_TYPE_TICKET = 3;
+
     /***** END CATEGORY TYPE ****/
 
     /***** START STOCK  ****/
